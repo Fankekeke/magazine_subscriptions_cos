@@ -3,7 +3,7 @@ package com.fank.f1k2.business.service;
 import com.alipay.api.AlipayApiException;
 import com.fank.f1k2.common.domain.AlipayBean;
 
-public interface IPayService {
+public interface PayService {
 
     /**
      * 支付宝支付接口

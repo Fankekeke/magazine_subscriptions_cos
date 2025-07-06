@@ -11,20 +11,20 @@ import java.io.Serializable;
 /**
  * 公告信息
  *
- * @author FanK
+ * @author Fank gmail - fan1ke2ke@gmail.com
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class BulletinInfo implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * 主键ID
      */
     @TableId(type = IdType.AUTO)
     private Integer id;
-
-    private static final long serialVersionUID = 1L;
 
     /**
      * 标题
@@ -47,11 +47,6 @@ public class BulletinInfo implements Serializable {
     private String images;
 
     /**
-     * 发布人
-     */
-    private String publisher;
-
-    /**
      * 上下架（0.下架 1.发布）
      */
     private Integer rackUp;
@@ -60,4 +55,11 @@ public class BulletinInfo implements Serializable {
      * 消息类型
      */
     private Integer type;
+
+    /**
+     * 发布人
+     */
+    private String publisher;
+
+
 }
