@@ -48,8 +48,8 @@ export default {
     flex-direction: column;
     height: 100vh;
     overflow: auto;
-    //background: #f0f2f5 url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg') no-repeat center 110px;
-    background: #ececec no-repeat center 110px;
+    background: #f0f2f5 url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg') no-repeat center 110px;
+    //background: #ececec no-repeat center 110px;
     background-size: 100%;
     .content {
       padding: 32px 0;
