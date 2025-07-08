@@ -238,6 +238,12 @@
             <artifactId>spring-plugin-core</artifactId>
             <version>2.0.0.RELEASE</version> <!-- 或根据需要选择兼容版本 -->
         </dependency>
+        <!--RSS解析包-->
+        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <repositories>
