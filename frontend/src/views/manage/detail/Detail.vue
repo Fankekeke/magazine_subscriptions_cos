@@ -15,7 +15,7 @@
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="书籍名称"
+                label="订阅源名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.bookName"/>
@@ -185,7 +185,7 @@ export default {
           }
         }
       }, {
-        title: '书籍名称',
+        title: '订阅源名称',
         dataIndex: 'bookName',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -214,7 +214,7 @@ export default {
           }
         }
       }, {
-        title: '书籍图片',
+        title: '订阅源图片',
         dataIndex: 'images',
         customRender: (text, record, index) => {
           if (!record.images) return <a-avatar shape="square" icon="user" />
@@ -277,7 +277,7 @@ export default {
     },
     handlebookAddSuccess () {
       this.bookAdd.visiable = false
-      this.$message.success('新增书籍章节成功')
+      this.$message.success('新增订阅源章节成功')
       this.search()
     },
     edit (record) {
@@ -289,7 +289,7 @@ export default {
     },
     handlebookEditSuccess () {
       this.bookEdit.visiable = false
-      this.$message.success('修改书籍章节成功')
+      this.$message.success('修改订阅源章节成功')
       this.search()
     },
     handleDeptChange (value) {

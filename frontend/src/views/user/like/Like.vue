@@ -7,7 +7,7 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="书籍名称"
+                label="订阅源名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.bookName"/>
@@ -136,7 +136,7 @@ export default {
           </a-popover>
         }
       }, {
-        title: '书籍名称',
+        title: '订阅源名称',
         dataIndex: 'bookName',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -146,7 +146,7 @@ export default {
           }
         }
       }, {
-        title: '书籍编号',
+        title: '订阅源编号',
         dataIndex: 'bookCode',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -156,7 +156,7 @@ export default {
           }
         }
       }, {
-        title: '书籍介绍',
+        title: '订阅源介绍',
         dataIndex: 'content',
         scopedSlots: {customRender: 'contentShow'}
       }, {

@@ -61,7 +61,7 @@ public class MemberOrderInfoServiceImpl extends ServiceImpl<MemberOrderInfoMappe
         // 本年工单
         Integer workOrderYear = baseMapper.selectWorkOrderYear();
 
-        // 作家数量
+        // 订阅源数量
         Integer authorNum = authorInfoMapper.selectCount(Wrappers.<AuthorInfo>lambdaQuery());
         // 用户数量
         Integer userNum = userInfoMapper.selectCount(Wrappers.<UserInfo>lambdaQuery());

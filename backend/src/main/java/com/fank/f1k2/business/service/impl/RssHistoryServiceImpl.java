@@ -77,4 +77,5 @@ public class RssHistoryServiceImpl extends ServiceImpl<RssHistoryMapper, RssHist
     public List<Map> getRssStatByRssCode() {
         return rssHistoryMapper.getRssStatByRssCode();
     }
+
 }

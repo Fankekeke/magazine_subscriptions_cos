@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 作家管理
+ * 订阅源管理
  *
  * @author Fank gmail - fan1ke2ke@gmail.com
  */
@@ -30,12 +30,12 @@ public class AuthorInfo implements Serializable {
     private Integer id;
 
     /**
-     * 创作者编号
+     * 订阅源编号
      */
     private String code;
 
     /**
-     * 创作者名称
+     * 订阅源名称
      */
     private String name;
 
@@ -63,6 +63,11 @@ public class AuthorInfo implements Serializable {
      * 创建时间
      */
     private String createDate;
+
+    /**
+     * rss地址
+     */
+    private String rssUrl;
 
     /**
      * 所属用户

@@ -31,10 +31,10 @@ public class AuthorInfoServiceImpl extends ServiceImpl<AuthorInfoMapper, AuthorI
     private final BookInfoMapper bookInfoMapper;
 
     /**
-     * 分页获取作家信息
+     * 分页获取订阅源信息
      *
      * @param page       分页对象
-     * @param authorInfo 作家信息
+     * @param authorInfo 订阅源信息
      * @return 结果
      */
     @Override
@@ -43,9 +43,9 @@ public class AuthorInfoServiceImpl extends ServiceImpl<AuthorInfoMapper, AuthorI
     }
 
     /**
-     * 作家信息详情
+     * 订阅源信息详情
      *
-     * @param id 作家ID
+     * @param id 订阅源ID
      * @return 结果
      */
     @Override
@@ -97,7 +97,7 @@ public class AuthorInfoServiceImpl extends ServiceImpl<AuthorInfoMapper, AuthorI
     }
 
     /**
-     * 热门创作者统计
+     * 热门订阅源统计
      *
      * @return 结果
      */

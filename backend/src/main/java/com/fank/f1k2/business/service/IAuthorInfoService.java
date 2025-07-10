@@ -15,18 +15,18 @@ import java.util.List;
 public interface IAuthorInfoService extends IService<AuthorInfo> {
 
     /**
-     * 分页获取作家信息
+     * 分页获取订阅源信息
      *
      * @param page       分页对象
-     * @param authorInfo 作家信息
+     * @param authorInfo 订阅源信息
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> selectAuthorPage(Page<AuthorInfo> page, AuthorInfo authorInfo);
 
     /**
-     * 作家信息详情
+     * 订阅源信息详情
      *
-     * @param id 作家ID
+     * @param id 订阅源ID
      * @return 结果
      */
     AuthorInfo selectAuthorDetail(Integer id);
@@ -39,7 +39,7 @@ public interface IAuthorInfoService extends IService<AuthorInfo> {
     List<AuthorInfo> selectTopAuthor();
 
     /**
-     * 热门创作者统计
+     * 热门订阅源统计
      *
      * @return 结果
      */

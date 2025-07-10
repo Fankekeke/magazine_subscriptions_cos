@@ -38,7 +38,7 @@ body {
   width: 100%;
   padding: 8px 16px;
   background: #f8f9fa;
-  border-left: 4px solid #1890ff;
+  border-left: 5px solid #1890ff;
   margin-bottom: 12px;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);

@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="修改书籍" @cancel="onClose" :width="800">
+  <a-modal v-model="show" title="修改订阅源" @cancel="onClose" :width="800">
     <template slot="footer">
       <a-button key="back" @click="onClose">
         取消
@@ -11,10 +11,10 @@
     <a-form :form="form" layout="vertical">
       <a-row :gutter="20">
         <a-col :span="12">
-          <a-form-item label='书籍名称' v-bind="formItemLayout">
+          <a-form-item label='订阅源名称' v-bind="formItemLayout">
             <a-input v-decorator="[
             'name',
-            { rules: [{ required: true, message: '请输入书籍名称!' }] }
+            { rules: [{ required: true, message: '请输入订阅源名称!' }] }
             ]"/>
           </a-form-item>
         </a-col>
@@ -27,10 +27,10 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='书籍类型' v-bind="formItemLayout">
+          <a-form-item label='订阅源类型' v-bind="formItemLayout">
             <a-select v-decorator="[
               'type',
-              { rules: [{ required: true, message: '请输入书籍类型!' }] }
+              { rules: [{ required: true, message: '请输入订阅源类型!' }] }
               ]">
               <a-select-option value="1">玄幻</a-select-option>
               <a-select-option value="2">奇幻</a-select-option>
@@ -49,7 +49,7 @@
           </a-form-item>
         </a-col>
         <a-col :span="24">
-          <a-form-item label='书籍图片' v-bind="formItemLayout">
+          <a-form-item label='订阅源图片' v-bind="formItemLayout">
             <a-upload
               name="avatar"
               action="http://127.0.0.1:9527/file/fileUpload/"

@@ -8,10 +8,10 @@
     <div style="font-size: 13px;font-family: SimHei" v-if="bookData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">章节信息</span></a-col>
-        <a-col :span="8"><b>书籍编号：</b>
+        <a-col :span="8"><b>订阅源编号：</b>
           {{ bookData.code ? bookData.code : '- -' }}
         </a-col>
-        <a-col :span="8"><b>书籍名称：</b>
+        <a-col :span="8"><b>订阅源名称：</b>
           {{ bookData.bookName ? bookData.bookName : '- -' }}
         </a-col>
         <a-col :span="8"><b>章节名称：</b>

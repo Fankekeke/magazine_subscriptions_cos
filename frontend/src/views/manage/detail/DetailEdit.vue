@@ -1,6 +1,6 @@
 <template>
   <a-drawer
-    title="修改书籍章节"
+    title="修改订阅源章节"
     :maskClosable="false"
     width="100%"
     placement="right"
@@ -19,10 +19,10 @@
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-form-item label='所属书籍' v-bind="formItemLayout">
+          <a-form-item label='所属订阅源' v-bind="formItemLayout">
             <a-select v-decorator="[
               'bookId',
-              { rules: [{ required: true, message: '请输入所属书籍!' }] }
+              { rules: [{ required: true, message: '请输入所属订阅源!' }] }
               ]">
               <a-select-option :value="item.id" v-for="(item, index) in bookList" :key="index">{{ item.name }}</a-select-option>
             </a-select>

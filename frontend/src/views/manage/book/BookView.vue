@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="书籍详情" @cancel="onClose" :width="800">
+  <a-modal v-model="show" title="订阅源详情" @cancel="onClose" :width="800">
     <template slot="footer">
       <a-button key="back1" @click="audit(1)" v-if="bookData.status == 0">
         通过
@@ -13,11 +13,11 @@
     </template>
     <div style="font-size: 13px;font-family: SimHei" v-if="bookData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">书籍信息</span></a-col>
-        <a-col :span="8"><b>书籍编号：</b>
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">订阅源信息</span></a-col>
+        <a-col :span="8"><b>订阅源编号：</b>
           {{ bookData.code ? bookData.code : '- -' }}
         </a-col>
-        <a-col :span="8"><b>书籍名称：</b>
+        <a-col :span="8"><b>订阅源名称：</b>
           {{ bookData.name ? bookData.name : '- -' }}
         </a-col>
         <a-col :span="8"><b>最后更新时间：</b>
@@ -29,7 +29,7 @@
         <a-col :span="8"><b>标签：</b>
           {{ bookData.tag }}
         </a-col>
-        <a-col :span="8"><b>书籍类型：</b>
+        <a-col :span="8"><b>订阅源类型：</b>
           <span v-if="bookData.type == 1">玄幻</span>
           <span v-if="bookData.type == 2">奇幻</span>
           <span v-if="bookData.type == 3">武侠</span>
@@ -63,7 +63,7 @@
       <br/>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">书籍图片</span></a-col>
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">订阅源图片</span></a-col>
         <a-col :span="24">
           <a-upload
             name="avatar"

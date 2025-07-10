@@ -25,10 +25,10 @@ public class AuthorInfoController {
     private final IAuthorInfoService authorInfoService;
 
     /**
-     * 分页获取作家信息
+     * 分页获取订阅源信息
      *
      * @param page       分页对象
-     * @param authorInfo 作家信息
+     * @param authorInfo 订阅源信息
      * @return 结果
      */
     @GetMapping("/page")
@@ -37,7 +37,7 @@ public class AuthorInfoController {
     }
 
     /**
-     * 热门创作者统计
+     * 热门订阅源统计
      *
      * @return 结果
      */
@@ -47,9 +47,9 @@ public class AuthorInfoController {
     }
 
     /**
-     * 作家信息详情
+     * 订阅源信息详情
      *
-     * @param id 作家ID
+     * @param id 订阅源ID
      * @return 结果
      */
     @GetMapping("/{id}")
@@ -58,9 +58,9 @@ public class AuthorInfoController {
     }
 
     /**
-     * 作家信息详情
+     * 订阅源信息详情
      *
-     * @param id 作家账户ID
+     * @param id 订阅源账户ID
      * @return 结果
      */
     @GetMapping("/detailByUserId/{id}")
@@ -70,7 +70,7 @@ public class AuthorInfoController {
     }
 
     /**
-     * 作家信息列表
+     * 订阅源信息列表
      *
      * @return 结果
      */
@@ -90,9 +90,9 @@ public class AuthorInfoController {
     }
 
     /**
-     * 新增作家信息
+     * 新增订阅源信息
      *
-     * @param authorInfo 作家信息
+     * @param authorInfo 订阅源信息
      * @return 结果
      */
     @PostMapping
@@ -103,9 +103,9 @@ public class AuthorInfoController {
     }
 
     /**
-     * 修改作家信息
+     * 修改订阅源信息
      *
-     * @param authorInfo 作家信息
+     * @param authorInfo 订阅源信息
      * @return 结果
      */
     @PutMapping
@@ -114,10 +114,10 @@ public class AuthorInfoController {
     }
 
     /**
-     * 删除作家信息
+     * 删除订阅源信息
      *
      * @param ids ids
-     * @return 作家信息
+     * @return 订阅源信息
      */
     @DeleteMapping("/{ids}")
     public R deleteByIds(@PathVariable("ids") List<Integer> ids) {
