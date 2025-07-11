@@ -17,6 +17,12 @@
             bi.`type`,
             bi.create_date,
             bi.status,
+
+            bi.rss_url,
+            bi.rss_author,
+            bi.rss_type,
+            bi.price,
+
             ai.name as authorName,
             ai.images as authorImages
         from

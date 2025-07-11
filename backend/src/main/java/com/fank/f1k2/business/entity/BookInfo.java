@@ -1,5 +1,6 @@
 package com.fank.f1k2.business.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
@@ -82,6 +83,26 @@ public class BookInfo implements Serializable {
      * 审核状态（0.审核中 1.通过 2.驳回）
      */
     private String status;
+
+    /**
+     * rss地址
+     */
+    private String rssUrl;
+
+    /**
+     * rss作者
+     */
+    private String rssAuthor;
+
+    /**
+     * rss类型
+     */
+    private String rssType;
+
+    /**
+     * 订阅价格
+     */
+    private BigDecimal price;
 
     @TableField(exist = false)
     private String authorName;

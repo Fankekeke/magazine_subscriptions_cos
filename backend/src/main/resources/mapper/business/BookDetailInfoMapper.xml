@@ -14,6 +14,16 @@
             bti.check_flag,
             bti.create_date,
             bti.content,
+
+            bti.web_img,
+            bti.author,
+            bti.link,
+            bti.published_date,
+            bti.video,
+            bti.title,
+            bti.type,
+            bti.value,
+
             bi.code,
             bi.name as bookName,
             bi.images,

@@ -68,6 +68,46 @@ public class BookDetailInfo implements Serializable {
      */
     private String content;
 
+    /**
+     * 图片列表
+     */
+    private String webImg;
+
+    /**
+     * 作者
+     */
+    private String author;
+
+    /**
+     * 链接
+     */
+    private String link;
+
+    /**
+     * 上传时间
+     */
+    private String publishedDate;
+
+    /**
+     * 流媒体播放文件列表
+     */
+    private String video;
+
+    /**
+     * 标题
+     */
+    private String title;
+
+    /**
+     * 分类
+     */
+    private String type;
+
+    /**
+     * 简介
+     */
+    private String value;
+
     @TableField(exist = false)
     private String bookName;
 
