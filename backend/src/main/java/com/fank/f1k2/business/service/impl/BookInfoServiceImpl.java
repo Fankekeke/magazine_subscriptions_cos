@@ -40,10 +40,10 @@ public class BookInfoServiceImpl extends ServiceImpl<BookInfoMapper, BookInfo> i
     private final UserInfoMapper userInfoMapper;
 
     /**
-     * 分页获取书籍信息
+     * 分页获取订阅源信息
      *
      * @param page     分页对象
-     * @param bookInfo 书籍信息
+     * @param bookInfo 订阅源信息
      * @return 结果
      */
     @Override
@@ -61,14 +61,14 @@ public class BookInfoServiceImpl extends ServiceImpl<BookInfoMapper, BookInfo> i
     public List<BookInfo> userCfRecommend(Integer userId) {
         // 获取所有评论信息
         List<EvaluateInfo> evaluateInfoList = evaluateInfoService.list();
-        // 根据用户ID与图书ID转map
+        // 根据用户ID与订阅源ID转map
         Map<String, List<EvaluateInfo>> evaluateInfoMap = evaluateInfoList.stream().collect(Collectors.groupingBy(e -> e.getUserId() + "|" + e.getBookId()));
         // 获取所有点赞信息
         List<BookLikeInfo> bookLikeInfoList = bookLikeInfoService.list();
-        // 根据用户ID与图书ID转map
+        // 根据用户ID与订阅源ID转map
         Map<String, List<BookLikeInfo>> bookLikeInfoMap = bookLikeInfoList.stream().collect(Collectors.groupingBy(e -> e.getUserId() + "|" + e.getBookId()));
 
-        // 所有图书信息
+        // 所有订阅源信息
         List<BookInfo> bookInfoList = this.list();
         // 所有用户信息
         List<UserInfo> userInfoList = userInfoMapper.selectList(Wrappers.<UserInfo>lambdaQuery());
@@ -103,7 +103,7 @@ public class BookInfoServiceImpl extends ServiceImpl<BookInfoMapper, BookInfo> i
             return Collections.emptyList();
         }
 
-        // 查询所有图书信息
+        // 查询所有订阅源信息
         List<BookInfo> bookInfoListResult = this.list(Wrappers.<BookInfo>lambdaQuery().in(BookInfo::getId, recommendations));
         if (CollectionUtil.isEmpty(bookInfoListResult)) {
             return bookInfoListResult;
@@ -124,9 +124,9 @@ public class BookInfoServiceImpl extends ServiceImpl<BookInfoMapper, BookInfo> i
     }
 
     /**
-     * 书籍信息详情
+     * 订阅源信息详情
      *
-     * @param bookId 书籍ID
+     * @param bookId 订阅源ID
      * @return 结果
      */
     @Override
@@ -140,10 +140,10 @@ public class BookInfoServiceImpl extends ServiceImpl<BookInfoMapper, BookInfo> i
             }
         };
 
-        // 图书信息
+        // 订阅源信息
         BookInfo bookInfo = this.getById(bookId);
         result.put("book", bookInfo);
-        // 图书章节
+        // 订阅源内容
         List<BookDetailInfo> detailList = bookDetailInfoMapper.selectList(Wrappers.<BookDetailInfo>lambdaQuery().eq(BookDetailInfo::getBookId, bookId).orderByDesc(BookDetailInfo::getIndexNo));
         result.put("detail", detailList);
         // 作者信息
@@ -154,7 +154,7 @@ public class BookInfoServiceImpl extends ServiceImpl<BookInfoMapper, BookInfo> i
     }
 
     /**
-     * 根据用户ID获取书籍信息
+     * 根据用户ID获取订阅源信息
      *
      * @param userId 用户ID
      * @return 结果
@@ -178,7 +178,7 @@ public class BookInfoServiceImpl extends ServiceImpl<BookInfoMapper, BookInfo> i
      */
     @Override
     public List<BookInfo> selectListDetail() {
-        // 查询所有图书信息
+        // 查询所有订阅源信息
         List<BookInfo> bookInfoList = this.list();
         if (CollectionUtil.isEmpty(bookInfoList)) {
             return bookInfoList;
@@ -204,7 +204,7 @@ public class BookInfoServiceImpl extends ServiceImpl<BookInfoMapper, BookInfo> i
      */
     @Override
     public List<BookInfo> selectListBySearch(String key) {
-        // 查询所有图书信息
+        // 查询所有订阅源信息
         List<BookInfo> bookInfoList = this.list();
         if (CollectionUtil.isEmpty(bookInfoList)) {
             return bookInfoList;
@@ -235,7 +235,7 @@ public class BookInfoServiceImpl extends ServiceImpl<BookInfoMapper, BookInfo> i
      */
     @Override
     public List<BookInfo> selectListTop() {
-        // 查询所有图书信息
+        // 查询所有订阅源信息
         List<BookInfo> bookInfoList = this.selectListDetail();
         if (CollectionUtil.isEmpty(bookInfoList)) {
             return bookInfoList;

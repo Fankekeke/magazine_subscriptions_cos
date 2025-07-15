@@ -55,7 +55,7 @@ public class AuthorInfoServiceImpl extends ServiceImpl<AuthorInfoMapper, AuthorI
         Integer count = followInfoMapper.selectCount(Wrappers.<FollowInfo>lambdaQuery().eq(FollowInfo::getAuthorId, id));
         authorInfo.setFansNum(count);
 
-        // 图书信息
+        // 订阅源信息
         List<BookInfo> bookInfoList = bookInfoMapper.selectList(Wrappers.<BookInfo>lambdaQuery().eq(BookInfo::getAuthorId, id));
         authorInfo.setBookInfoList(bookInfoList);
         return authorInfo;

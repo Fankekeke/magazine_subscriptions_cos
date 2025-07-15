@@ -3,7 +3,7 @@
     <div>
       <a-row :gutter="30">
         <a-col :span="6" style="margin-bottom: 20px;margin-top: 20px">
-          <a-input-search placeholder="搜索图书或者作者" enter-button @search="onSearch" />
+          <a-input-search placeholder="搜索订阅源或者作者" enter-button @search="onSearch" />
         </a-col>
         <a-col :span="24" style="background:#ECECEC; padding:30px;margin-top: 30px;margin-bottom: 30px">
           <a-row :gutter="30">
@@ -76,7 +76,7 @@ export default {
           enabled: false
         },
         title: {
-          text: '章节流量统计',
+          text: '内容流量统计',
           align: 'left'
         },
         markers: {

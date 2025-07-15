@@ -31,10 +31,10 @@ public class BookLikeInfoController {
     private final IUserInfoService userInfoService;
 
     /**
-     * 分页获取书籍点赞信息
+     * 分页获取订阅源点赞信息
      *
      * @param page         分页对象
-     * @param bookLikeInfo 书籍点赞信息
+     * @param bookLikeInfo 订阅源点赞信息
      * @return 结果
      */
     @GetMapping("/page")
@@ -43,9 +43,9 @@ public class BookLikeInfoController {
     }
 
     /**
-     * 书籍点赞信息详情
+     * 订阅源点赞信息详情
      *
-     * @param id 书籍点赞ID
+     * @param id 订阅源点赞ID
      * @return 结果
      */
     @GetMapping("/{id}")
@@ -54,7 +54,7 @@ public class BookLikeInfoController {
     }
 
     /**
-     * 书籍点赞信息列表
+     * 订阅源点赞信息列表
      *
      * @return 结果
      */
@@ -64,9 +64,9 @@ public class BookLikeInfoController {
     }
 
     /**
-     * 新增书籍点赞信息
+     * 新增订阅源点赞信息
      *
-     * @param bookLikeInfo 书籍点赞信息
+     * @param bookLikeInfo 订阅源点赞信息
      * @return 结果
      */
     @PostMapping
@@ -86,9 +86,9 @@ public class BookLikeInfoController {
     }
 
     /**
-     * 修改书籍点赞信息
+     * 修改订阅源点赞信息
      *
-     * @param bookLikeInfo 书籍点赞信息
+     * @param bookLikeInfo 订阅源点赞信息
      * @return 结果
      */
     @PutMapping
@@ -97,10 +97,10 @@ public class BookLikeInfoController {
     }
 
     /**
-     * 删除书籍点赞信息
+     * 删除订阅源点赞信息
      *
      * @param ids ids
-     * @return 书籍点赞信息
+     * @return 订阅源点赞信息
      */
     @DeleteMapping("/{ids}")
     public R deleteByIds(@PathVariable("ids") List<Integer> ids) {

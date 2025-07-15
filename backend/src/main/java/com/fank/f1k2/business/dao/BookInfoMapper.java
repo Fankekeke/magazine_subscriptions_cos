@@ -14,10 +14,10 @@ import java.util.LinkedHashMap;
 public interface BookInfoMapper extends BaseMapper<BookInfo> {
 
     /**
-     * 分页获取书籍信息
+     * 分页获取订阅源信息
      *
      * @param page     分页对象
-     * @param bookInfo 书籍信息
+     * @param bookInfo 订阅源信息
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> selectBookPage(Page<BookInfo> page, @Param("bookInfo") BookInfo bookInfo);

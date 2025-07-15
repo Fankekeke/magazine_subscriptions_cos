@@ -25,7 +25,7 @@
                   {{ bookData.name }} | {{ bookData.tag }}
                   <div style="margin-top: 10px">{{ bookData.content }}</div>
                   <div style="margin-top: 10px">最后更新时间：{{ bookData.updateDate ? bookData.updateDate : '- -' }}</div>
-                  <div style="margin-top: 10px">最后章节：{{ bookData.lastChapter ? bookData.lastChapter : '- -' }}</div>
+                  <div style="margin-top: 10px">最后内容：{{ bookData.lastChapter ? bookData.lastChapter : '- -' }}</div>
                   <div style="margin: 20px 0px 20px 0px">
                     <a-avatar shape="square" :src="'http://127.0.0.1:9527/imagesWeb/' + bookData.authorInfo.images.split(',')[0]" />
                     <span style="font-size: 12px;font-family: SimHei">{{ bookData.authorInfo.name }}</span>
@@ -40,7 +40,7 @@
           </div>
           <div style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;margin-top: 15px">
             <div style="font-size: 16px;font-family: SimHei;padding: 15px;font-weight: 600">
-              章节列表
+              内容列表
             </div>
             <div style="padding: 15px">
               <a-list item-layout="horizontal" :data-source="bookDetailList">
@@ -279,7 +279,7 @@ export default {
     },
     detailOpen (item) {
       if (this.memberInfo == null && item.checkFlag.toString() === '1') {
-        this.$message.warn('该章节需要会员才能查看，请购买会员！')
+        this.$message.warn('该内容需要会员才能查看，请购买会员！')
         return false
       }
       this.$get('/cos/book-detail-info/views/edit', {detailId: item.id}).then((r) => {

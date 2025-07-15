@@ -33,10 +33,10 @@ public class BookInfoController {
     private final IUserInfoService userInfoService;
 
     /**
-     * 分页获取书籍信息
+     * 分页获取订阅源信息
      *
      * @param page     分页对象
-     * @param bookInfo 书籍信息
+     * @param bookInfo 订阅源信息
      * @return 结果
      */
     @GetMapping("/page")
@@ -45,7 +45,7 @@ public class BookInfoController {
     }
 
     /**
-     * 图书状态审核
+     * 订阅源状态审核
      *
      * @param id     主键ID
      * @param status 状态
@@ -57,9 +57,9 @@ public class BookInfoController {
     }
 
     /**
-     * 书籍信息详情
+     * 订阅源信息详情
      *
-     * @param id 书籍ID
+     * @param id 订阅源ID
      * @return 结果
      */
     @GetMapping("/{id}")
@@ -68,7 +68,7 @@ public class BookInfoController {
     }
 
     /**
-     * 根据用户ID获取书籍信息
+     * 根据用户ID获取订阅源信息
      *
      * @param userId 用户ID
      * @return 结果
@@ -122,7 +122,7 @@ public class BookInfoController {
     }
 
     /**
-     * 书籍信息列表
+     * 订阅源信息列表
      *
      * @return 结果
      */
@@ -132,9 +132,9 @@ public class BookInfoController {
     }
 
     /**
-     * 新增书籍信息
+     * 新增订阅源信息
      *
-     * @param bookInfo 书籍信息
+     * @param bookInfo 订阅源信息
      * @return 结果
      */
     @PostMapping
@@ -153,9 +153,9 @@ public class BookInfoController {
     }
 
     /**
-     * 修改书籍信息
+     * 修改订阅源信息
      *
-     * @param bookInfo 书籍信息
+     * @param bookInfo 订阅源信息
      * @return 结果
      */
     @PutMapping
@@ -165,10 +165,10 @@ public class BookInfoController {
     }
 
     /**
-     * 删除书籍信息
+     * 删除订阅源信息
      *
      * @param ids ids
-     * @return 书籍信息
+     * @return 订阅源信息
      */
     @DeleteMapping("/{ids}")
     public R deleteByIds(@PathVariable("ids") List<Integer> ids) {

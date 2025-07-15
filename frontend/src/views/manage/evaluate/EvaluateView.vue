@@ -74,7 +74,7 @@
         </a-row>
         <br/>
         <a-row style="padding-left: 24px;padding-right: 24px;">
-          <a-col :span="8"><b>最后章节：</b>
+          <a-col :span="8"><b>最后内容：</b>
             {{ bookInfo.lastChapter ? bookInfo.lastChapter : '- -' }}
           </a-col>
           <a-col :span="8"><b>创建时间：</b>

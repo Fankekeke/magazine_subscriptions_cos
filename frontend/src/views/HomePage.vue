@@ -22,16 +22,16 @@
               <a-col :span="4"></a-col>
               <a-col :span="4"></a-col>
               <a-col :span="4">
-                <head-info title="订单总量" :content="titleData.orderCode" :center="false" :bordered="false"/>
+                <head-info title="平台总收益" :content="titleData.orderCode" :center="false" :bordered="false"/>
               </a-col>
               <a-col :span="4">
-                <head-info title="采购总支出" :content="titleData.orderPrice" :center="false" :bordered="false"/>
+                <head-info title="订阅源数量" :content="titleData.orderPrice" :center="false" :bordered="false"/>
               </a-col>
               <a-col :span="4">
-                <head-info title="供应商数量" :content="titleData.pharmacyNum" :center="false" :bordered="false"/>
+                <head-info title="文章数量" :content="titleData.pharmacyNum" :center="false" :bordered="false"/>
               </a-col>
               <a-col :span="4">
-                <head-info title="员工数量" :content="titleData.staffNum" :center="false"/>
+                <head-info title="用户数量" :content="titleData.staffNum" :center="false"/>
               </a-col>
             </a-row>
           </div>

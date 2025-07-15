@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fank.f1k2.business.dao.BookDetailInfoMapper">
 
-    <!-- 分页获取书籍章节信息 -->
+    <!-- 分页获取订阅源内容信息 -->
     <select id="selectDetailPage" resultType="java.util.LinkedHashMap">
         select
             bti.id,

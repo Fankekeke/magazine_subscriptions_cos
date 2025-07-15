@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fank.f1k2.business.dao.EvaluateInfoMapper">
 
-    <!-- 分页获取书籍评价信息 -->
+    <!-- 分页获取订阅源评价信息 -->
     <select id="selectEvaluatePage" resultType="java.util.LinkedHashMap">
         select
             ei.id,
@@ -47,7 +47,7 @@
             ei.create_date desc
     </select>
 
-    <!-- 根据图书ID获取评价信息 -->
+    <!-- 根据订阅源ID获取评价信息 -->
     <select id="selectListByBookId" resultType="java.util.LinkedHashMap">
         select
         ei.id,

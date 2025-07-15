@@ -29,10 +29,10 @@ public class EvaluateInfoController {
     private final IUserInfoService userInfoService;
 
     /**
-     * 分页获取书籍评价信息
+     * 分页获取订阅源评价信息
      *
      * @param page         分页对象
-     * @param evaluateInfo 书籍评价信息
+     * @param evaluateInfo 订阅源评价信息
      * @return 结果
      */
     @GetMapping("/page")
@@ -41,9 +41,9 @@ public class EvaluateInfoController {
     }
 
     /**
-     * 根据图书ID获取评价信息
+     * 根据订阅源ID获取评价信息
      *
-     * @param bookId 图书ID
+     * @param bookId 订阅源ID
      * @return 结果
      */
     @GetMapping("/selectListByBookId/list")
@@ -52,9 +52,9 @@ public class EvaluateInfoController {
     }
 
     /**
-     * 书籍评价信息详情
+     * 订阅源评价信息详情
      *
-     * @param id 书籍评价ID
+     * @param id 订阅源评价ID
      * @return 结果
      */
     @GetMapping("/{id}")
@@ -63,7 +63,7 @@ public class EvaluateInfoController {
     }
 
     /**
-     * 书籍评价信息列表
+     * 订阅源评价信息列表
      *
      * @return 结果
      */
@@ -73,9 +73,9 @@ public class EvaluateInfoController {
     }
 
     /**
-     * 新增书籍评价信息
+     * 新增订阅源评价信息
      *
-     * @param evaluateInfo 书籍评价信息
+     * @param evaluateInfo 订阅源评价信息
      * @return 结果
      */
     @PostMapping
@@ -89,9 +89,9 @@ public class EvaluateInfoController {
     }
 
     /**
-     * 修改书籍评价信息
+     * 修改订阅源评价信息
      *
-     * @param evaluateInfo 书籍评价信息
+     * @param evaluateInfo 订阅源评价信息
      * @return 结果
      */
     @PutMapping
@@ -100,10 +100,10 @@ public class EvaluateInfoController {
     }
 
     /**
-     * 删除书籍评价信息
+     * 删除订阅源评价信息
      *
      * @param ids ids
-     * @return 书籍评价信息
+     * @return 订阅源评价信息
      */
     @DeleteMapping("/{ids}")
     public R deleteByIds(@PathVariable("ids") List<Integer> ids) {

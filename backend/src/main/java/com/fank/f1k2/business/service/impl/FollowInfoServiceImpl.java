@@ -68,7 +68,7 @@ public class FollowInfoServiceImpl extends ServiceImpl<FollowInfoMapper, FollowI
         AuthorInfo authorInfo = authorInfoMapper.selectById(followInfo.getAuthorId());
         result.put("author", authorInfo);
 
-        // 图书信息
+        // 订阅源信息
         List<BookInfo> bookInfoList = bookInfoMapper.selectList(Wrappers.<BookInfo>lambdaQuery().eq(BookInfo::getAuthorId, authorInfo.getId()));
         result.put("books", bookInfoList);
         return result;

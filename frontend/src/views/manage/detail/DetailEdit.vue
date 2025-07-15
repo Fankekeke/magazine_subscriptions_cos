@@ -1,6 +1,6 @@
 <template>
   <a-drawer
-    title="修改订阅源章节"
+    title="修改订阅源内容"
     :maskClosable="false"
     width="100%"
     placement="right"
@@ -11,10 +11,10 @@
     <a-form :form="form" layout="vertical">
       <a-row :gutter="20">
         <a-col :span="6">
-          <a-form-item label='章节名称' v-bind="formItemLayout">
+          <a-form-item label='内容名称' v-bind="formItemLayout">
             <a-input v-decorator="[
             'name',
-            { rules: [{ required: true, message: '请输入章节名称!' }] }
+            { rules: [{ required: true, message: '请输入内容名称!' }] }
             ]"/>
           </a-form-item>
         </a-col>

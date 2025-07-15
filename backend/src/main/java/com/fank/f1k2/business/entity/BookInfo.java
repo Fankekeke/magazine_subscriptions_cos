@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 书籍管理
+ * 订阅源管理
  *
  * @author Fank gmail - fan1ke2ke@gmail.com
  */
@@ -30,12 +30,12 @@ public class BookInfo implements Serializable {
     private Integer id;
 
     /**
-     * 书籍ID
+     * 订阅源ID
      */
     private String code;
 
     /**
-     * 书籍名称
+     * 订阅源名称
      */
     private String name;
 
@@ -50,7 +50,7 @@ public class BookInfo implements Serializable {
     private String updateDate;
 
     /**
-     * 最后章节
+     * 最后内容
      */
     private String lastChapter;
 
@@ -65,7 +65,7 @@ public class BookInfo implements Serializable {
     private String content;
 
     /**
-     * 书籍图片
+     * 订阅源图片
      */
     private String images;
 

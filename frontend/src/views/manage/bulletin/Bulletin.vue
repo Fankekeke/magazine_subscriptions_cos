@@ -7,26 +7,18 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="内容名称"
+                label="标题"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.name"/>
+                <a-input v-model="queryParams.title"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="订阅源名称"
+                label="内容"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.bookName"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
-                label="作者名称"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.authorName"/>
+                <a-input v-model="queryParams.content"/>
               </a-form-item>
             </a-col>
           </div>
@@ -41,6 +33,7 @@
       <div class="operator">
         <a-button type="primary" ghost @click="add">新增</a-button>
         <a-button @click="batchDelete">删除</a-button>
+<!--        <a-button @click="batchDelete1">删除</a-button>-->
       </div>
       <!-- 表格区域 -->
       <a-table ref="TableInfo"
@@ -70,60 +63,49 @@
               <template slot="title">
                 {{ record.content }}
               </template>
-              {{ record.content.slice(0, 20) }} ...
+              {{ record.content.slice(0, 30) }} ...
             </a-tooltip>
           </template>
         </template>
         <template slot="operation" slot-scope="text, record">
           <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改"></a-icon>
-          <a-icon type="file-search" @click="bookViewOpen(record)" title="详 情" style="margin-left: 15px"></a-icon>
         </template>
       </a-table>
     </div>
-    <book-add
-      v-if="bookAdd.visiable"
-      @close="handlebookAddClose"
-      @success="handlebookAddSuccess"
-      :bookAddVisiable="bookAdd.visiable">
-    </book-add>
-    <book-edit
-      ref="bookEdit"
-      @close="handlebookEditClose"
-      @success="handlebookEditSuccess"
-      :bookEditVisiable="bookEdit.visiable">
-    </book-edit>
-    <book-view
-      @close="handlebookViewClose"
-      :bookShow="bookView.visiable"
-      :bookData="bookView.data">
-    </book-view>
+    <bulletin-add
+      v-if="bulletinAdd.visiable"
+      @close="handleBulletinAddClose"
+      @success="handleBulletinAddSuccess"
+      :bulletinAddVisiable="bulletinAdd.visiable">
+    </bulletin-add>
+    <bulletin-edit
+      ref="bulletinEdit"
+      @close="handleBulletinEditClose"
+      @success="handleBulletinEditSuccess"
+      :bulletinEditVisiable="bulletinEdit.visiable">
+    </bulletin-edit>
   </a-card>
 </template>
 
 <script>
 import RangeDate from '@/components/datetime/RangeDate'
-import bookView from './DetailView.vue'
-import bookAdd from './DetailAdd.vue'
-import bookEdit from './DetailEdit.vue'
+import BulletinAdd from './BulletinAdd'
+import BulletinEdit from './BulletinEdit'
 import {mapState} from 'vuex'
 import moment from 'moment'
 moment.locale('zh-cn')
 
 export default {
-  name: 'book',
-  components: {bookAdd, bookEdit, RangeDate, bookView},
+  name: 'Bulletin',
+  components: {BulletinAdd, BulletinEdit, RangeDate},
   data () {
     return {
       advanced: false,
-      bookAdd: {
+      bulletinAdd: {
         visiable: false
       },
-      bookEdit: {
+      bulletinEdit: {
         visiable: false
-      },
-      bookView: {
-        visiable: false,
-        data: null
       },
       queryParams: {},
       filteredInfo: null,
@@ -149,92 +131,13 @@ export default {
     }),
     columns () {
       return [{
-        title: '内容名称',
-        dataIndex: 'name'
+        title: '标题',
+        dataIndex: 'title',
+        ellipsis: true
       }, {
-        title: '浏览量',
-        dataIndex: 'views',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '0'
-          }
-        }
-      }, {
-        title: '会员权限',
-        dataIndex: 'checkFlag',
-        customRender: (text, row, index) => {
-          switch (text) {
-            case '0':
-              return <a-tag>否</a-tag>
-            case '1':
-              return <a-tag>是</a-tag>
-            default:
-              return '- -'
-          }
-        }
-      }, {
-        title: '字数',
-        dataIndex: 'words',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '0'
-          }
-        }
-      }, {
-        title: '订阅源名称',
-        dataIndex: 'bookName',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '类型',
-        dataIndex: 'type',
-        customRender: (text, row, index) => {
-          switch (text) {
-            case '1':
-              return <a-tag>玄幻</a-tag>
-            case '2':
-              return <a-tag>奇幻</a-tag>
-            case '3':
-              return <a-tag>武侠</a-tag>
-            case '4':
-              return <a-tag>都市</a-tag>
-            case '5':
-              return <a-tag>现实</a-tag>
-            default:
-              return '- -'
-          }
-        }
-      }, {
-        title: '订阅源图片',
-        dataIndex: 'images',
-        customRender: (text, record, index) => {
-          if (!record.images) return <a-avatar shape="square" icon="user" />
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-            </template>
-            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-          </a-popover>
-        }
-      }, {
-        title: '作者名称',
-        dataIndex: 'authorName',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
+        title: '公告内容',
+        dataIndex: 'content',
+        ellipsis: true
       }, {
         title: '发布时间',
         dataIndex: 'createDate',
@@ -244,7 +147,32 @@ export default {
           } else {
             return '- -'
           }
+        },
+        ellipsis: true
+      }, {
+        title: '消息类型',
+        dataIndex: 'type',
+        customRender: (text, row, index) => {
+          switch (text) {
+            case 1:
+              return <a-tag>通知</a-tag>
+            case 2:
+              return <a-tag>公告</a-tag>
+            default:
+              return '- -'
+          }
         }
+      }, {
+        title: '上传人',
+        dataIndex: 'publisher',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        },
+        ellipsis: true
       }, {
         title: '操作',
         dataIndex: 'operation',
@@ -256,13 +184,6 @@ export default {
     this.fetch()
   },
   methods: {
-    bookViewOpen (row) {
-      this.bookView.data = row
-      this.bookView.visiable = true
-    },
-    handlebookViewClose () {
-      this.bookView.visiable = false
-    },
     onSelectChange (selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
     },
@@ -270,30 +191,34 @@ export default {
       this.advanced = !this.advanced
     },
     add () {
-      this.bookAdd.visiable = true
+      this.bulletinAdd.visiable = true
     },
-    handlebookAddClose () {
-      this.bookAdd.visiable = false
+    handleBulletinAddClose () {
+      this.bulletinAdd.visiable = false
     },
-    handlebookAddSuccess () {
-      this.bookAdd.visiable = false
-      this.$message.success('新增订阅源内容成功')
+    handleBulletinAddSuccess () {
+      this.bulletinAdd.visiable = false
+      this.$message.success('新增公告成功')
       this.search()
     },
     edit (record) {
-      this.$refs.bookEdit.setFormValues(record)
-      this.bookEdit.visiable = true
+      this.$refs.bulletinEdit.setFormValues(record)
+      this.bulletinEdit.visiable = true
     },
-    handlebookEditClose () {
-      this.bookEdit.visiable = false
+    handleBulletinEditClose () {
+      this.bulletinEdit.visiable = false
     },
-    handlebookEditSuccess () {
-      this.bookEdit.visiable = false
-      this.$message.success('修改订阅源内容成功')
+    handleBulletinEditSuccess () {
+      this.bulletinEdit.visiable = false
+      this.$message.success('修改公告成功')
       this.search()
     },
     handleDeptChange (value) {
       this.queryParams.deptId = value || ''
+    },
+    batchDelete1 () {
+      this.$get('/business/supplier-info/batchEditSupplierName').then((r) => {
+      })
     },
     batchDelete () {
       if (!this.selectedRowKeys.length) {
@@ -307,7 +232,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/book-detail-info/' + ids).then(() => {
+          that.$delete('/business/bulletin-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -377,7 +302,7 @@ export default {
         params.size = this.pagination.defaultPageSize
         params.current = this.pagination.defaultCurrent
       }
-      this.$get('/cos/book-detail-info/page', {
+      this.$get('/business/bulletin-info/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

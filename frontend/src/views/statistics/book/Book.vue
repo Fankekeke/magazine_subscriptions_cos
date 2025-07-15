@@ -60,7 +60,7 @@ export default {
           enabled: false
         },
         title: {
-          text: '章节流量统计',
+          text: '内容流量统计',
           align: 'left'
         },
         markers: {

@@ -15,10 +15,10 @@ import java.util.List;
 public interface IBookInfoService extends IService<BookInfo> {
 
     /**
-     * 分页获取书籍信息
+     * 分页获取订阅源信息
      *
      * @param page     分页对象
-     * @param bookInfo 书籍信息
+     * @param bookInfo 订阅源信息
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> selectBookPage(Page<BookInfo> page, BookInfo bookInfo);
@@ -32,15 +32,15 @@ public interface IBookInfoService extends IService<BookInfo> {
     List<BookInfo> userCfRecommend(Integer userId);
 
     /**
-     * 书籍信息详情
+     * 订阅源信息详情
      *
-     * @param bookId 书籍ID
+     * @param bookId 订阅源ID
      * @return 结果
      */
     LinkedHashMap<String, Object> selectDetailById(Integer bookId);
 
     /**
-     * 根据用户ID获取书籍信息
+     * 根据用户ID获取订阅源信息
      *
      * @param userId 用户ID
      * @return 结果

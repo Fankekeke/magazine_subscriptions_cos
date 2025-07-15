@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 书籍评价
+ * 订阅源评价
  *
  * @author Fank gmail - fan1ke2ke@gmail.com
  */
@@ -34,7 +34,7 @@ public class EvaluateInfo implements Serializable {
     private Integer userId;
 
     /**
-     * 书籍ID
+     * 订阅源ID
      */
     private Integer bookId;
 

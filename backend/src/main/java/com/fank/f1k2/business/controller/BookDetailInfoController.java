@@ -30,10 +30,10 @@ public class BookDetailInfoController {
     private final IBookInfoService bookInfoService;
 
     /**
-     * 分页获取书籍章节信息
+     * 分页获取订阅源内容信息
      *
      * @param page           分页对象
-     * @param bookDetailInfo 书籍章节信息
+     * @param bookDetailInfo 订阅源内容信息
      * @return 结果
      */
     @GetMapping("/page")
@@ -44,7 +44,7 @@ public class BookDetailInfoController {
     /**
      * 更新浏览量
      *
-     * @param detailId 章节ID
+     * @param detailId 内容ID
      * @return 结果
      */
     @GetMapping("/views/edit")
@@ -56,9 +56,9 @@ public class BookDetailInfoController {
     }
 
     /**
-     * 根据图书ID获取章节信息
+     * 根据订阅源ID获取内容信息
      *
-     * @param bookId 图书ID
+     * @param bookId 订阅源ID
      * @return 结果
      */
     @GetMapping("/list/book")
@@ -72,9 +72,9 @@ public class BookDetailInfoController {
     }
 
     /**
-     * 根据图书ID获取章节统计
+     * 根据订阅源ID获取内容统计
      *
-     * @param bookId 图书ID
+     * @param bookId 订阅源ID
      * @return 结果
      */
     @GetMapping("/rate")
@@ -99,9 +99,9 @@ public class BookDetailInfoController {
     }
 
     /**
-     * 书籍章节信息详情
+     * 订阅源内容信息详情
      *
-     * @param id 书籍章节ID
+     * @param id 订阅源内容ID
      * @return 结果
      */
     @GetMapping("/{id}")
@@ -110,7 +110,7 @@ public class BookDetailInfoController {
     }
 
     /**
-     * 书籍章节信息列表
+     * 订阅源内容信息列表
      *
      * @return 结果
      */
@@ -120,14 +120,14 @@ public class BookDetailInfoController {
     }
 
     /**
-     * 新增书籍章节信息
+     * 新增订阅源内容信息
      *
-     * @param bookDetailInfo 书籍章节信息
+     * @param bookDetailInfo 订阅源内容信息
      * @return 结果
      */
     @PostMapping
     public R save(BookDetailInfo bookDetailInfo) {
-        // 更新书籍信息
+        // 更新订阅源信息
         BookInfo bookInfo = bookInfoService.getById(bookDetailInfo.getBookId());
         bookInfo.setLastChapter(bookDetailInfo.getName());
         bookInfo.setUpdateDate(DateUtil.formatDateTime(new Date()));
@@ -152,14 +152,14 @@ public class BookDetailInfoController {
     }
 
     /**
-     * 修改书籍章节信息
+     * 修改订阅源内容信息
      *
-     * @param bookDetailInfo 书籍章节信息
+     * @param bookDetailInfo 订阅源内容信息
      * @return 结果
      */
     @PutMapping
     public R edit(BookDetailInfo bookDetailInfo) {
-        // 更新书籍信息
+        // 更新订阅源信息
         BookInfo bookInfo = bookInfoService.getById(bookDetailInfo.getBookId());
         bookInfo.setUpdateDate(DateUtil.formatDateTime(new Date()));
 
@@ -180,10 +180,10 @@ public class BookDetailInfoController {
     }
 
     /**
-     * 删除书籍章节信息
+     * 删除订阅源内容信息
      *
      * @param ids ids
-     * @return 书籍章节信息
+     * @return 订阅源内容信息
      */
     @DeleteMapping("/{ids}")
     public R deleteByIds(@PathVariable("ids") List<Integer> ids) {

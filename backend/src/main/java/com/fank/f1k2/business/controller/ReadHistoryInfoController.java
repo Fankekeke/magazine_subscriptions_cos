@@ -2,6 +2,9 @@ package com.fank.f1k2.business.controller;
 
 
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fank.f1k2.business.entity.UserInfo;
+import com.fank.f1k2.business.service.IUserInfoService;
 import com.fank.f1k2.common.utils.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fank.f1k2.business.entity.ReadHistoryInfo;
@@ -25,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReadHistoryInfoController {
 
     private final IReadHistoryInfoService bulletinInfoService;
+
+    private final IUserInfoService userInfoService;
 
     /**
     * 分页获取阅读记录
@@ -67,6 +72,11 @@ public class ReadHistoryInfoController {
     */
     @PostMapping
     public R save(ReadHistoryInfo addFrom) {
+        // 获取用户信息
+        UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, addFrom.getUserId()));
+        if (userInfo != null) {
+            addFrom.setUserId(userInfo.getId());
+        }
         addFrom.setCreateDate(DateUtil.formatDateTime(new Date()));
         return R.ok(bulletinInfoService.save(addFrom));
     }

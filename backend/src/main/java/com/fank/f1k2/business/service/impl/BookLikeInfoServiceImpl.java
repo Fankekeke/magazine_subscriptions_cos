@@ -17,10 +17,10 @@ import java.util.LinkedHashMap;
 public class BookLikeInfoServiceImpl extends ServiceImpl<BookLikeInfoMapper, BookLikeInfo> implements IBookLikeInfoService {
 
     /**
-     * 分页获取书籍点赞信息
+     * 分页获取订阅源点赞信息
      *
      * @param page         分页对象
-     * @param bookLikeInfo 书籍点赞信息
+     * @param bookLikeInfo 订阅源点赞信息
      * @return 结果
      */
     @Override

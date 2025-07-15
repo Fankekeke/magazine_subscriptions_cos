@@ -67,7 +67,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         if (CollectionUtil.isEmpty(authorIdList)) {
             result.put("order", Collections.emptyList());
         } else {
-            // 获取作者图书信息
+            // 获取作者订阅源信息
             List<BookInfo> bookInfoList = bookInfoService.list(Wrappers.<BookInfo>lambdaQuery().in(BookInfo::getAuthorId, authorIdList));
             // 获取用户关注作者的更新时间
             result.put("order", bookInfoList);

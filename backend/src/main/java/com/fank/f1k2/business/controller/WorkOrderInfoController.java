@@ -2,6 +2,9 @@ package com.fank.f1k2.business.controller;
 
 
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fank.f1k2.business.entity.UserInfo;
+import com.fank.f1k2.business.service.IUserInfoService;
 import com.fank.f1k2.common.utils.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fank.f1k2.business.entity.WorkOrderInfo;
@@ -26,6 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class WorkOrderInfoController {
 
     private final IWorkOrderInfoService workerInfoService;
+
+    private final IUserInfoService userInfoService;
 
     /**
     * 分页获取工单信息
@@ -68,6 +73,11 @@ public class WorkOrderInfoController {
     */
     @PostMapping
     public R save(WorkOrderInfo addFrom) {
+        // 获取用户信息
+        UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, addFrom.getUserId()));
+        if (userInfo != null) {
+            addFrom.setUserId(userInfo.getId());
+        }
         addFrom.setCreateDate(DateUtil.formatDateTime(new Date()));
         return R.ok(workerInfoService.save(addFrom));
     }

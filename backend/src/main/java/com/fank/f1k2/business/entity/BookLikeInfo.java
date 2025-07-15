@@ -34,7 +34,7 @@ public class BookLikeInfo implements Serializable {
     private Integer userId;
 
     /**
-     * 书籍ID
+     * 订阅源ID
      */
     private Integer bookId;
 

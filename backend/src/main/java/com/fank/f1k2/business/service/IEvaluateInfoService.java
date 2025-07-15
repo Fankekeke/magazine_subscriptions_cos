@@ -15,18 +15,18 @@ import java.util.List;
 public interface IEvaluateInfoService extends IService<EvaluateInfo> {
 
     /**
-     * 分页获取书籍评价信息
+     * 分页获取订阅源评价信息
      *
      * @param page         分页对象
-     * @param evaluateInfo 书籍评价信息
+     * @param evaluateInfo 订阅源评价信息
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> selectEvaluatePage(Page<EvaluateInfo> page, EvaluateInfo evaluateInfo);
 
     /**
-     * 根据图书ID获取评价信息
+     * 根据订阅源ID获取评价信息
      *
-     * @param bookId 图书ID
+     * @param bookId 订阅源ID
      * @return 结果
      */
     List<LinkedHashMap<String, Object>> selectListByBookId(Integer bookId);
