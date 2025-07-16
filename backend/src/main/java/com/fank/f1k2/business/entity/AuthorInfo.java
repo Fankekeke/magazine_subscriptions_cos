@@ -65,11 +65,6 @@ public class AuthorInfo implements Serializable {
     private String createDate;
 
     /**
-     * rss地址
-     */
-    private String rssUrl;
-
-    /**
      * 所属用户
      */
     private Integer userId;
