@@ -31,7 +31,7 @@ public class BookDetailInfo implements Serializable {
     /**
      * 所属订阅源
      */
-    private Integer bookId;
+    private String bookId;
 
     /**
      * 内容名称
