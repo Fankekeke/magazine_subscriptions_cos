@@ -32,29 +32,16 @@ public class NotifyInfoController {
     private final INotifyInfoService notifyInfoService;
 
     /**
-     * 分页获取消息通知-科研人员
+     * 分页获取消息通知
      *
      * @param page      分页对象
      * @param queryFrom 消息通知
      * @return 结果
      */
-    @ApiOperation(value = "分页查询科研人员消息", notes = "根据分页和筛选条件获取科研人员相关消息通知")
-    @GetMapping("/page/supplier")
-    public R queryPageBySupplier(Page<NotifyInfo> page, NotifyInfo queryFrom) {
-        return R.ok(notifyInfoService.queryPageBySupplier(page, queryFrom));
-    }
-
-    /**
-     * 分页获取消息通知-员工
-     *
-     * @param page      分页对象
-     * @param queryFrom 消息通知
-     * @return 结果
-     */
-    @ApiOperation(value = "分页查询员工消息", notes = "根据分页和筛选条件获取员工相关消息通知")
-    @GetMapping("/page/staff")
-    public R queryPageByStaff(Page<NotifyInfo> page, NotifyInfo queryFrom) {
-        return R.ok(notifyInfoService.queryPageByStaff(page, queryFrom));
+    @ApiOperation(value = "分页查询消息", notes = "根据分页和筛选条件获取相关消息通知")
+    @GetMapping("/page")
+    public R queryPage(Page<NotifyInfo> page, NotifyInfo queryFrom) {
+        return R.ok(notifyInfoService.queryPage(page, queryFrom));
     }
 
     /**

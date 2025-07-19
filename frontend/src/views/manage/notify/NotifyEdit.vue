@@ -1,63 +1,88 @@
 <template>
-  <a-modal v-model="show" title="修改公告" @cancel="onClose" :width="800">
-    <template slot="footer">
-      <a-button key="back" @click="onClose">
-        取消
-      </a-button>
-      <a-button key="submit" type="primary" :loading="loading" @click="handleSubmit">
-        修改
-      </a-button>
-    </template>
+  <a-drawer
+    title="修改消息通知"
+    :maskClosable="false"
+    width=850
+    placement="right"
+    :closable="false"
+    @close="onClose"
+    :visible="moduleEditVisiable"
+    style="height: calc(100% - 55px);overflow: auto;padding-bottom: 53px;">
     <a-form :form="form" layout="vertical">
-      <a-row :gutter="20">
+      <a-row :gutter="10">
         <a-col :span="12">
-          <a-form-item label='公告标题' v-bind="formItemLayout">
+          <a-form-item label='消息通知名称'>
             <a-input v-decorator="[
-            'title',
+            'name',
             { rules: [{ required: true, message: '请输入名称!' }] }
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='上传人' v-bind="formItemLayout">
+          <a-form-item label='可供类型'>
             <a-input v-decorator="[
-            'publisher',
-            { rules: [{ required: true, message: '请输入上传人!' }] }
+            'supplyType',
+            { rules: [{ required: true, message: '请输入可供类型!' }] }
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='公告类型' v-bind="formItemLayout">
-            <a-select v-decorator="[
-              'type',
-              { rules: [{ required: true, message: '请输入公告类型!' }] }
-              ]">
-              <a-select-option value="1">通知</a-select-option>
-              <a-select-option value="2">公告</a-select-option>
-            </a-select>
+          <a-form-item label='信用代码'>
+            <a-input v-decorator="[
+            'creditCode',
+            { rules: [{ required: true, message: '请输入信用代码!' }] }
+            ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='公告状态' v-bind="formItemLayout">
-            <a-select v-decorator="[
-              'rackUp',
-              { rules: [{ required: true, message: '请输入公告状态!' }] }
-              ]">
-              <a-select-option value="0">下架</a-select-option>
-              <a-select-option value="1">已发布</a-select-option>
-            </a-select>
+          <a-form-item label='营业执照号'>
+            <a-input v-decorator="[
+            'businessLicense',
+            { rules: [{ required: true, message: '请输入营业执照号!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='开户银行'>
+            <a-input v-decorator="[
+            'bankName',
+            { rules: [{ required: true, message: '请输入开户银行!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='银行账号'>
+            <a-input v-decorator="[
+            'bankAccount',
+            { rules: [{ required: true, message: '请输入银行账号!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='负责人'>
+            <a-input v-decorator="[
+            'chargePerson',
+            { rules: [{ required: true, message: '请输入负责人!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='联系电话'>
+            <a-input v-decorator="[
+            'phone',
+            { rules: [{ required: true, message: '请输入联系电话!' }] }
+            ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="24">
-          <a-form-item label='公告内容' v-bind="formItemLayout">
+          <a-form-item label='备注内容' v-bind="formItemLayout">
             <a-textarea :rows="6" v-decorator="[
-            'content',
-             { rules: [{ required: true, message: '请输入名称!' }] }
+            'content'
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="24">
-          <a-form-item label='图册' v-bind="formItemLayout">
+          <a-form-item label='消息通知图片' v-bind="formItemLayout">
             <a-upload
               name="avatar"
               action="http://127.0.0.1:9527/file/fileUpload/"
@@ -67,24 +92,32 @@
               @change="picHandleChange"
             >
               <div v-if="fileList.length < 8">
-                <a-icon type="plus" />
+                <a-icon type="plus"/>
                 <div class="ant-upload-text">
                   Upload
                 </div>
               </div>
             </a-upload>
             <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-              <img alt="example" style="width: 100%" :src="previewImage" />
+              <img alt="example" style="width: 100%" :src="previewImage"/>
             </a-modal>
           </a-form-item>
         </a-col>
       </a-row>
     </a-form>
-  </a-modal>
+
+    <div class="drawer-bootom-button">
+      <a-popconfirm title="确定放弃编辑？" @confirm="onClose" okText="确定" cancelText="取消">
+        <a-button style="margin-right: .8rem">取消</a-button>
+      </a-popconfirm>
+      <a-button @click="handleSubmit" type="primary" :loading="loading">提交</a-button>
+    </div>
+  </a-drawer>
 </template>
 
 <script>
 import {mapState} from 'vuex'
+
 function getBase64 (file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -93,14 +126,15 @@ function getBase64 (file) {
     reader.onerror = error => reject(error)
   })
 }
+
 const formItemLayout = {
-  labelCol: { span: 24 },
-  wrapperCol: { span: 24 }
+  labelCol: {span: 24},
+  wrapperCol: {span: 24}
 }
 export default {
-  name: 'BulletinEdit',
+  name: 'moduleEdit',
   props: {
-    bulletinEditVisiable: {
+    moduleEditVisiable: {
       default: false
     }
   },
@@ -110,7 +144,7 @@ export default {
     }),
     show: {
       get: function () {
-        return this.bulletinEditVisiable
+        return this.moduleEditVisiable
       },
       set: function () {
       }
@@ -138,7 +172,7 @@ export default {
       this.previewImage = file.url || file.preview
       this.previewVisible = true
     },
-    picHandleChange ({ fileList }) {
+    picHandleChange ({fileList}) {
       this.fileList = fileList
     },
     imagesInit (images) {
@@ -150,21 +184,18 @@ export default {
         this.fileList = imageList
       }
     },
-    setFormValues ({...bulletin}) {
-      this.rowId = bulletin.id
-      let fields = ['title', 'content', 'publisher', 'rackUp', 'type']
+    setFormValues ({...module}) {
+      this.rowId = module.id
+      let fields = ['name', 'address', 'content', 'longitude', 'latitude', 'content', 'creditCode', 'chargePerson', 'phone', 'supplyType', 'businessLicense', 'bankName', 'bankAccount']
       let obj = {}
-      Object.keys(bulletin).forEach((key) => {
+      Object.keys(module).forEach((key) => {
         if (key === 'images') {
           this.fileList = []
-          this.imagesInit(bulletin['images'])
-        }
-        if (key === 'rackUp' || key === 'type') {
-          bulletin[key] = bulletin[key].toString()
+          this.imagesInit(module['images'])
         }
         if (fields.indexOf(key) !== -1) {
           this.form.getFieldDecorator(key)
-          obj[key] = bulletin[key]
+          obj[key] = module[key]
         }
       })
       this.form.setFieldsValue(obj)
@@ -192,7 +223,7 @@ export default {
         values.images = images.length > 0 ? images.join(',') : null
         if (!err) {
           this.loading = true
-          this.$put('/cos/bulletin-info', {
+          this.$put('/business/notify-info', {
             ...values
           }).then((r) => {
             this.reset()

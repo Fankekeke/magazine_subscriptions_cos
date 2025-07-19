@@ -3,6 +3,8 @@ package com.fank.f1k2.business.service.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fank.f1k2.business.entity.WorkOrderInfo;
 import com.fank.f1k2.business.dao.WorkOrderInfoMapper;
 import com.fank.f1k2.business.entity.vo.ChatVo;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -62,5 +65,17 @@ public class WorkOrderInfoServiceImpl extends ServiceImpl<WorkOrderInfoMapper, W
             return Collections.emptyList();
         }
         return JSONUtil.toList(workOrderInfo.getChatContent(), ChatVo.class);
+    }
+
+    /**
+     * 分页获取工单信息
+     *
+     * @param page      分页对象
+     * @param queryFrom 工单信息
+     * @return 结果
+     */
+    @Override
+    public IPage<LinkedHashMap<String, Object>> queryPage(Page<WorkOrderInfo> page, WorkOrderInfo queryFrom) {
+        return baseMapper.queryPage(page, queryFrom);
     }
 }

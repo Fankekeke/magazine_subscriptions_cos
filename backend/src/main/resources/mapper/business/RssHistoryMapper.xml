@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fank.f1k2.business.dao.RssHistoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.fank.f1k2.business.entity.RssHistory">
+        <id column="id" property="id"/>
+        <result column="rss_code"  property="rssCode"/>
+        <result column="rss_name"  property="rssName"/>
+        <result column="web_img"  property="webImg"/>
+        <result column="author"  property="author"/>
+        <result column="link"  property="link"/>
+        <result column="published_date"  property="publishedDate"/>
+        <result column="video"  property="video"/>
+        <result column="title"  property="title"/>
+        <result column="type"  property="type"/>
+        <result column="value"  property="value"/>
+    </resultMap>
+
+    <select id="getMaxHistoryByDate" resultMap="BaseResultMap" parameterType="com.fank.f1k2.business.entity.RssHistory">
+        SELECT
+            a.*
+        FROM
+            rss_history a,
+            ( SELECT max( published_date ) max_day FROM rss_history WHERE rss_code = #{rssHistory.rssCode} ) b
+        WHERE
+            a.published_date = b.max_day
+    </select>
+
+</mapper>

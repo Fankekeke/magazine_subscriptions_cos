@@ -1,9 +1,13 @@
 package com.fank.f1k2.business.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fank.f1k2.business.entity.WorkOrderInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fank.f1k2.business.entity.vo.ChatVo;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -28,4 +32,13 @@ public interface IWorkOrderInfoService extends IService<WorkOrderInfo> {
      * @return 回复列表
      */
     List<ChatVo> queryReplyByQuotationId(Integer quotationId);
+
+    /**
+     * 分页获取工单信息
+     *
+     * @param page      分页对象
+     * @param queryFrom 工单信息
+     * @return 结果
+     */
+    IPage<LinkedHashMap<String, Object>> queryPage(Page<WorkOrderInfo> page, WorkOrderInfo queryFrom);
 }

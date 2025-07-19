@@ -3,7 +3,7 @@
 <mapper namespace="com.fank.f1k2.business.dao.BulletinInfoMapper">
 
     <!-- 分页获取公告信息 -->
-    <select id="getBulletinByPage" resultType="java.util.LinkedHashMap">
+    <select id="selectBulletinByPage" resultType="java.util.LinkedHashMap">
         SELECT
         bi.id,
         bi.title,

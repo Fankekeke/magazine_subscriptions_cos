@@ -13,20 +13,11 @@ import java.util.LinkedHashMap;
 public interface INotifyInfoService extends IService<NotifyInfo> {
 
     /**
-     * 分页获取消息通知-科研人员
+     * 分页获取消息通知
      *
      * @param page      分页对象
      * @param queryFrom 消息通知
      * @return 结果
      */
-    IPage<LinkedHashMap<String, Object>> queryPageBySupplier(Page<NotifyInfo> page, NotifyInfo queryFrom);
-
-    /**
-     * 分页获取消息通知-员工
-     *
-     * @param page      分页对象
-     * @param queryFrom 消息通知
-     * @return 结果
-     */
-    IPage<LinkedHashMap<String, Object>> queryPageByStaff(Page<NotifyInfo> page, NotifyInfo queryFrom);
+    IPage<LinkedHashMap<String, Object>> queryPage(Page<NotifyInfo> page, NotifyInfo queryFrom);
 }

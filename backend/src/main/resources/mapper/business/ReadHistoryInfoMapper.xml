@@ -2,4 +2,52 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fank.f1k2.business.dao.ReadHistoryInfoMapper">
 
+    <!-- 分页获取阅读记录 -->
+    <select id="queryPage" resultType="java.util.LinkedHashMap">
+        select
+        rhi.id,
+        rhi.user_id,
+        rhi.create_date,
+        rhi.book_detail_id,
+
+        bdi.id,
+        bdi.book_id,
+        bdi.name,
+        bdi.index_no,
+        bdi.views,
+        bdi.words,
+        bdi.check_flag,
+        bdi.create_date,
+        bdi.content,
+
+        bdi.web_img,
+        bdi.author,
+        bdi.link,
+        bdi.published_date,
+        bdi.video,
+        bdi.title,
+        bdi.type,
+        bdi.value,
+
+        ui.name as userName,
+        ui.sex,
+        ui.images as userImages,
+        ui.phone
+        from
+        read_history_info rhi
+        left join user_info ui on
+        (ui.id = rhi.user_id)
+        left join book_detail_info bdi on
+        (bdi.id = rhi.book_detail_id)
+        where
+        1 = 1
+        <if test="queryFrom.name != null and queryFrom.name != ''">
+            AND bdi.name LIKE CONCAT('%',#{queryFrom.name},'%')
+        </if>
+        <if test="queryFrom.userName != null and queryFrom.userName != ''">
+            AND ui.name LIKE CONCAT('%',#{queryFrom.userName},'%')
+        </if>
+        order by
+        rhi.create_date desc
+    </select>
 </mapper>

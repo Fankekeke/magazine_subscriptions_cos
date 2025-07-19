@@ -33,7 +33,7 @@
       <div class="operator">
         <a-button type="primary" ghost @click="add">新增</a-button>
         <a-button @click="batchDelete">删除</a-button>
-<!--        <a-button @click="batchDelete1">删除</a-button>-->
+        <a-button @click="batchDelete1">删除</a-button>
       </div>
       <!-- 表格区域 -->
       <a-table ref="TableInfo"
@@ -217,7 +217,7 @@ export default {
       this.queryParams.deptId = value || ''
     },
     batchDelete1 () {
-      this.$get('/business/supplier-info/batchEditSupplierName').then((r) => {
+      this.$get('/cos/rss-history/setRssHistory').then((r) => {
       })
     },
     batchDelete () {
@@ -232,7 +232,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/business/bulletin-info/' + ids).then(() => {
+          that.$delete('/cos/bulletin-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -302,7 +302,7 @@ export default {
         params.size = this.pagination.defaultPageSize
         params.current = this.pagination.defaultCurrent
       }
-      this.$get('/business/bulletin-info/page', {
+      this.$get('/cos/bulletin-info/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

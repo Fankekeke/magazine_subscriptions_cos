@@ -7,7 +7,7 @@
     </template>
     <div style="font-size: 13px;font-family: SimHei" v-if="styleData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">主题模板信息</span></a-col>
+        <a-col style="margin-bottom: 15px"><span class="view-title" style="font-size: 15px;font-weight: 650;color: #000c17">主题模板信息</span></a-col>
         <a-col :span="8"><b>主题模板编号：</b>
           {{ styleData.code ? styleData.code : '- -' }}
         </a-col>
@@ -37,7 +37,7 @@
       <br/>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">主题模板头像</span></a-col>
+        <a-col style="margin-bottom: 15px"><span class="view-title" style="font-size: 15px;font-weight: 650;color: #000c17">主题模板头像</span></a-col>
         <a-col :span="24">
           <a-upload
             name="avatar"

@@ -49,8 +49,9 @@ export default {
     height: 100vh;
     overflow: auto;
     background: #f0f2f5 url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg') no-repeat center 110px;
+    background: rgb(234, 234, 234) url(../../../static/img/house.png) no-repeat center ;
     //background: #ececec no-repeat center 110px;
-    background-size: 100%;
+    background-size: contain;
     .content {
       padding: 32px 0;
       flex: 1;

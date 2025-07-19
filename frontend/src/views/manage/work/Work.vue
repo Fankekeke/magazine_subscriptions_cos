@@ -7,18 +7,38 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="作者编号"
+                label="供应商名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.code"/>
+                <a-input v-model="queryParams.supplierName"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="作者姓名"
+                label="物料编号"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.name"/>
+                <a-input v-model="queryParams.materialsName"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item
+                label="计划编号"
+                :labelCol="{span: 5}"
+                :wrapperCol="{span: 18, offset: 1}">
+                <a-input v-model="queryParams.planCode"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item
+                label="状态"
+                :labelCol="{span: 5}"
+                :wrapperCol="{span: 18, offset: 1}">
+                <a-select v-model="queryParams.status" allowClear>
+                  <a-select-option value="0">未接收</a-select-option>
+                  <a-select-option value="1">已接收</a-select-option>
+                  <a-select-option value="2">已报价</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
           </div>
@@ -31,7 +51,7 @@
     </div>
     <div>
       <div class="operator">
-        <a-button type="primary" ghost @click="add">新增</a-button>
+<!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
         <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
@@ -44,76 +64,53 @@
                :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
                :scroll="{ x: 900 }"
                @change="handleTableChange">
-        <template slot="titleShow" slot-scope="text, record">
-          <template>
-            <a-badge status="processing" v-if="record.rackUp === 1"/>
-            <a-badge status="error" v-if="record.rackUp === 0"/>
-            <a-tooltip>
-              <template slot="title">
-                {{ record.title }}
-              </template>
-              {{ record.title.slice(0, 8) }} ...
-            </a-tooltip>
-          </template>
-        </template>
-        <template slot="contentShow" slot-scope="text, record">
-          <template>
-            <a-tooltip>
-              <template slot="title">
-                {{ record.content }}
-              </template>
-              {{ record.content.slice(0, 20) }} ...
-            </a-tooltip>
-          </template>
-        </template>
         <template slot="operation" slot-scope="text, record">
-          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改"></a-icon>
-          <a-icon type="file-search" @click="authorViewOpen(record)" title="详 情" style="margin-left: 15px"></a-icon>
+          <a-icon type="cloud" @click="handleModuleViewOpen(record)" title="详 情"></a-icon>
         </template>
       </a-table>
     </div>
-    <author-add
-      v-if="authorAdd.visiable"
-      @close="handleauthorAddClose"
-      @success="handleauthorAddSuccess"
-      :authorAddVisiable="authorAdd.visiable">
-    </author-add>
-    <author-edit
-      ref="authorEdit"
-      @close="handleauthorEditClose"
-      @success="handleauthorEditSuccess"
-      :authorEditVisiable="authorEdit.visiable">
-    </author-edit>
-    <author-view
-      @close="handleauthorViewClose"
-      :authorShow="authorView.visiable"
-      :authorData="authorView.data">
-    </author-view>
+    <module-add
+      @close="handleModuleAddClose"
+      @success="handleModuleAddSuccess"
+      :moduleAddVisiable="moduleAdd.visiable">
+    </module-add>
+    <module-edit
+      ref="moduleEdit"
+      @close="handleModuleEditClose"
+      @success="handleModuleEditSuccess"
+      :moduleEditVisiable="moduleEdit.visiable">
+    </module-edit>
+    <module-view
+      @close="handleModuleViewClose"
+      :moduleShow="moduleView.visiable"
+      :moduleData="moduleView.data">
+    </module-view>
   </a-card>
 </template>
 
 <script>
 import RangeDate from '@/components/datetime/RangeDate'
-import authorView from './AuthorView.vue'
-import authorAdd from './AuthorAdd.vue'
-import authorEdit from './AuthorEdit.vue'
+import moduleAdd from './WorkAdd.vue'
+import moduleEdit from './WorkEdit.vue'
+import moduleView from './WorkView.vue'
 import {mapState} from 'vuex'
 import moment from 'moment'
+
 moment.locale('zh-cn')
 
 export default {
-  name: 'author',
-  components: {authorAdd, authorEdit, RangeDate, authorView},
+  name: 'module',
+  components: {moduleAdd, moduleEdit, moduleView, RangeDate},
   data () {
     return {
       advanced: false,
-      authorAdd: {
+      moduleAdd: {
         visiable: false
       },
-      authorEdit: {
+      moduleEdit: {
         visiable: false
       },
-      authorView: {
+      moduleView: {
         visiable: false,
         data: null
       },
@@ -141,11 +138,13 @@ export default {
     }),
     columns () {
       return [{
-        title: '作者编号',
-        dataIndex: 'code'
+        title: '采购计划编号',
+        dataIndex: 'planCode',
+        ellipsis: true
       }, {
-        title: '作者姓名',
-        dataIndex: 'name',
+        title: '下发供应商',
+        dataIndex: 'supplierName',
+        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -154,47 +153,85 @@ export default {
           }
         }
       }, {
-        title: '备注',
-        dataIndex: 'content',
-        scopedSlots: {customRender: 'contentShow'}
+        title: '供应商图片',
+        dataIndex: 'supplierImages',
+        customRender: (text, record, index) => {
+          if (!record.supplierImages) return <a-avatar shape="square" icon="user"/>
+          return <a-popover>
+            <template slot="content">
+              <a-avatar shape="square" size={132} icon="user"
+                src={'http://127.0.0.1:9527/imagesWeb/' + record.supplierImages.split(',')[0]}/>
+            </template>
+            <a-avatar shape="square" icon="user"
+              src={'http://127.0.0.1:9527/imagesWeb/' + record.supplierImages.split(',')[0]}/>
+          </a-popover>
+        }
       }, {
-        title: '性别',
-        dataIndex: 'sex',
+        title: '采购物料',
+        dataIndex: 'materialsName',
+        ellipsis: true,
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text + ' ' + row.purchaseNum + '' + row.measurementUnit
+          } else {
+            return '- -'
+          }
+        }
+      }, {
+        title: '物料型号',
+        dataIndex: 'model',
+        ellipsis: true,
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        }
+      }, {
+        title: '物料图片',
+        dataIndex: 'materialsImages',
+        customRender: (text, record, index) => {
+          if (!record.materialsImages) return <a-avatar shape="square" icon="user"/>
+          return <a-popover>
+            <template slot="content">
+              <a-avatar shape="square" size={132} icon="user"
+                src={'http://127.0.0.1:9527/imagesWeb/' + record.materialsImages.split(',')[0]}/>
+            </template>
+            <a-avatar shape="square" icon="user"
+              src={'http://127.0.0.1:9527/imagesWeb/' + record.materialsImages.split(',')[0]}/>
+          </a-popover>
+        }
+      }, {
+        title: '状态',
+        dataIndex: 'status',
+        ellipsis: true,
         customRender: (text, row, index) => {
           switch (text) {
+            case '0':
+              return <a-tag>未接收</a-tag>
             case '1':
-              return <a-tag>男</a-tag>
+              return <a-tag color="green">已接收</a-tag>
             case '2':
-              return <a-tag>女</a-tag>
+              return <a-tag color="blue">已报价</a-tag>
             default:
               return '- -'
           }
         }
       }, {
-        title: '作者头像',
-        dataIndex: 'images',
-        customRender: (text, record, index) => {
-          if (!record.images) return <a-avatar shape="square" icon="user" />
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-            </template>
-            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-          </a-popover>
-        }
-      }, {
-        title: '联系方式',
-        dataIndex: 'phone',
+        title: '报价金额',
+        dataIndex: 'totalPrice',
+        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
-            return text
+            return text + '元'
           } else {
             return '- -'
           }
         }
       }, {
-        title: '创建时间',
-        dataIndex: 'createDate',
+        title: '报价时间',
+        dataIndex: 'quotationDate',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -213,12 +250,12 @@ export default {
     this.fetch()
   },
   methods: {
-    authorViewOpen (row) {
-      this.authorView.data = row
-      this.authorView.visiable = true
+    handleModuleViewOpen (row) {
+      this.moduleView.data = row
+      this.moduleView.visiable = true
     },
-    handleauthorViewClose () {
-      this.authorView.visiable = false
+    handleModuleViewClose () {
+      this.moduleView.visiable = false
     },
     onSelectChange (selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
@@ -227,30 +264,27 @@ export default {
       this.advanced = !this.advanced
     },
     add () {
-      this.authorAdd.visiable = true
+      this.moduleAdd.visiable = true
     },
-    handleauthorAddClose () {
-      this.authorAdd.visiable = false
+    handleModuleAddClose () {
+      this.moduleAdd.visiable = false
     },
-    handleauthorAddSuccess () {
-      this.authorAdd.visiable = false
-      this.$message.success('新增作者成功')
+    handleModuleAddSuccess () {
+      this.moduleAdd.visiable = false
+      this.$message.success('新增异常反馈成功')
       this.search()
     },
     edit (record) {
-      this.$refs.authorEdit.setFormValues(record)
-      this.authorEdit.visiable = true
+      this.$refs.moduleEdit.setFormValues(record)
+      this.moduleEdit.visiable = true
     },
-    handleauthorEditClose () {
-      this.authorEdit.visiable = false
+    handleModuleEditClose () {
+      this.moduleEdit.visiable = false
     },
-    handleauthorEditSuccess () {
-      this.authorEdit.visiable = false
-      this.$message.success('修改作者成功')
+    handleModuleEditSuccess () {
+      this.moduleEdit.visiable = false
+      this.$message.success('修改异常反馈成功')
       this.search()
-    },
-    handleDeptChange (value) {
-      this.queryParams.deptId = value || ''
     },
     batchDelete () {
       if (!this.selectedRowKeys.length) {
@@ -264,7 +298,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/author-info/' + ids).then(() => {
+          that.$delete('/business/abnormal-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -334,7 +368,10 @@ export default {
         params.size = this.pagination.defaultPageSize
         params.current = this.pagination.defaultCurrent
       }
-      this.$get('/cos/author-info/page', {
+      if (params.status === undefined) {
+        delete params.status
+      }
+      this.$get('/business/purchase-quotation-info/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

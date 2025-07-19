@@ -7,7 +7,7 @@
     </template>
     <div style="font-size: 13px;font-family: SimHei" v-if="recordData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">基础信息</span></a-col>
+        <a-col style="margin-bottom: 15px"><span class="view-title" style="font-size: 15px;font-weight: 650;color: #000c17">基础信息</span></a-col>
         <a-col :span="8"><b>用户名称：</b>
           {{ recordData.userName ? recordData.userName : '- -' }}
         </a-col>
@@ -18,11 +18,11 @@
       <br/>
       <div style="font-size: 13px;font-family: SimHei" v-if="authorInfo !== null">
         <a-row style="padding-left: 24px;padding-right: 24px;">
-          <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">创作者信息</span></a-col>
-          <a-col :span="8"><b>创作者编号：</b>
+          <a-col style="margin-bottom: 15px"><span class="view-title" style="font-size: 15px;font-weight: 650;color: #000c17">作者信息</span></a-col>
+          <a-col :span="8"><b>作者编号：</b>
             {{ authorInfo.code ? authorInfo.code : '- -' }}
           </a-col>
-          <a-col :span="8"><b>创作者姓名：</b>
+          <a-col :span="8"><b>作者姓名：</b>
             {{ authorInfo.name ? authorInfo.name : '- -' }}
           </a-col>
           <a-col :span="8"><b>联系方式：</b>
@@ -43,7 +43,7 @@
       <br/>
       <div style="font-size: 13px;font-family: SimHei" v-if="bookInfo !== null">
         <a-row style="padding-left: 24px;padding-right: 24px;">
-          <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">订阅源信息</span></a-col>
+          <a-col style="margin-bottom: 15px"><span class="view-title" style="font-size: 15px;font-weight: 650;color: #000c17">订阅源信息</span></a-col>
           <a-col :span="8"><b>订阅源编号：</b>
             {{ bookInfo.code ? bookInfo.code : '- -' }}
           </a-col>

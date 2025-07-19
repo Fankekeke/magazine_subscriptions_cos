@@ -1,52 +1,88 @@
 <template>
-  <a-modal v-model="show" title="新增作者" @cancel="onClose" :width="800">
-    <template slot="footer">
-      <a-button key="back" @click="onClose">
-        取消
-      </a-button>
-      <a-button key="submit" type="primary" :loading="loading" @click="handleSubmit">
-        提交
-      </a-button>
-    </template>
+  <a-drawer
+    title="新增消息通知"
+    :maskClosable="false"
+    width=850
+    placement="right"
+    :closable="false"
+    @close="onClose"
+    :visible="moduleAddVisiable"
+    style="height: calc(100% - 55px);overflow: auto;padding-bottom: 53px;">
     <a-form :form="form" layout="vertical">
-      <a-row :gutter="20">
+      <a-row :gutter="10">
         <a-col :span="12">
-          <a-form-item label='作者姓名' v-bind="formItemLayout">
+          <a-form-item label='消息通知名称'>
             <a-input v-decorator="[
             'name',
-            { rules: [{ required: true, message: '请输入作者姓名!' }] }
+            { rules: [{ required: true, message: '请输入名称!' }] }
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='联系方式' v-bind="formItemLayout">
+          <a-form-item label='可供类型'>
+            <a-input v-decorator="[
+            'supplyType',
+            { rules: [{ required: true, message: '请输入可供类型!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='信用代码'>
+            <a-input v-decorator="[
+            'creditCode',
+            { rules: [{ required: true, message: '请输入信用代码!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='营业执照号'>
+            <a-input v-decorator="[
+            'businessLicense',
+            { rules: [{ required: true, message: '请输入营业执照号!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='开户银行'>
+            <a-input v-decorator="[
+            'bankName',
+            { rules: [{ required: true, message: '请输入开户银行!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='银行账号'>
+            <a-input v-decorator="[
+            'bankAccount',
+            { rules: [{ required: true, message: '请输入银行账号!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='负责人'>
+            <a-input v-decorator="[
+            'chargePerson',
+            { rules: [{ required: true, message: '请输入负责人!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='联系电话'>
             <a-input v-decorator="[
             'phone',
-            { rules: [{ required: true, message: '请输入联系方式!' }] }
+            { rules: [{ required: true, message: '请输入联系电话!' }] }
             ]"/>
           </a-form-item>
         </a-col>
-        <a-col :span="12">
-          <a-form-item label='性别' v-bind="formItemLayout">
-            <a-select v-decorator="[
-              'sex',
-              { rules: [{ required: true, message: '请输入性别!' }] }
-              ]">
-              <a-select-option value="1">男</a-select-option>
-              <a-select-option value="2">女</a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
         <a-col :span="24">
-          <a-form-item label='备注' v-bind="formItemLayout">
+          <a-form-item label='备注内容' v-bind="formItemLayout">
             <a-textarea :rows="6" v-decorator="[
-            'content',
-             { rules: [{ required: true, message: '请输入备注!' }] }
+            'content'
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="24">
-          <a-form-item label='作者头像' v-bind="formItemLayout">
+          <a-form-item label='消息通知图片' v-bind="formItemLayout">
             <a-upload
               name="avatar"
               action="http://127.0.0.1:9527/file/fileUpload/"
@@ -56,26 +92,32 @@
               @change="picHandleChange"
             >
               <div v-if="fileList.length < 8">
-                <a-icon type="plus" />
+                <a-icon type="plus"/>
                 <div class="ant-upload-text">
                   Upload
                 </div>
               </div>
             </a-upload>
             <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-              <img alt="example" style="width: 100%" :src="previewImage" />
+              <img alt="example" style="width: 100%" :src="previewImage"/>
             </a-modal>
           </a-form-item>
         </a-col>
       </a-row>
     </a-form>
-  </a-modal>
+
+    <div class="drawer-bootom-button">
+      <a-popconfirm title="确定放弃编辑？" @confirm="onClose" okText="确定" cancelText="取消">
+        <a-button style="margin-right: .8rem">取消</a-button>
+      </a-popconfirm>
+      <a-button @click="handleSubmit" type="primary" :loading="loading">提交</a-button>
+    </div>
+  </a-drawer>
 </template>
 
 <script>
 import {mapState} from 'vuex'
-import moment from 'moment'
-moment.locale('zh-cn')
+
 function getBase64 (file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -84,14 +126,15 @@ function getBase64 (file) {
     reader.onerror = error => reject(error)
   })
 }
+
 const formItemLayout = {
-  labelCol: { span: 24 },
-  wrapperCol: { span: 24 }
+  labelCol: {span: 24},
+  wrapperCol: {span: 24}
 }
 export default {
-  name: 'authorAdd',
+  name: 'moduleAdd',
   props: {
-    authorAddVisiable: {
+    moduleAddVisiable: {
       default: false
     }
   },
@@ -101,7 +144,7 @@ export default {
     }),
     show: {
       get: function () {
-        return this.authorAddVisiable
+        return this.moduleAddVisiable
       },
       set: function () {
       }
@@ -128,7 +171,7 @@ export default {
       this.previewImage = file.url || file.preview
       this.previewVisible = true
     },
-    picHandleChange ({ fileList }) {
+    picHandleChange ({fileList}) {
       this.fileList = fileList
     },
     reset () {
@@ -149,7 +192,7 @@ export default {
         values.images = images.length > 0 ? images.join(',') : null
         if (!err) {
           this.loading = true
-          this.$post('/cos/author-info', {
+          this.$post('/business/notify-info', {
             ...values
           }).then((r) => {
             this.reset()

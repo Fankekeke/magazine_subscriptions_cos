@@ -2,4 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fank.f1k2.business.dao.WorkOrderInfoMapper">
 
+    <!-- 分页获取工单信息 -->
+    <select id="queryPage" resultType="java.util.LinkedHashMap">
+        select
+        woi.id,
+        woi.content,
+        woi.status,
+        woi.user_id,
+        woi.create_date,
+        woi.finish_date,
+        woi.chat_content,
+
+        ui.name as userName,
+        ui.sex,
+        ui.images as userImages,
+        ui.phone
+        from
+        work_order_info woi
+        left join user_info ui on (ui.id = woi.user_id)
+        where 1 = 1
+        <if test="queryFrom.userName != null and queryFrom.userName != ''">
+            AND ui.name LIKE CONCAT('%',#{queryFrom.userName},'%')
+        </if>
+        order by woi.create_date desc
+    </select>
 </mapper>

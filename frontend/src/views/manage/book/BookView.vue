@@ -13,7 +13,7 @@
     </template>
     <div style="font-size: 13px;font-family: SimHei" v-if="bookData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">订阅源信息</span></a-col>
+        <a-col style="margin-bottom: 15px"><span class="view-title" style="font-size: 15px;font-weight: 650;color: #000c17">订阅源信息</span></a-col>
         <a-col :span="8"><b>订阅源编号：</b>
           {{ bookData.code ? bookData.code : '- -' }}
         </a-col>
@@ -63,7 +63,7 @@
       <br/>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">订阅源图片</span></a-col>
+        <a-col style="margin-bottom: 15px"><span class="view-title" style="font-size: 15px;font-weight: 650;color: #000c17">订阅源图片</span></a-col>
         <a-col :span="24">
           <a-upload
             name="avatar"

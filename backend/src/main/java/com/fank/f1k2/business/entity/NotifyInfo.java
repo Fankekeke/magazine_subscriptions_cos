@@ -23,8 +23,8 @@ public class NotifyInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-    * 主键ID
-    */
+     * 主键ID
+     */
     @TableId(type = IdType.AUTO)
     private Integer id;
 
@@ -45,11 +45,6 @@ public class NotifyInfo implements Serializable {
     private Integer userId;
 
     /**
-     * 类型（1.科研人员 2.员工）
-     */
-    private String agencyType;
-
-    /**
      * 创建时间
      */
     private String createDate;
@@ -65,26 +60,8 @@ public class NotifyInfo implements Serializable {
     private String delFlag;
 
     /**
-     * 科研人员名称
+     * 人员名称
      */
     @TableField(exist = false)
-    private String supplierName;
-
-    /**
-     * 科研人员名称
-     */
-    @TableField(exist = false)
-    private String staffName;
-
-    /**
-     * 科研人员账户ID
-     */
-    @TableField(exist = false)
-    private Integer supplierUserId;
-
-    /**
-     * 员工账户ID
-     */
-    @TableField(exist = false)
-    private Integer staffUserId;
+    private String name;
 }

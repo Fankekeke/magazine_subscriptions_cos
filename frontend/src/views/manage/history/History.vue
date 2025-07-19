@@ -7,18 +7,21 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="作者编号"
+                label="物品名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.code"/>
+                <a-input v-model="queryParams.name"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="作者姓名"
+                label="操作类型"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.name"/>
+                <a-select v-model="queryParams.transactionType" allowClear>
+                  <a-select-option value="1">入库</a-select-option>
+                  <a-select-option value="2">出库</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
           </div>
@@ -31,8 +34,8 @@
     </div>
     <div>
       <div class="operator">
-        <a-button type="primary" ghost @click="add">新增</a-button>
-        <a-button @click="batchDelete">删除</a-button>
+        <!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
+<!--        <a-button @click="batchDelete">删除</a-button>-->
       </div>
       <!-- 表格区域 -->
       <a-table ref="TableInfo"
@@ -44,79 +47,32 @@
                :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
                :scroll="{ x: 900 }"
                @change="handleTableChange">
-        <template slot="titleShow" slot-scope="text, record">
-          <template>
-            <a-badge status="processing" v-if="record.rackUp === 1"/>
-            <a-badge status="error" v-if="record.rackUp === 0"/>
-            <a-tooltip>
-              <template slot="title">
-                {{ record.title }}
-              </template>
-              {{ record.title.slice(0, 8) }} ...
-            </a-tooltip>
-          </template>
-        </template>
-        <template slot="contentShow" slot-scope="text, record">
-          <template>
-            <a-tooltip>
-              <template slot="title">
-                {{ record.content }}
-              </template>
-              {{ record.content.slice(0, 20) }} ...
-            </a-tooltip>
-          </template>
+        <template slot="amountShow" slot-scope="text, record">
+          <a-icon v-if="record.isIn == 1" type="caret-up" style="color: red;font-size: 15px"/>
+          <a-icon v-if="record.isIn == 2" type="caret-down" style="color: green;font-size: 15px"/>
+          {{ record.amount }}
         </template>
         <template slot="operation" slot-scope="text, record">
-          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改"></a-icon>
-          <a-icon type="file-search" @click="authorViewOpen(record)" title="详 情" style="margin-left: 15px"></a-icon>
+          <a-icon v-if="record.accountStatus == 0" type="caret-up" @click="edit(record, 1)" title="修 改"/>
+          <a-icon v-if="record.accountStatus == 1" type="caret-down" @click="edit(record, 0)" title="修 改"/>
         </template>
       </a-table>
     </div>
-    <author-add
-      v-if="authorAdd.visiable"
-      @close="handleauthorAddClose"
-      @success="handleauthorAddSuccess"
-      :authorAddVisiable="authorAdd.visiable">
-    </author-add>
-    <author-edit
-      ref="authorEdit"
-      @close="handleauthorEditClose"
-      @success="handleauthorEditSuccess"
-      :authorEditVisiable="authorEdit.visiable">
-    </author-edit>
-    <author-view
-      @close="handleauthorViewClose"
-      :authorShow="authorView.visiable"
-      :authorData="authorView.data">
-    </author-view>
   </a-card>
 </template>
 
 <script>
 import RangeDate from '@/components/datetime/RangeDate'
-import authorView from './AuthorView.vue'
-import authorAdd from './AuthorAdd.vue'
-import authorEdit from './AuthorEdit.vue'
 import {mapState} from 'vuex'
 import moment from 'moment'
 moment.locale('zh-cn')
 
 export default {
-  name: 'author',
-  components: {authorAdd, authorEdit, RangeDate, authorView},
+  name: 'Details',
+  components: {RangeDate},
   data () {
     return {
       advanced: false,
-      authorAdd: {
-        visiable: false
-      },
-      authorEdit: {
-        visiable: false
-      },
-      authorView: {
-        visiable: false,
-        data: null
-      },
       queryParams: {},
       filteredInfo: null,
       sortedInfo: null,
@@ -131,8 +87,7 @@ export default {
         showQuickJumper: true,
         showSizeChanger: true,
         showTotal: (total, range) => `显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-      },
-      userList: []
+      }
     }
   },
   computed: {
@@ -141,11 +96,9 @@ export default {
     }),
     columns () {
       return [{
-        title: '作者编号',
-        dataIndex: 'code'
-      }, {
-        title: '作者姓名',
-        dataIndex: 'name',
+        title: '物料名称',
+        dataIndex: 'materialsName',
+        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -154,46 +107,66 @@ export default {
           }
         }
       }, {
-        title: '备注',
-        dataIndex: 'content',
-        scopedSlots: {customRender: 'contentShow'}
+        title: '物料型号',
+        dataIndex: 'model',
+        ellipsis: true,
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        }
       }, {
-        title: '性别',
-        dataIndex: 'sex',
+        title: '物料类型',
+        dataIndex: 'type',
+        ellipsis: true,
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        }
+      }, {
+        title: '物料图片',
+        dataIndex: 'materialsImages',
+        customRender: (text, record, index) => {
+          if (!record.materialsImages) return <a-avatar shape="square" icon="user"/>
+          return <a-popover>
+            <template slot="content">
+              <a-avatar shape="square" size={132} icon="user"
+                src={'http://127.0.0.1:9527/imagesWeb/' + record.materialsImages.split(',')[0]}/>
+            </template>
+            <a-avatar shape="square" icon="user"
+              src={'http://127.0.0.1:9527/imagesWeb/' + record.materialsImages.split(',')[0]}/>
+          </a-popover>
+        }
+      }, {
+        title: '操作类型',
+        dataIndex: 'transactionType',
         customRender: (text, row, index) => {
           switch (text) {
-            case '1':
-              return <a-tag>男</a-tag>
-            case '2':
-              return <a-tag>女</a-tag>
+            case 1:
+              return <a-tag color="green">入库</a-tag>
+            case 2:
+              return <a-tag color="red">出库</a-tag>
             default:
               return '- -'
           }
         }
       }, {
-        title: '作者头像',
-        dataIndex: 'images',
-        customRender: (text, record, index) => {
-          if (!record.images) return <a-avatar shape="square" icon="user" />
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-            </template>
-            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.images.split(',')[0] } />
-          </a-popover>
-        }
-      }, {
-        title: '联系方式',
-        dataIndex: 'phone',
+        title: '出入库数量',
+        dataIndex: 'quantity',
         customRender: (text, row, index) => {
           if (text !== null) {
-            return text
+            return text + ' ' + row.measurementUnit
           } else {
             return '- -'
           }
         }
       }, {
-        title: '创建时间',
+        title: '操作时间',
         dataIndex: 'createDate',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -202,52 +175,24 @@ export default {
             return '- -'
           }
         }
-      }, {
-        title: '操作',
-        dataIndex: 'operation',
-        scopedSlots: {customRender: 'operation'}
-      }]
+      },]
     }
   },
   mounted () {
     this.fetch()
   },
   methods: {
-    authorViewOpen (row) {
-      this.authorView.data = row
-      this.authorView.visiable = true
-    },
-    handleauthorViewClose () {
-      this.authorView.visiable = false
+    edit (row, status) {
+      this.$post('/cos/student-info/accountStatusEdit', { userId: row.userId, status }).then((r) => {
+        this.$message.success('修改成功')
+        this.fetch()
+      })
     },
     onSelectChange (selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
     },
     toggleAdvanced () {
       this.advanced = !this.advanced
-    },
-    add () {
-      this.authorAdd.visiable = true
-    },
-    handleauthorAddClose () {
-      this.authorAdd.visiable = false
-    },
-    handleauthorAddSuccess () {
-      this.authorAdd.visiable = false
-      this.$message.success('新增作者成功')
-      this.search()
-    },
-    edit (record) {
-      this.$refs.authorEdit.setFormValues(record)
-      this.authorEdit.visiable = true
-    },
-    handleauthorEditClose () {
-      this.authorEdit.visiable = false
-    },
-    handleauthorEditSuccess () {
-      this.authorEdit.visiable = false
-      this.$message.success('修改作者成功')
-      this.search()
     },
     handleDeptChange (value) {
       this.queryParams.deptId = value || ''
@@ -264,7 +209,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/author-info/' + ids).then(() => {
+          that.$delete('/cos/student-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -334,7 +279,13 @@ export default {
         params.size = this.pagination.defaultPageSize
         params.current = this.pagination.defaultCurrent
       }
-      this.$get('/cos/author-info/page', {
+      if (params.transactionType === undefined) {
+        delete params.transactionType
+      }
+      if (params.typeId === undefined) {
+        delete params.typeId
+      }
+      this.$get('/business/warehouse-info/queryStockDetailPage', {
         ...params
       }).then((r) => {
         let data = r.data.data

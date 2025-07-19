@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ReadHistoryInfoController {
 
-    private final IReadHistoryInfoService bulletinInfoService;
+    private final IReadHistoryInfoService readHistoryInfoService;
 
     private final IUserInfoService userInfoService;
 
@@ -40,7 +40,7 @@ public class ReadHistoryInfoController {
     */
     @GetMapping("/page")
     public R page(Page<ReadHistoryInfo> page, ReadHistoryInfo queryFrom) {
-        return R.ok();
+        return R.ok(readHistoryInfoService.queryPage(page, queryFrom));
     }
 
     /**
@@ -51,7 +51,7 @@ public class ReadHistoryInfoController {
     */
     @GetMapping("/{id}")
     public R detail(@PathVariable("id") Integer id) {
-        return R.ok(bulletinInfoService.getById(id));
+        return R.ok(readHistoryInfoService.getById(id));
     }
 
     /**
@@ -61,7 +61,7 @@ public class ReadHistoryInfoController {
     */
     @GetMapping("/list")
     public R list() {
-        return R.ok(bulletinInfoService.list());
+        return R.ok(readHistoryInfoService.list());
     }
 
     /**
@@ -78,7 +78,7 @@ public class ReadHistoryInfoController {
             addFrom.setUserId(userInfo.getId());
         }
         addFrom.setCreateDate(DateUtil.formatDateTime(new Date()));
-        return R.ok(bulletinInfoService.save(addFrom));
+        return R.ok(readHistoryInfoService.save(addFrom));
     }
 
     /**
@@ -89,7 +89,7 @@ public class ReadHistoryInfoController {
     */
     @PutMapping
     public R edit(ReadHistoryInfo editFrom) {
-        return R.ok(bulletinInfoService.updateById(editFrom));
+        return R.ok(readHistoryInfoService.updateById(editFrom));
     }
 
     /**
@@ -100,7 +100,7 @@ public class ReadHistoryInfoController {
     */
     @DeleteMapping("/{ids}")
     public R deleteByIds(@PathVariable("ids") List<Integer> ids) {
-        return R.ok(bulletinInfoService.removeByIds(ids));
+        return R.ok(readHistoryInfoService.removeByIds(ids));
     }
 
 }
