@@ -7,15 +7,19 @@
     </template>
     <div style="font-size: 13px;font-family: SimHei" v-if="bookData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col style="margin-bottom: 15px"><span class="view-title" style="font-size: 15px;font-weight: 650;color: #000c17">文章标题</span></a-col>
+        <a-col :span="25">
+          {{ bookData.name ? bookData.name : '- -' }}
+        </a-col>
+      </a-row>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span class="view-title" style="font-size: 15px;font-weight: 650;color: #000c17">内容信息</span></a-col>
-        <a-col :span="8"><b>订阅源编号：</b>
+        <a-col :span="16"><b>订阅源编号：</b>
           {{ bookData.code ? bookData.code : '- -' }}
         </a-col>
         <a-col :span="8"><b>订阅源名称：</b>
           {{ bookData.bookName ? bookData.bookName : '- -' }}
-        </a-col>
-        <a-col :span="8"><b>内容名称：</b>
-          {{ bookData.name ? bookData.name : '- -' }}
         </a-col>
       </a-row>
       <br/>
@@ -37,7 +41,7 @@
           {{ bookData.words ? bookData.words : '- -' }}
         </a-col>
         <a-col :span="8"><b>创建时间：</b>
-          {{ bookData.createDate }}
+          {{ bookData.publishedDate }}
         </a-col>
       </a-row>
       <br/>

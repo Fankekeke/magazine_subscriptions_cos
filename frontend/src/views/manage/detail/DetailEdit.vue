@@ -10,25 +10,33 @@
     style="height: calc(100% - 55px);overflow: auto;padding-bottom: 53px;">
     <a-form :form="form" layout="vertical">
       <a-row :gutter="20">
-        <a-col :span="6">
-          <a-form-item label='内容名称' v-bind="formItemLayout">
+        <a-col :span="4">
+          <a-form-item label='文章标题' v-bind="formItemLayout">
             <a-input v-decorator="[
             'name',
-            { rules: [{ required: true, message: '请输入内容名称!' }] }
+            { rules: [{ required: true, message: '请输入文章标题!' }] }
             ]"/>
           </a-form-item>
         </a-col>
-        <a-col :span="6">
+        <a-col :span="4">
           <a-form-item label='所属订阅源' v-bind="formItemLayout">
             <a-select v-decorator="[
               'bookId',
               { rules: [{ required: true, message: '请输入所属订阅源!' }] }
               ]">
-              <a-select-option :value="item.id" v-for="(item, index) in bookList" :key="index">{{ item.name }}</a-select-option>
+              <a-select-option :value="item.code" v-for="(item, index) in bookList" :key="index">{{ item.name }}</a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col :span="6">
+        <a-col :span="4">
+          <a-form-item label='链接' v-bind="formItemLayout">
+            <a-input v-decorator="[
+            'link',
+            { rules: [{ required: true, message: '请输入链接!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="4">
           <a-form-item label='会员权限' v-bind="formItemLayout">
             <a-radio-group button-style="solid"
                            v-decorator="['checkFlag',{rules: [{ required: true, message: '请选择状态'}]}]">
@@ -46,7 +54,7 @@
               :mode="mode"
             />
             <Editor
-              style="height: 600px; overflow-y: hidden;"
+              style="height: 70vh; overflow-y: hidden;"
               v-model="html"
               :defaultConfig="editorConfig"
               :mode="mode"
@@ -134,7 +142,7 @@ export default {
       this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
     },
     selectBookList () {
-      this.$get('/cos/book-info/list/byUserId', {userId: this.currentUser.userId}).then((r) => {
+      this.$get('/cos/book-info/list').then((r) => {
         this.bookList = r.data.data
       })
     },
@@ -162,7 +170,7 @@ export default {
     },
     setFormValues ({...book}) {
       this.rowId = book.id
-      let fields = ['name', 'checkFlag', 'bookId']
+      let fields = ['name', 'checkFlag', 'bookId', 'link']
       let obj = {}
       Object.keys(book).forEach((key) => {
         if (key === 'images') {

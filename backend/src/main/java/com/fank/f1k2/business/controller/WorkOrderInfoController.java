@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author FanK fan1ke2ke@gmail.com（悲伤的橘子树）
  */
 @RestController
-@RequestMapping("/business/work-order-info")
+@RequestMapping("/cos/work-order-info")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class WorkOrderInfoController {
 
@@ -87,7 +87,7 @@ public class WorkOrderInfoController {
      * 查询工单回复
      *
      * @param quotationId 工单ID
-     * @return 采购计划工单管理对象
+     * @return 工单管理对象
      */
     @ApiOperation(value = "查询工单回复", notes = "通过工单ID获取对应的回复信息")
     @GetMapping("/queryReplyByQuotationId")
@@ -96,14 +96,14 @@ public class WorkOrderInfoController {
     }
 
     /**
-     * 回复科研人员
+     * 回复用户
      *
      * @param content     回复内容
      * @param quotationId 工单ID
-     * @return 采购计划工单管理对象
+     * @return 工单管理对象
      */
-    @ApiOperation(value = "回复科研人员", notes = "通过工单ID回复科研人员")
-    @GetMapping("/replySupplier")
+    @ApiOperation(value = "回复用户", notes = "通过工单ID回复用户")
+    @GetMapping("/replyUser")
     public R replySupplier(String content, Integer quotationId) {
         return R.ok(workerInfoService.reply(content, quotationId, "2"));
     }
@@ -113,7 +113,7 @@ public class WorkOrderInfoController {
      *
      * @param content     回复内容
      * @param quotationId 工单ID
-     * @return 采购计划工单管理对象
+     * @return 工单管理对象
      */
     @ApiOperation(value = "回复管理员", notes = "通过工单ID回复管理员")
     @GetMapping("/replyAdmin")

@@ -160,7 +160,7 @@ export default {
         values.images = images.length > 0 ? images.join(',') : null
         if (!err) {
           this.loading = true
-          this.$post('/business/materials-info', {
+          this.$post('/cos/materials-info', {
             ...values
           }).then((r) => {
             this.reset()

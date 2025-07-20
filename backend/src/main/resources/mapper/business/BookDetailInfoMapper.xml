@@ -29,12 +29,13 @@
         bi.images,
         bi.`type`,
         bi.content as bookContent,
+
         ai.name as authorName,
         ai.images as authorImages
         from
         book_detail_info bti
         left join book_info bi on
-        (bi.id = bti.book_id)
+        (bi.code = bti.book_id)
         left join author_info ai on
         (ai.id = bi.author_id)
         where

@@ -27,16 +27,35 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
+          <a-form-item label='链接' v-bind="formItemLayout">
+            <a-input v-decorator="[
+            'rssUrl',
+            { rules: [{ required: true, message: '请输入链接!' }] }
+            ]"/>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item label='所属作者' v-bind="formItemLayout">
+            <a-select  v-decorator="[
+              'authorId',
+              { rules: [{ required: true, message: '请输入所属作者!' }] }
+              ]">
+              <a-select-option :value="item.id" v-for="(item, index) in authorList" :key="index">{{ item.name }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col :span="12">
           <a-form-item label='订阅源类型' v-bind="formItemLayout">
             <a-select v-decorator="[
               'type',
               { rules: [{ required: true, message: '请输入订阅源类型!' }] }
               ]">
-              <a-select-option value="1">玄幻</a-select-option>
-              <a-select-option value="2">奇幻</a-select-option>
-              <a-select-option value="3">武侠</a-select-option>
+              <a-select-option value="1">科技</a-select-option>
+              <a-select-option value="2">历史</a-select-option>
+              <a-select-option value="3">新闻</a-select-option>
               <a-select-option value="4">都市</a-select-option>
-              <a-select-option value="5">现实</a-select-option>
+              <a-select-option value="5">资讯</a-select-option>
             </a-select>
           </a-form-item>
         </a-col>
@@ -110,17 +129,26 @@ export default {
       }
     }
   },
+  mounted () {
+    this.getAuthorList()
+  },
   data () {
     return {
       formItemLayout,
       form: this.$form.createForm(this),
       loading: false,
       fileList: [],
+      authorList: [],
       previewVisible: false,
       previewImage: ''
     }
   },
   methods: {
+    getAuthorList () {
+      this.$get(`/cos/author-info/list`).then((r) => {
+        this.authorList = r.data.data
+      })
+    },
     handleCancel () {
       this.previewVisible = false
     },

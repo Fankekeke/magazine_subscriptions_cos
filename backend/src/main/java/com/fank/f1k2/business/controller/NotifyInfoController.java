@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(tags = "消息通知")
 @RestController
-@RequestMapping("/business/notify-info")
+@RequestMapping("/cos/notify-info")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class NotifyInfoController {
 

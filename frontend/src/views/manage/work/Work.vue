@@ -7,26 +7,10 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="供应商名称"
+                label="所属用户"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.supplierName"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
-                label="物料编号"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.materialsName"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
-                label="计划编号"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.planCode"/>
+                <a-input v-model="queryParams.userName"/>
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
@@ -35,9 +19,8 @@
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-select v-model="queryParams.status" allowClear>
-                  <a-select-option value="0">未接收</a-select-option>
-                  <a-select-option value="1">已接收</a-select-option>
-                  <a-select-option value="2">已报价</a-select-option>
+                  <a-select-option value="0">进行中</a-select-option>
+                  <a-select-option value="1">已完成</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -138,12 +121,12 @@ export default {
     }),
     columns () {
       return [{
-        title: '采购计划编号',
-        dataIndex: 'planCode',
+        title: '所属用户',
+        dataIndex: 'userName',
         ellipsis: true
       }, {
-        title: '下发供应商',
-        dataIndex: 'supplierName',
+        title: '联系方式',
+        dataIndex: 'phone',
         ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -153,53 +136,17 @@ export default {
           }
         }
       }, {
-        title: '供应商图片',
-        dataIndex: 'supplierImages',
+        title: '用户头像',
+        dataIndex: 'userImages',
         customRender: (text, record, index) => {
-          if (!record.supplierImages) return <a-avatar shape="square" icon="user"/>
+          if (!record.userImages) return <a-avatar shape="square" icon="user"/>
           return <a-popover>
             <template slot="content">
               <a-avatar shape="square" size={132} icon="user"
-                src={'http://127.0.0.1:9527/imagesWeb/' + record.supplierImages.split(',')[0]}/>
+                src={'http://127.0.0.1:9527/imagesWeb/' + record.userImages.split(',')[0]}/>
             </template>
             <a-avatar shape="square" icon="user"
-              src={'http://127.0.0.1:9527/imagesWeb/' + record.supplierImages.split(',')[0]}/>
-          </a-popover>
-        }
-      }, {
-        title: '采购物料',
-        dataIndex: 'materialsName',
-        ellipsis: true,
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text + ' ' + row.purchaseNum + '' + row.measurementUnit
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '物料型号',
-        dataIndex: 'model',
-        ellipsis: true,
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '物料图片',
-        dataIndex: 'materialsImages',
-        customRender: (text, record, index) => {
-          if (!record.materialsImages) return <a-avatar shape="square" icon="user"/>
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="user"
-                src={'http://127.0.0.1:9527/imagesWeb/' + record.materialsImages.split(',')[0]}/>
-            </template>
-            <a-avatar shape="square" icon="user"
-              src={'http://127.0.0.1:9527/imagesWeb/' + record.materialsImages.split(',')[0]}/>
+              src={'http://127.0.0.1:9527/imagesWeb/' + record.userImages.split(',')[0]}/>
           </a-popover>
         }
       }, {
@@ -209,29 +156,26 @@ export default {
         customRender: (text, row, index) => {
           switch (text) {
             case '0':
-              return <a-tag>未接收</a-tag>
+              return <a-tag>进行中</a-tag>
             case '1':
-              return <a-tag color="green">已接收</a-tag>
-            case '2':
-              return <a-tag color="blue">已报价</a-tag>
+              return <a-tag color="green">已完成</a-tag>
             default:
               return '- -'
           }
         }
       }, {
-        title: '报价金额',
-        dataIndex: 'totalPrice',
-        ellipsis: true,
+        title: '结束时间',
+        dataIndex: 'finishDate',
         customRender: (text, row, index) => {
           if (text !== null) {
-            return text + '元'
+            return text
           } else {
             return '- -'
           }
         }
       }, {
-        title: '报价时间',
-        dataIndex: 'quotationDate',
+        title: '创建时间',
+        dataIndex: 'createDate',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -298,7 +242,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/business/abnormal-info/' + ids).then(() => {
+          that.$delete('/cos/abnormal-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -371,7 +315,7 @@ export default {
       if (params.status === undefined) {
         delete params.status
       }
-      this.$get('/business/purchase-quotation-info/page', {
+      this.$get('/cos/work-order-info/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

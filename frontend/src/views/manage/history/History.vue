@@ -96,8 +96,31 @@ export default {
     }),
     columns () {
       return [{
-        title: '物料名称',
-        dataIndex: 'materialsName',
+        title: '用户名称',
+        dataIndex: 'userName',
+        ellipsis: true,
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        }
+      },{
+        title: '用户头像',
+        dataIndex: 'userImages',
+        customRender: (text, record, index) => {
+          if (!record.userImages) return <a-avatar shape="square" icon="user"/>
+          return <a-popover>
+            <template slot="content">
+              <a-avatar shape="square" size={132} icon="user" src={'http://127.0.0.1:9527/imagesWeb/' + record.userImages.split(',')[0]}/>
+            </template>
+            <a-avatar shape="square" icon="user" src={'http://127.0.0.1:9527/imagesWeb/' + record.userImages.split(',')[0]}/>
+          </a-popover>
+        }
+      }, {
+        title: '文章标题',
+        dataIndex: 'name',
         ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -107,18 +130,7 @@ export default {
           }
         }
       }, {
-        title: '物料型号',
-        dataIndex: 'model',
-        ellipsis: true,
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '物料类型',
+        title: '文章类型',
         dataIndex: 'type',
         ellipsis: true,
         customRender: (text, row, index) => {
@@ -129,45 +141,9 @@ export default {
           }
         }
       }, {
-        title: '物料图片',
-        dataIndex: 'materialsImages',
-        customRender: (text, record, index) => {
-          if (!record.materialsImages) return <a-avatar shape="square" icon="user"/>
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="user"
-                src={'http://127.0.0.1:9527/imagesWeb/' + record.materialsImages.split(',')[0]}/>
-            </template>
-            <a-avatar shape="square" icon="user"
-              src={'http://127.0.0.1:9527/imagesWeb/' + record.materialsImages.split(',')[0]}/>
-          </a-popover>
-        }
-      }, {
-        title: '操作类型',
-        dataIndex: 'transactionType',
-        customRender: (text, row, index) => {
-          switch (text) {
-            case 1:
-              return <a-tag color="green">入库</a-tag>
-            case 2:
-              return <a-tag color="red">出库</a-tag>
-            default:
-              return '- -'
-          }
-        }
-      }, {
-        title: '出入库数量',
-        dataIndex: 'quantity',
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text + ' ' + row.measurementUnit
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '操作时间',
-        dataIndex: 'createDate',
+        title: '访问量',
+        dataIndex: 'views',
+        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -175,7 +151,41 @@ export default {
             return '- -'
           }
         }
-      },]
+      }, {
+        title: '创作人',
+        dataIndex: 'author',
+        ellipsis: true,
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        }
+      }, {
+        title: '文章图片',
+        dataIndex: 'webImg',
+        customRender: (text, record, index) => {
+          if (!record.webImg) return <a-avatar shape="square" icon="user"/>
+          return <a-popover>
+            <template slot="content">
+              <a-avatar shape="square" size={132} icon="user" src={record.webImg.split(',')[0]}/>
+            </template>
+            <a-avatar shape="square" icon="user" src={record.webImg.split(',')[0]}/>
+          </a-popover>
+        }
+      },  {
+        title: '创建时间',
+        dataIndex: 'createDate',
+        ellipsis: true,
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        }
+      }]
     }
   },
   mounted () {
@@ -279,13 +289,7 @@ export default {
         params.size = this.pagination.defaultPageSize
         params.current = this.pagination.defaultCurrent
       }
-      if (params.transactionType === undefined) {
-        delete params.transactionType
-      }
-      if (params.typeId === undefined) {
-        delete params.typeId
-      }
-      this.$get('/business/warehouse-info/queryStockDetailPage', {
+      this.$get('/cos/read-history-info/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

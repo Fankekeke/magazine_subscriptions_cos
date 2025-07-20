@@ -192,7 +192,7 @@ export default {
         values.images = images.length > 0 ? images.join(',') : null
         if (!err) {
           this.loading = true
-          this.$post('/business/abnormal-info', {
+          this.$post('/cos/abnormal-info', {
             ...values
           }).then((r) => {
             this.reset()

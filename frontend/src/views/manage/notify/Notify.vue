@@ -7,7 +7,7 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="供应商名称"
+                label="用户名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.supplierName"/>
@@ -127,8 +127,8 @@ export default {
         dataIndex: 'content',
         ellipsis: true
       }, {
-        title: '供应商名称',
-        dataIndex: 'supplierName',
+        title: '用户名称',
+        dataIndex: 'userName',
         ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -138,8 +138,8 @@ export default {
           }
         }
       }, {
-        title: '供应商图片',
-        dataIndex: 'supplierImages',
+        title: '用户头像',
+        dataIndex: 'userImages',
         customRender: (text, record, index) => {
           if (!record.supplierImages) return <a-avatar shape="square" icon="user"/>
           return <a-popover>
@@ -150,6 +150,17 @@ export default {
             <a-avatar shape="square" icon="user"
               src={'http://127.0.0.1:9527/imagesWeb/' + record.supplierImages.split(',')[0]}/>
           </a-popover>
+        }
+      }, {
+        title: '联系方式',
+        dataIndex: 'phone',
+        ellipsis: true,
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
         }
       }, {
         title: '已读状态',
@@ -168,6 +179,7 @@ export default {
       }, {
         title: '确认时间',
         dataIndex: 'finishDate',
+        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -178,6 +190,7 @@ export default {
       }, {
         title: '发送时间',
         dataIndex: 'createDate',
+        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -244,7 +257,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/business/notify-info/' + ids).then(() => {
+          that.$delete('/cos/notify-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -317,7 +330,7 @@ export default {
       if (params.status === undefined) {
         delete params.status
       }
-      this.$get('/business/notify-info/page/supplier', {
+      this.$get('/cos/notify-info/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

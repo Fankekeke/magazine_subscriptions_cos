@@ -13,6 +13,7 @@
         woi.finish_date,
         woi.chat_content,
 
+        ui.code as userCode,
         ui.name as userName,
         ui.sex,
         ui.images as userImages,

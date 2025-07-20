@@ -166,7 +166,7 @@ export default {
       }, {
         title: '备注',
         dataIndex: 'content',
-        scopedSlots: {customRender: 'contentShow'}
+        ellipsis: true
       }, {
         title: '性别',
         dataIndex: 'sex',

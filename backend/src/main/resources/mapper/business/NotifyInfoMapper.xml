@@ -18,7 +18,7 @@
         si.phone,
         si.images as userImages
         from
-        user_info ni
+        notify_info ni
         left join user_info si on (si.id = ni.user_id )
         where
         1 = 1

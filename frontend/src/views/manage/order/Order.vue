@@ -119,6 +119,7 @@ export default {
       return [{
         title: '订单编号',
         dataIndex: 'code',
+        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -129,6 +130,7 @@ export default {
       }, {
         title: '会员开始时间',
         dataIndex: 'startDate',
+        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -139,6 +141,7 @@ export default {
       }, {
         title: '会员结束时间',
         dataIndex: 'endDate',
+        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -204,6 +207,7 @@ export default {
       }, {
         title: '创建时间',
         dataIndex: 'createDate',
+        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
             return text

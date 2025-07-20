@@ -19,10 +19,14 @@
                 <a-row :gutter="30">
                   <a-col :span="4" v-for="(item1, index2) in item.bookInfoList" :key="index2" @click="selectBookDetailRate(item1.id)">
                     <div style="background: #e8e8e8">
-                      <a-carousel autoplay style="height: 280px;" v-if="item1.images !== undefined && item1.images !== ''">
-                        <div style="width: 100%;height: 280px" v-for="(item2, index1) in item1.images.split(',')" :key="index1">
-                          <img :src="'http://127.0.0.1:9527/imagesWeb/'+item2" style="width: 100%;height: 280px">
+                      <a-carousel autoplay style="height: 180px;" v-if="item1.images !== undefined && item1.images !== null">
+                        <div style="width: 100%;height: 180px" v-for="(item2, index1) in item1.images.split(',')" :key="index1">
+                          <img v-if="item2 != null" :src="'http://127.0.0.1:9527/imagesWeb/'+item2" style="width: 100%;height: 180px">
+                          <img v-else :src="'http://127.0.0.1:9527/imagesWeb/xxx.png'" style="width: 100%;height: 180px">
                         </div>
+                      </a-carousel>
+                      <a-carousel autoplay style="height: 180px;" v-else>
+                        <img :src="'http://127.0.0.1:9527/imagesWeb/xxx.png'" style="width: 100%;height: 180px">
                       </a-carousel>
                       <a-card :bordered="false">
                         <span slot="title">
@@ -134,8 +138,8 @@ export default {
 }
 .ant-carousel >>> .slick-slide {
   text-align: center;
-  height: 280px;
-  line-height: 280px;
+  height: 180px;
+  line-height: 180px;
   overflow: hidden;
 }
 

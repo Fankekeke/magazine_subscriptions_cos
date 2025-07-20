@@ -7,7 +7,7 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="内容名称"
+                label="文章标题"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.name"/>
@@ -149,8 +149,9 @@ export default {
     }),
     columns () {
       return [{
-        title: '内容名称',
-        dataIndex: 'name'
+        title: '文章标题',
+        dataIndex: 'name',
+        ellipsis: true
       }, {
         title: '浏览量',
         dataIndex: 'views',
@@ -187,6 +188,7 @@ export default {
       }, {
         title: '订阅源名称',
         dataIndex: 'bookName',
+        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -200,15 +202,15 @@ export default {
         customRender: (text, row, index) => {
           switch (text) {
             case '1':
-              return <a-tag>玄幻</a-tag>
+              return <a-tag>科技</a-tag>
             case '2':
-              return <a-tag>奇幻</a-tag>
+              return <a-tag>历史</a-tag>
             case '3':
-              return <a-tag>武侠</a-tag>
+              return <a-tag>新闻</a-tag>
             case '4':
               return <a-tag>都市</a-tag>
             case '5':
-              return <a-tag>现实</a-tag>
+              return <a-tag>资讯</a-tag>
             default:
               return '- -'
           }
@@ -237,7 +239,8 @@ export default {
         }
       }, {
         title: '发布时间',
-        dataIndex: 'createDate',
+        dataIndex: 'publishedDate',
+        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
             return text

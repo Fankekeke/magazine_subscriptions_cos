@@ -30,11 +30,11 @@
           {{ bookData.tag }}
         </a-col>
         <a-col :span="8"><b>订阅源类型：</b>
-          <span v-if="bookData.type == 1">玄幻</span>
-          <span v-if="bookData.type == 2">奇幻</span>
-          <span v-if="bookData.type == 3">武侠</span>
+          <span v-if="bookData.type == 1">科技</span>
+          <span v-if="bookData.type == 2">历史</span>
+          <span v-if="bookData.type == 3">新闻</span>
           <span v-if="bookData.type == 4">都市</span>
-          <span v-if="bookData.type == 5">现实</span>
+          <span v-if="bookData.type == 5">资讯</span>
         </a-col>
         <a-col :span="8"><b>审核状态：</b>
           <span v-if="bookData.status == 0">审核中</span>

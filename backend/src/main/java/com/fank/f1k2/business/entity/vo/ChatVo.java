@@ -9,7 +9,7 @@ public class ChatVo {
     private String createDate;
 
     /**
-     * 1:科研人员消息 2:系统消息
+     * 1:用户消息 2:系统消息
      */
     private String type;
 }

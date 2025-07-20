@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author FanK fan1ke2ke@gmail.com（悲伤的橘子树）
  */
 @RestController
-@RequestMapping("/business/read-history-info")
+@RequestMapping("/cos/read-history-info")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ReadHistoryInfoController {
 

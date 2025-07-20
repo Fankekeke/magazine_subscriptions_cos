@@ -9,22 +9,19 @@
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span
-          class="view-title">供应商信息</span></a-col>
-        <a-col :span="8"><b>供应商编号：</b>
-          {{ moduleData.supplierCode }}
+          class="view-title">用户信息</span></a-col>
+        <a-col :span="8"><b>用户编号：</b>
+          {{ moduleData.userCode }}
         </a-col>
-        <a-col :span="8"><b>供应商名称：</b>
-          {{ moduleData.supplierName }}
+        <a-col :span="8"><b>用户名称：</b>
+          {{ moduleData.userName }}
         </a-col>
-        <a-col :span="8"><b>负责人：</b>
-          {{ moduleData.chargePerson }}
+        <a-col :span="8"><b>联系方式：</b>
+          {{ moduleData.phone }}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>联系方式：</b>
-          {{ moduleData.phone }}
-        </a-col>
         <a-col :span="8"><b>通知时间：</b>
           {{ moduleData.createDate }}
         </a-col>

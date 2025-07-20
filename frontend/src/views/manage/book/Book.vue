@@ -7,14 +7,6 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="订阅源编号"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.code"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
                 label="订阅源名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
@@ -52,28 +44,6 @@
                :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
                :scroll="{ x: 900 }"
                @change="handleTableChange">
-        <template slot="titleShow" slot-scope="text, record">
-          <template>
-            <a-badge status="processing" v-if="record.rackUp === 1"/>
-            <a-badge status="error" v-if="record.rackUp === 0"/>
-            <a-tooltip>
-              <template slot="title">
-                {{ record.title }}
-              </template>
-              {{ record.title.slice(0, 8) }} ...
-            </a-tooltip>
-          </template>
-        </template>
-        <template slot="contentShow" slot-scope="text, record">
-          <template>
-            <a-tooltip>
-              <template slot="title">
-                {{ record.content }}
-              </template>
-              {{ record.content.slice(0, 20) }} ...
-            </a-tooltip>
-          </template>
-        </template>
         <template slot="operation" slot-scope="text, record">
           <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改"></a-icon>
           <a-icon type="audit" @click="bookViewOpen(record)" title="详 情" style="margin-left: 15px"></a-icon>
@@ -150,11 +120,9 @@ export default {
     }),
     columns () {
       return [{
-        title: '订阅源编号',
-        dataIndex: 'code'
-      }, {
         title: '订阅源名称',
         dataIndex: 'name',
+        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -165,7 +133,25 @@ export default {
       }, {
         title: '订阅源介绍',
         dataIndex: 'content',
-        scopedSlots: {customRender: 'contentShow'}
+        ellipsis: true,
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        }
+      }, {
+        title: '标签',
+        dataIndex: 'tag',
+        ellipsis: true,
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        }
       }, {
         title: '审核状态',
         dataIndex: 'status',
@@ -187,15 +173,15 @@ export default {
         customRender: (text, row, index) => {
           switch (text) {
             case '1':
-              return <a-tag>玄幻</a-tag>
+              return <a-tag>科技</a-tag>
             case '2':
-              return <a-tag>奇幻</a-tag>
+              return <a-tag>历史</a-tag>
             case '3':
-              return <a-tag>武侠</a-tag>
+              return <a-tag>新闻</a-tag>
             case '4':
               return <a-tag>都市</a-tag>
             case '5':
-              return <a-tag>现实</a-tag>
+              return <a-tag>资讯</a-tag>
             default:
               return '- -'
           }
@@ -214,7 +200,7 @@ export default {
         }
       }, {
         title: '作者名称',
-        dataIndex: 'authorName',
+        dataIndex: 'rssAuthor',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text

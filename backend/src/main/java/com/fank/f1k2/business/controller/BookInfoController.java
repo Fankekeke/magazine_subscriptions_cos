@@ -143,6 +143,7 @@ public class BookInfoController {
         AuthorInfo authorInfo = authorInfoService.getOne(Wrappers.<AuthorInfo>lambdaQuery().eq(AuthorInfo::getUserId, bookInfo.getAuthorId()));
         if (authorInfo != null) {
             bookInfo.setAuthorId(authorInfo.getId());
+            bookInfo.setRssAuthor(authorInfo.getName());
         }
 
         bookInfo.setCode("BK-" + System.currentTimeMillis());

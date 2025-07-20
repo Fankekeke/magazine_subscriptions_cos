@@ -1,6 +1,8 @@
 package com.fank.f1k2.business.controller;
 
 
+import com.fank.f1k2.business.entity.AuthorInfo;
+import com.fank.f1k2.business.service.IAuthorInfoService;
 import com.fank.f1k2.common.utils.R;
 import com.fank.f1k2.business.entity.BookDetailInfo;
 import com.fank.f1k2.business.entity.BookInfo;
@@ -28,6 +30,8 @@ public class BookDetailInfoController {
     private final IBookDetailInfoService bookDetailInfoService;
 
     private final IBookInfoService bookInfoService;
+
+    private final IAuthorInfoService authorInfoService;
 
     /**
      * 分页获取订阅源内容信息
@@ -129,10 +133,14 @@ public class BookDetailInfoController {
     public R save(BookDetailInfo bookDetailInfo) {
         // 更新订阅源信息
         BookInfo bookInfo = bookInfoService.getById(bookDetailInfo.getBookId());
-        bookInfo.setLastChapter(bookDetailInfo.getName());
-        bookInfo.setUpdateDate(DateUtil.formatDateTime(new Date()));
-        bookInfoService.updateById(bookInfo);
-
+        if (bookInfo != null) {
+            bookInfo.setLastChapter(bookDetailInfo.getName());
+            bookInfo.setUpdateDate(DateUtil.formatDateTime(new Date()));
+            bookInfoService.updateById(bookInfo);
+            // 获取作者信息
+            AuthorInfo authorInfo = authorInfoService.getById(bookInfo.getAuthorId());
+            bookDetailInfo.setAuthor(authorInfo.getName());
+        }
         bookDetailInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
         // 字数
         if (StrUtil.isNotEmpty(bookDetailInfo.getContent())) {
@@ -147,6 +155,7 @@ public class BookDetailInfoController {
         } else {
             bookDetailInfo.setIndexNo(detailInfoList.get(0).getIndexNo() + 1);
         }
+        bookDetailInfo.setPublishedDate(bookDetailInfo.getCreateDate());
 
         return R.ok(bookDetailInfoService.save(bookDetailInfo));
     }

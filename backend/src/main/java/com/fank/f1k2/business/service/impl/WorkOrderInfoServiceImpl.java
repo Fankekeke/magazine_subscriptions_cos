@@ -33,7 +33,7 @@ public class WorkOrderInfoServiceImpl extends ServiceImpl<WorkOrderInfoMapper, W
      */
     @Override
     public boolean reply(String content, Integer quotationId, String type) {
-        // 获取采购计划工单信息
+        // 获取工单信息
         WorkOrderInfo workOrderInfo = this.getById(quotationId);
         ChatVo chatVo = new ChatVo();
         chatVo.setContent(content);
@@ -59,7 +59,7 @@ public class WorkOrderInfoServiceImpl extends ServiceImpl<WorkOrderInfoMapper, W
      */
     @Override
     public List<ChatVo> queryReplyByQuotationId(Integer quotationId) {
-        // 获取采购计划工单信息
+        // 获取工单信息
         WorkOrderInfo workOrderInfo = this.getById(quotationId);
         if (StrUtil.isEmpty(workOrderInfo.getChatContent())) {
             return Collections.emptyList();

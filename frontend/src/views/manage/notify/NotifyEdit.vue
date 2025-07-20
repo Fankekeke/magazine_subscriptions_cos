@@ -223,7 +223,7 @@ export default {
         values.images = images.length > 0 ? images.join(',') : null
         if (!err) {
           this.loading = true
-          this.$put('/business/notify-info', {
+          this.$put('/cos/notify-info', {
             ...values
           }).then((r) => {
             this.reset()
