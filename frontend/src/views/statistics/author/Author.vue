@@ -18,7 +18,7 @@
                 </a-list-item-meta>
                 <a-row :gutter="30">
                   <a-col :span="4" v-for="(item1, index2) in item.bookInfoList" :key="index2" @click="selectBookDetailRate(item1.id)">
-                    <div style="background: #e8e8e8">
+                    <div style="background: #f8f8f8">
                       <a-carousel autoplay style="height: 180px;" v-if="item1.images !== undefined && item1.images !== null">
                         <div style="width: 100%;height: 180px" v-for="(item2, index1) in item1.images.split(',')" :key="index1">
                           <img v-if="item2 != null" :src="'http://127.0.0.1:9527/imagesWeb/'+item2" style="width: 100%;height: 180px">
@@ -28,10 +28,10 @@
                       <a-carousel autoplay style="height: 180px;" v-else>
                         <img :src="'http://127.0.0.1:9527/imagesWeb/xxx.png'" style="width: 100%;height: 180px">
                       </a-carousel>
-                      <a-card :bordered="false">
+                      <a-card :bordered="false" style="background-color: #f8f8f8;margin-bottom: 15px">
                         <span slot="title">
                           <span style="font-size: 14px;font-family: SimHei">
-                            《{{ item1.name }}》 | {{ item1.tag }}
+                            《{{ item1.name }}》 | {{ item1.tag ? item1.tag : '暂无标签' }}
                             <div style="margin: 20px 0px 20px 0px">
                             </div>
                           </span>

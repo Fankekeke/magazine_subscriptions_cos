@@ -8,12 +8,15 @@
       <a-row :gutter="30">
         <a-col :span="24" style="background:#ECECEC; padding:30px;margin-top: 30px;margin-bottom: 30px">
           <a-row :gutter="30">
-            <a-col :span="6" v-for="(item, index) in bookList" :key="index" @click="selectBookDetailRate(item.id)">
+            <a-col :span="6" v-for="(item, index) in bookList" :key="index" @click="selectBookDetailRate(item.id)" style="margin-bottom: 10px">
               <div style="background: #e8e8e8">
-                <a-carousel autoplay style="height: 350px;" v-if="item.images !== undefined && item.images !== ''">
-                  <div style="width: 100%;height: 350px" v-for="(item, index) in item.images.split(',')" :key="index">
-                    <img :src="'http://127.0.0.1:9527/imagesWeb/'+item" style="width: 100%;height: 350px">
+                <a-carousel autoplay style="height: 150px;" v-if="item.images !== undefined && item.images">
+                  <div style="width: 100%;height: 150px" v-for="(item, index) in item.images.split(',')" :key="index">
+                    <img :src="'http://127.0.0.1:9527/imagesWeb/'+item" style="width: 100%;height: 150px">
                   </div>
+                </a-carousel>
+                <a-carousel autoplay style="height: 150px;" v-else>
+                  <img :src="'http://127.0.0.1:9527/imagesWeb/xxx.png'" style="width: 100%;height: 150px">
                 </a-carousel>
                 <a-card :bordered="false">
               <span slot="title">
@@ -119,8 +122,8 @@ export default {
 }
 .ant-carousel >>> .slick-slide {
   text-align: center;
-  height: 350px;
-  line-height: 350px;
+  height: 150px;
+  line-height: 150px;
   overflow: hidden;
 }
 

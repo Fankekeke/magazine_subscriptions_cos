@@ -12,15 +12,23 @@
                   </span>
                 </template>
                 <img
+                  v-if="item.images"
                   slot="extra"
                   width="150"
                   alt="logo"
                   :src="'http://127.0.0.1:9527/imagesWeb/' + item.images.split(',')[0]"
                 />
+                <img
+                  v-else
+                  slot="extra"
+                  width="150"
+                  alt="logo"
+                  :src="'http://127.0.0.1:9527/imagesWeb/xxx.png'"
+                />
                 <a-list-item-meta :description="'作者- ' + item.authorInfo.name">
                   <a slot="title">
                     《{{ item.name }}》
-                    <span style="margin-left: 15px;font-family: SimHei">排名<span style="">{{ index + 1 }}</span></span>
+                    <span style="margin-left: 15px;font-family: SimHei;font-size: 14px">排名<span style="">{{ index + 1 }}</span></span>
                   </a>
                   <a-avatar slot="avatar" shape="square" :src="'http://127.0.0.1:9527/imagesWeb/' + item.authorInfo.images.split(',')[0]" />
                 </a-list-item-meta>
