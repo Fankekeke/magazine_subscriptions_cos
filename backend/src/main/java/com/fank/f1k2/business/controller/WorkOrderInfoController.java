@@ -80,6 +80,7 @@ public class WorkOrderInfoController {
             addFrom.setUserId(userInfo.getId());
         }
         addFrom.setCreateDate(DateUtil.formatDateTime(new Date()));
+        addFrom.setStatus("0");
         return R.ok(workerInfoService.save(addFrom));
     }
 
@@ -104,7 +105,7 @@ public class WorkOrderInfoController {
      */
     @ApiOperation(value = "回复用户", notes = "通过工单ID回复用户")
     @GetMapping("/replyUser")
-    public R replySupplier(String content, Integer quotationId) {
+    public R replyUser(String content, Integer quotationId) {
         return R.ok(workerInfoService.reply(content, quotationId, "2"));
     }
 
@@ -119,6 +120,17 @@ public class WorkOrderInfoController {
     @GetMapping("/replyAdmin")
     public R replyAdmin(String content, Integer quotationId) {
         return R.ok(workerInfoService.reply(content, quotationId, "1"));
+    }
+
+    /**
+     * 工单关闭
+     *
+     * @param quotationId 工单ID
+     * @return 工单管理对象
+     */
+    @GetMapping("/workClose")
+    public R workClose(Integer quotationId) {
+        return R.ok(workerInfoService.update(Wrappers.<WorkOrderInfo>lambdaUpdate().set(WorkOrderInfo::getStatus, "1").eq(WorkOrderInfo::getFinishDate, DateUtil.formatDateTime(new Date())).eq(WorkOrderInfo::getId, quotationId)));
     }
 
     /**

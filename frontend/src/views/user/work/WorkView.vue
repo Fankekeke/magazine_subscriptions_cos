@@ -139,7 +139,7 @@ export default {
         this.$message.error('请输入回复内容')
         return false
       }
-      this.$get('/cos/work-order-info/replyUser', {
+      this.$get('/cos/work-order-info/replyAdmin', {
         content: this.content,
         quotationId: this.moduleData.id
       }).then(res => {

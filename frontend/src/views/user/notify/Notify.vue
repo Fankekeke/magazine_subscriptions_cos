@@ -7,18 +7,13 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="文章标题"
+                label="状态"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.name"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
-                label="所属用户"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.userName"/>
+                <a-select v-model="queryParams.status" allowClear>
+                  <a-select-option value="0">未读</a-select-option>
+                  <a-select-option value="1">已读</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
           </div>
@@ -31,8 +26,8 @@
     </div>
     <div>
       <div class="operator">
-        <!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
-<!--        <a-button @click="batchDelete">删除</a-button>-->
+<!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
+        <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
       <a-table ref="TableInfo"
@@ -44,32 +39,58 @@
                :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
                :scroll="{ x: 900 }"
                @change="handleTableChange">
-        <template slot="amountShow" slot-scope="text, record">
-          <a-icon v-if="record.isIn == 1" type="caret-up" style="color: red;font-size: 15px"/>
-          <a-icon v-if="record.isIn == 2" type="caret-down" style="color: green;font-size: 15px"/>
-          {{ record.amount }}
-        </template>
         <template slot="operation" slot-scope="text, record">
-          <a-icon v-if="record.accountStatus == 0" type="caret-up" @click="edit(record, 1)" title="修 改"/>
-          <a-icon v-if="record.accountStatus == 1" type="caret-down" @click="edit(record, 0)" title="修 改"/>
+          <a-icon type="cloud" @click="handleModuleViewOpen(record)" title="详 情"></a-icon>
+<!--          <a-icon type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="edit(record)" title="修 改"-->
+<!--                  style="margin-left: 15px"></a-icon>-->
         </template>
       </a-table>
     </div>
+    <module-add
+      @close="handleModuleAddClose"
+      @success="handleModuleAddSuccess"
+      :moduleAddVisiable="moduleAdd.visiable">
+    </module-add>
+    <module-edit
+      ref="moduleEdit"
+      @close="handleModuleEditClose"
+      @success="handleModuleEditSuccess"
+      :moduleEditVisiable="moduleEdit.visiable">
+    </module-edit>
+    <module-view
+      @close="handleModuleViewClose"
+      :moduleShow="moduleView.visiable"
+      :moduleData="moduleView.data">
+    </module-view>
   </a-card>
 </template>
 
 <script>
 import RangeDate from '@/components/datetime/RangeDate'
+import moduleAdd from './NotifyAdd.vue'
+import moduleEdit from './NotifyEdit.vue'
+import moduleView from './NotifyView.vue'
 import {mapState} from 'vuex'
 import moment from 'moment'
+
 moment.locale('zh-cn')
 
 export default {
-  name: 'Details',
-  components: {RangeDate},
+  name: 'module',
+  components: {moduleAdd, moduleEdit, moduleView, RangeDate},
   data () {
     return {
       advanced: false,
+      moduleAdd: {
+        visiable: false
+      },
+      moduleEdit: {
+        visiable: false
+      },
+      moduleView: {
+        visiable: false,
+        data: null
+      },
       queryParams: {},
       filteredInfo: null,
       sortedInfo: null,
@@ -84,7 +105,8 @@ export default {
         showQuickJumper: true,
         showSizeChanger: true,
         showTotal: (total, range) => `显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-      }
+      },
+      userList: []
     }
   },
   computed: {
@@ -93,6 +115,10 @@ export default {
     }),
     columns () {
       return [{
+        title: '消息内容',
+        dataIndex: 'content',
+        ellipsis: true
+      }, {
         title: '用户名称',
         dataIndex: 'userName',
         ellipsis: true,
@@ -103,21 +129,23 @@ export default {
             return '- -'
           }
         }
-      },{
+      }, {
         title: '用户头像',
         dataIndex: 'userImages',
         customRender: (text, record, index) => {
-          if (!record.userImages) return <a-avatar shape="square" icon="user"/>
+          if (!record.supplierImages) return <a-avatar shape="square" icon="user"/>
           return <a-popover>
             <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={'http://127.0.0.1:9527/imagesWeb/' + record.userImages.split(',')[0]}/>
+              <a-avatar shape="square" size={132} icon="user"
+                src={'http://127.0.0.1:9527/imagesWeb/' + record.supplierImages.split(',')[0]}/>
             </template>
-            <a-avatar shape="square" icon="user" src={'http://127.0.0.1:9527/imagesWeb/' + record.userImages.split(',')[0]}/>
+            <a-avatar shape="square" icon="user"
+              src={'http://127.0.0.1:9527/imagesWeb/' + record.supplierImages.split(',')[0]}/>
           </a-popover>
         }
       }, {
-        title: '文章标题',
-        dataIndex: 'name',
+        title: '联系方式',
+        dataIndex: 'phone',
         ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -127,8 +155,22 @@ export default {
           }
         }
       }, {
-        title: '文章类型',
-        dataIndex: 'type',
+        title: '已读状态',
+        dataIndex: 'status',
+        ellipsis: true,
+        customRender: (text, row, index) => {
+          switch (text) {
+            case '0':
+              return <a-tag color="red">未读</a-tag>
+            case '1':
+              return <a-tag color="green">已读</a-tag>
+            default:
+              return '- -'
+          }
+        }
+      }, {
+        title: '确认时间',
+        dataIndex: 'finishDate',
         ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -138,41 +180,7 @@ export default {
           }
         }
       }, {
-        title: '访问量',
-        dataIndex: 'views',
-        ellipsis: true,
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '创作人',
-        dataIndex: 'author',
-        ellipsis: true,
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '文章图片',
-        dataIndex: 'webImg',
-        customRender: (text, record, index) => {
-          if (!record.webImg) return <a-avatar shape="square" icon="user"/>
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={record.webImg.split(',')[0]}/>
-            </template>
-            <a-avatar shape="square" icon="user" src={record.webImg.split(',')[0]}/>
-          </a-popover>
-        }
-      },  {
-        title: '创建时间',
+        title: '发送时间',
         dataIndex: 'createDate',
         ellipsis: true,
         customRender: (text, row, index) => {
@@ -182,6 +190,10 @@ export default {
             return '- -'
           }
         }
+      }, {
+        title: '操作',
+        dataIndex: 'operation',
+        scopedSlots: {customRender: 'operation'}
       }]
     }
   },
@@ -189,11 +201,16 @@ export default {
     this.fetch()
   },
   methods: {
-    edit (row, status) {
-      this.$post('/cos/student-info/accountStatusEdit', { userId: row.userId, status }).then((r) => {
-        this.$message.success('修改成功')
-        this.fetch()
-      })
+    handleModuleViewOpen (row) {
+      this.moduleView.data = row
+      this.moduleView.visiable = true
+      if (row.status === '0') {
+        this.$get(`/cos/notify-info/finish`, {id: row.id }).then((r) => {
+        })
+      }
+    },
+    handleModuleViewClose () {
+      this.moduleView.visiable = false
     },
     onSelectChange (selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
@@ -201,8 +218,28 @@ export default {
     toggleAdvanced () {
       this.advanced = !this.advanced
     },
-    handleDeptChange (value) {
-      this.queryParams.deptId = value || ''
+    add () {
+      this.moduleAdd.visiable = true
+    },
+    handleModuleAddClose () {
+      this.moduleAdd.visiable = false
+    },
+    handleModuleAddSuccess () {
+      this.moduleAdd.visiable = false
+      this.$message.success('新增消息通知成功')
+      this.search()
+    },
+    edit (record) {
+      this.$refs.moduleEdit.setFormValues(record)
+      this.moduleEdit.visiable = true
+    },
+    handleModuleEditClose () {
+      this.moduleEdit.visiable = false
+    },
+    handleModuleEditSuccess () {
+      this.moduleEdit.visiable = false
+      this.$message.success('修改消息通知成功')
+      this.search()
     },
     batchDelete () {
       if (!this.selectedRowKeys.length) {
@@ -216,7 +253,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/student-info/' + ids).then(() => {
+          that.$delete('/cos/notify-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -286,7 +323,11 @@ export default {
         params.size = this.pagination.defaultPageSize
         params.current = this.pagination.defaultCurrent
       }
-      this.$get('/cos/read-history-info/page', {
+      if (params.status === undefined) {
+        delete params.status
+      }
+      params.userId = this.currentUser.userId
+      this.$get('/cos/notify-info/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

@@ -7,18 +7,21 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="文章标题"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.name"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
                 label="所属用户"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.userName"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item
+                label="状态"
+                :labelCol="{span: 5}"
+                :wrapperCol="{span: 18, offset: 1}">
+                <a-select v-model="queryParams.status" allowClear>
+                  <a-select-option value="0">进行中</a-select-option>
+                  <a-select-option value="1">已完成</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
           </div>
@@ -31,8 +34,8 @@
     </div>
     <div>
       <div class="operator">
-        <!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
-<!--        <a-button @click="batchDelete">删除</a-button>-->
+<!--        <a-button type="primary" ghost @click="add">新增</a-button>-->
+        <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
       <a-table ref="TableInfo"
@@ -44,32 +47,56 @@
                :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
                :scroll="{ x: 900 }"
                @change="handleTableChange">
-        <template slot="amountShow" slot-scope="text, record">
-          <a-icon v-if="record.isIn == 1" type="caret-up" style="color: red;font-size: 15px"/>
-          <a-icon v-if="record.isIn == 2" type="caret-down" style="color: green;font-size: 15px"/>
-          {{ record.amount }}
-        </template>
         <template slot="operation" slot-scope="text, record">
-          <a-icon v-if="record.accountStatus == 0" type="caret-up" @click="edit(record, 1)" title="修 改"/>
-          <a-icon v-if="record.accountStatus == 1" type="caret-down" @click="edit(record, 0)" title="修 改"/>
+          <a-icon type="cloud" @click="handleModuleViewOpen(record)" title="详 情"></a-icon>
         </template>
       </a-table>
     </div>
+    <module-add
+      @close="handleModuleAddClose"
+      @success="handleModuleAddSuccess"
+      :moduleAddVisiable="moduleAdd.visiable">
+    </module-add>
+    <module-edit
+      ref="moduleEdit"
+      @close="handleModuleEditClose"
+      @success="handleModuleEditSuccess"
+      :moduleEditVisiable="moduleEdit.visiable">
+    </module-edit>
+    <module-view
+      @close="handleModuleViewClose"
+      :moduleShow="moduleView.visiable"
+      :moduleData="moduleView.data">
+    </module-view>
   </a-card>
 </template>
 
 <script>
 import RangeDate from '@/components/datetime/RangeDate'
+import moduleAdd from './WorkAdd.vue'
+import moduleEdit from './WorkEdit.vue'
+import moduleView from './WorkView.vue'
 import {mapState} from 'vuex'
 import moment from 'moment'
+
 moment.locale('zh-cn')
 
 export default {
-  name: 'Details',
-  components: {RangeDate},
+  name: 'module',
+  components: {moduleAdd, moduleEdit, moduleView, RangeDate},
   data () {
     return {
       advanced: false,
+      moduleAdd: {
+        visiable: false
+      },
+      moduleEdit: {
+        visiable: false
+      },
+      moduleView: {
+        visiable: false,
+        data: null
+      },
       queryParams: {},
       filteredInfo: null,
       sortedInfo: null,
@@ -84,7 +111,8 @@ export default {
         showQuickJumper: true,
         showSizeChanger: true,
         showTotal: (total, range) => `显示 ${range[0]} ~ ${range[1]} 条记录，共 ${total} 条记录`
-      }
+      },
+      userList: []
     }
   },
   computed: {
@@ -93,8 +121,12 @@ export default {
     }),
     columns () {
       return [{
-        title: '用户名称',
+        title: '所属用户',
         dataIndex: 'userName',
+        ellipsis: true
+      }, {
+        title: '联系方式',
+        dataIndex: 'phone',
         ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -103,22 +135,37 @@ export default {
             return '- -'
           }
         }
-      },{
+      }, {
         title: '用户头像',
         dataIndex: 'userImages',
         customRender: (text, record, index) => {
           if (!record.userImages) return <a-avatar shape="square" icon="user"/>
           return <a-popover>
             <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={'http://127.0.0.1:9527/imagesWeb/' + record.userImages.split(',')[0]}/>
+              <a-avatar shape="square" size={132} icon="user"
+                src={'http://127.0.0.1:9527/imagesWeb/' + record.userImages.split(',')[0]}/>
             </template>
-            <a-avatar shape="square" icon="user" src={'http://127.0.0.1:9527/imagesWeb/' + record.userImages.split(',')[0]}/>
+            <a-avatar shape="square" icon="user"
+              src={'http://127.0.0.1:9527/imagesWeb/' + record.userImages.split(',')[0]}/>
           </a-popover>
         }
       }, {
-        title: '文章标题',
-        dataIndex: 'name',
+        title: '状态',
+        dataIndex: 'status',
         ellipsis: true,
+        customRender: (text, row, index) => {
+          switch (text) {
+            case '0':
+              return <a-tag>进行中</a-tag>
+            case '1':
+              return <a-tag color="green">已完成</a-tag>
+            default:
+              return '- -'
+          }
+        }
+      }, {
+        title: '结束时间',
+        dataIndex: 'finishDate',
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -127,54 +174,8 @@ export default {
           }
         }
       }, {
-        title: '文章类型',
-        dataIndex: 'type',
-        ellipsis: true,
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '访问量',
-        dataIndex: 'views',
-        ellipsis: true,
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '创作人',
-        dataIndex: 'author',
-        ellipsis: true,
-        customRender: (text, row, index) => {
-          if (text !== null) {
-            return text
-          } else {
-            return '- -'
-          }
-        }
-      }, {
-        title: '文章图片',
-        dataIndex: 'webImg',
-        customRender: (text, record, index) => {
-          if (!record.webImg) return <a-avatar shape="square" icon="user"/>
-          return <a-popover>
-            <template slot="content">
-              <a-avatar shape="square" size={132} icon="user" src={record.webImg.split(',')[0]}/>
-            </template>
-            <a-avatar shape="square" icon="user" src={record.webImg.split(',')[0]}/>
-          </a-popover>
-        }
-      },  {
         title: '创建时间',
         dataIndex: 'createDate',
-        ellipsis: true,
         customRender: (text, row, index) => {
           if (text !== null) {
             return text
@@ -182,6 +183,10 @@ export default {
             return '- -'
           }
         }
+      }, {
+        title: '操作',
+        dataIndex: 'operation',
+        scopedSlots: {customRender: 'operation'}
       }]
     }
   },
@@ -189,11 +194,12 @@ export default {
     this.fetch()
   },
   methods: {
-    edit (row, status) {
-      this.$post('/cos/student-info/accountStatusEdit', { userId: row.userId, status }).then((r) => {
-        this.$message.success('修改成功')
-        this.fetch()
-      })
+    handleModuleViewOpen (row) {
+      this.moduleView.data = row
+      this.moduleView.visiable = true
+    },
+    handleModuleViewClose () {
+      this.moduleView.visiable = false
     },
     onSelectChange (selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
@@ -201,8 +207,28 @@ export default {
     toggleAdvanced () {
       this.advanced = !this.advanced
     },
-    handleDeptChange (value) {
-      this.queryParams.deptId = value || ''
+    add () {
+      this.moduleAdd.visiable = true
+    },
+    handleModuleAddClose () {
+      this.moduleAdd.visiable = false
+    },
+    handleModuleAddSuccess () {
+      this.moduleAdd.visiable = false
+      this.$message.success('新增工单成功')
+      this.search()
+    },
+    edit (record) {
+      this.$refs.moduleEdit.setFormValues(record)
+      this.moduleEdit.visiable = true
+    },
+    handleModuleEditClose () {
+      this.moduleEdit.visiable = false
+    },
+    handleModuleEditSuccess () {
+      this.moduleEdit.visiable = false
+      this.$message.success('修改工单成功')
+      this.search()
     },
     batchDelete () {
       if (!this.selectedRowKeys.length) {
@@ -216,7 +242,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/student-info/' + ids).then(() => {
+          that.$delete('/cos/work-order-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -286,7 +312,11 @@ export default {
         params.size = this.pagination.defaultPageSize
         params.current = this.pagination.defaultCurrent
       }
-      this.$get('/cos/read-history-info/page', {
+      if (params.status === undefined) {
+        delete params.status
+      }
+      params.userId = this.currentUser.userId
+      this.$get('/cos/work-order-info/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

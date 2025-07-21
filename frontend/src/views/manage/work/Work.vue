@@ -49,6 +49,7 @@
                @change="handleTableChange">
         <template slot="operation" slot-scope="text, record">
           <a-icon type="cloud" @click="handleModuleViewOpen(record)" title="详 情"></a-icon>
+          <a-icon v-if="record.status == 0" type="cloud" @click="handleModuleClose(record)" title="完 成"></a-icon>
         </template>
       </a-table>
     </div>
@@ -194,6 +195,14 @@ export default {
     this.fetch()
   },
   methods: {
+    handleModuleClose (row) {
+      this.$get('/cos/work-order-info/workClose', {
+        quotationId: row.id
+      }).then((r) => {
+        this.$message.success('工单结束')
+        this.search()
+      })
+    },
     handleModuleViewOpen (row) {
       this.moduleView.data = row
       this.moduleView.visiable = true
@@ -215,7 +224,7 @@ export default {
     },
     handleModuleAddSuccess () {
       this.moduleAdd.visiable = false
-      this.$message.success('新增异常反馈成功')
+      this.$message.success('新增工单成功')
       this.search()
     },
     edit (record) {
@@ -227,7 +236,7 @@ export default {
     },
     handleModuleEditSuccess () {
       this.moduleEdit.visiable = false
-      this.$message.success('修改异常反馈成功')
+      this.$message.success('修改工单成功')
       this.search()
     },
     batchDelete () {
@@ -242,7 +251,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/abnormal-info/' + ids).then(() => {
+          that.$delete('/cos/work-order-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()

@@ -30,7 +30,7 @@
             AND ni.status = #{queryForm.status}
         </if>
         <if test="queryForm.userId != null and queryForm.userId != ''">
-            AND si.sys_user_id = #{queryForm.userId}
+            AND si.user_id = #{queryForm.userId}
         </if>
         order by
         ni.create_date desc
