@@ -9,22 +9,25 @@
           <a-row :gutter="30">
             <a-col :span="6" v-for="(item, index) in bookList" :key="index" v-if="item.status == 1" style="margin-bottom: 20px">
               <div style="background: #e8e8e8">
-                <a-carousel autoplay style="height: 350px;" v-if="item.images !== undefined && item.images !== ''">
+                <a-carousel autoplay style="height: 350px;" v-if="item.images !== undefined && item.images">
                   <div style="width: 100%;height: 350px" v-for="(item, index) in item.images.split(',')" :key="index">
                     <img :src="'http://127.0.0.1:9527/imagesWeb/'+item" style="width: 100%;height: 350px">
                   </div>
                 </a-carousel>
+                <a-carousel autoplay style="height: 150px;" v-else>
+                  <img :src="'http://127.0.0.1:9527/imagesWeb/xxx.png'" style="width: 100%;height: 150px">
+                </a-carousel>
                 <a-card :bordered="false">
-              <span slot="title">
-                <span style="font-size: 14px;font-family: SimHei">
-                  {{ item.name }} | {{ item.tag }}
-                  <div style="margin: 20px 0px 20px 0px">
-                    <a-avatar shape="square" :src="'http://127.0.0.1:9527/imagesWeb/' + item.authorInfo.images.split(',')[0]" />
-                    <span style="font-size: 12px;font-family: SimHei">{{ item.authorInfo.name }}</span>
-                    <a style="font-size: 13px;font-family: SimHei;float: right" @click="viewOpen(item)">查看</a>
-                  </div>
-                </span>
-              </span>
+                  <span slot="title">
+                    <span style="font-size: 14px;font-family: SimHei">
+                      {{ item.name }} | {{ item.tag }}
+                      <div style="margin: 20px 0px 20px 0px">
+                        <a-avatar shape="square" :src="'http://127.0.0.1:9527/imagesWeb/' + item.authorInfo.images.split(',')[0]" />
+                        <span style="font-size: 12px;font-family: SimHei">{{ item.authorInfo.name }}</span>
+                        <a style="font-size: 13px;font-family: SimHei;float: right" @click="viewOpen(item)">查看</a>
+                      </div>
+                    </span>
+                  </span>
                 </a-card>
               </div>
             </a-col>
