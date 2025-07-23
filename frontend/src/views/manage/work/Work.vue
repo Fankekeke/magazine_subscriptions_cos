@@ -49,7 +49,7 @@
                @change="handleTableChange">
         <template slot="operation" slot-scope="text, record">
           <a-icon type="cloud" @click="handleModuleViewOpen(record)" title="详 情"></a-icon>
-          <a-icon v-if="record.status == 0" type="cloud" @click="handleModuleClose(record)" title="完 成"></a-icon>
+          <a-icon v-if="record.status == 0" type="check" @click="handleModuleClose(record)" title="完 成" style="margin-left: 10px"></a-icon>
         </template>
       </a-table>
     </div>
@@ -149,6 +149,17 @@ export default {
             <a-avatar shape="square" icon="user"
               src={'http://127.0.0.1:9527/imagesWeb/' + record.userImages.split(',')[0]}/>
           </a-popover>
+        }
+      }, {
+        title: '工单内容',
+        dataIndex: 'content',
+        ellipsis: true,
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
         }
       }, {
         title: '状态',

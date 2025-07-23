@@ -7,11 +7,11 @@
         </a-col>
         <a-col :span="24" style="background:#ECECEC; padding:30px;margin-top: 30px;margin-bottom: 30px">
           <a-row :gutter="30">
-            <a-col :span="6" v-for="(item, index) in bookList" :key="index" v-if="item.status == 1" style="margin-bottom: 20px">
+            <a-col :span="4" v-for="(item, index) in bookList" :key="index" v-if="item.status == 1" style="margin-bottom: 20px">
               <div style="background: #e8e8e8">
-                <a-carousel autoplay style="height: 350px;" v-if="item.images !== undefined && item.images">
-                  <div style="width: 100%;height: 350px" v-for="(item, index) in item.images.split(',')" :key="index">
-                    <img :src="'http://127.0.0.1:9527/imagesWeb/'+item" style="width: 100%;height: 350px">
+                <a-carousel autoplay style="height: 150px;" v-if="item.images !== undefined && item.images">
+                  <div style="width: 100%;height: 150px" v-for="(item, index) in item.images.split(',')" :key="index">
+                    <img :src="'http://127.0.0.1:9527/imagesWeb/'+item" style="width: 100%;height: 150px">
                   </div>
                 </a-carousel>
                 <a-carousel autoplay style="height: 150px;" v-else>
@@ -20,11 +20,11 @@
                 <a-card :bordered="false">
                   <span slot="title">
                     <span style="font-size: 14px;font-family: SimHei">
-                      {{ item.name }} | {{ item.tag }}
-                      <div style="margin: 20px 0px 20px 0px">
+                      {{ item.name }} | <span style="font-size: 13px;color: #5d5a5a">{{ item.tag ? item.tag : '暂无标签' }}</span>
+                      <div style="margin: 20px 0px 5px 0px">
                         <a-avatar shape="square" :src="'http://127.0.0.1:9527/imagesWeb/' + item.authorInfo.images.split(',')[0]" />
-                        <span style="font-size: 12px;font-family: SimHei">{{ item.authorInfo.name }}</span>
-                        <a style="font-size: 13px;font-family: SimHei;float: right" @click="viewOpen(item)">查看</a>
+                        <span style="font-size: 13px;font-family: SimHei;margin-left: 10px">{{ item.authorInfo.name }}</span>
+                        <a style="font-size: 13px;font-family: SimHei;float: right;line-height: 32px" @click="viewOpen(item)">查看</a>
                       </div>
                     </span>
                   </span>
@@ -158,8 +158,8 @@ export default {
 }
 .ant-carousel >>> .slick-slide {
   text-align: center;
-  height: 350px;
-  line-height: 350px;
+  height: 150px;
+  line-height: 150px;
   overflow: hidden;
 }
 

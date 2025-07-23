@@ -150,6 +150,17 @@ export default {
           </a-popover>
         }
       }, {
+        title: '工单内容',
+        dataIndex: 'content',
+        ellipsis: true,
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        }
+      }, {
         title: '状态',
         dataIndex: 'status',
         ellipsis: true,

@@ -13,27 +13,38 @@
       <a-row :gutter="20">
         <a-col :span="6">
           <div style="font-size: 13px;font-family: SimHei" v-if="bookData !== null">
-            <div style="background: #e8e8e8;box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
-              <a-carousel autoplay style="height: 350px;" v-if="bookData.images !== undefined && bookData.images !== ''">
-                <div style="width: 100%;height: 350px" v-for="(item, index) in bookData.images.split(',')" :key="index">
-                  <img :src="'http://127.0.0.1:9527/imagesWeb/'+item" style="width: 100%;height: 350px">
+            <div class="book-info-container">
+              <a-carousel autoplay style="height: 350px;" v-if="bookData.images !== undefined && bookData.images">
+                <div v-for="(item, index) in bookData.images.split(',')" :key="index" class="carousel-item">
+                  <img :src="'http://127.0.0.1:9527/imagesWeb/' + item" alt="封面" class="carousel-image">
                 </div>
               </a-carousel>
-              <a-card :bordered="false">
-              <span slot="title">
-                <span style="font-size: 14px;font-family: SimHei">
-                  {{ bookData.name }} | {{ bookData.tag }}
-                  <div style="margin-top: 10px">{{ bookData.content }}</div>
-                  <div style="margin-top: 10px">最后更新时间：{{ bookData.updateDate ? bookData.updateDate : '- -' }}</div>
-                  <div style="margin-top: 10px">最后内容：{{ bookData.lastChapter ? bookData.lastChapter : '- -' }}</div>
-                  <div style="margin: 20px 0px 20px 0px">
+              <a-carousel autoplay style="height: 350px;" v-else>
+                <div class="carousel-item">
+                  <img src="http://127.0.0.1:9527/imagesWeb/xxx.png" alt="默认封面" class="carousel-image">
+                </div>
+              </a-carousel>
+              <a-card :bordered="false" class="book-details-card">
+                <span slot="title" class="book-title">
+                  <span class="book-name-tag">
+                    {{ bookData.name }} | {{ bookData.tag }}
+                  </span>
+                  <div class="book-description">{{ bookData.content }}</div>
+                  <div class="book-update-time">最后更新时间：{{ bookData.updateDate ? bookData.updateDate : '- -' }}</div>
+                  <div class="book-last-chapter">最后内容：{{ bookData.lastChapter ? bookData.lastChapter : '- -' }}</div>
+                  <div class="book-author-info">
                     <a-avatar shape="square" :src="'http://127.0.0.1:9527/imagesWeb/' + bookData.authorInfo.images.split(',')[0]" />
-                    <span style="font-size: 12px;font-family: SimHei">{{ bookData.authorInfo.name }}</span>
-                    <a style="font-size: 13px;font-family: SimHei;float: right;margin-left: 15px" @click="followUser">关注</a>
-                    <a style="font-size: 13px;font-family: SimHei;float: right" @click="bookLike">点赞</a>
+                    <span class="author-name">{{ bookData.authorInfo.name }}</span>
+                    <a class="follow-button" @click="followUser">
+                      <a-icon type="star" theme="twoTone" twoToneColor="#faad14" />
+                      关注
+                    </a>
+                    <a class="like-button" @click="bookLike">
+                      <a-icon type="heart" theme="twoTone" twoToneColor="#ff4d4f" />
+                      点赞
+                    </a>
                   </div>
                 </span>
-              </span>
               </a-card>
             </div>
             <br/>
@@ -352,5 +363,85 @@ export default {
   }
   >>> .ant-comment-content-detail p {
     white-space: pre-line;
+  }
+  .book-info-container {
+    background: #e8e8e8;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  .carousel-item {
+    width: 100%;
+    height: 350px;
+  }
+
+  .carousel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .book-details-card {
+    margin-top: 15px;
+  }
+
+  .book-title {
+    font-size: 14px;
+    font-family: SimHei;
+    display: block;
+  }
+
+  .book-name-tag {
+    font-weight: bold;
+  }
+
+  .book-description {
+    margin-top: 10px;
+    color: #555;
+  }
+
+  .book-update-time,
+  .book-last-chapter {
+    margin-top: 10px;
+    color: #888;
+  }
+
+  .book-author-info {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .author-name {
+    font-size: 12px;
+    margin-left: 10px;
+  }
+
+  .follow-button,
+  .like-button {
+    font-size: 13px;
+    margin-left: auto;
+    color: #1890ff;
+    cursor: pointer;
+  }
+
+  .follow-button:hover,
+  .like-button:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .book-author-info {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .follow-button,
+    .like-button {
+      margin-left: 0;
+      margin-top: 10px;
+    }
   }
 </style>
