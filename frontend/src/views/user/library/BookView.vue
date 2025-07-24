@@ -10,16 +10,16 @@
     :getContainer="false"
     style="height: calc(100% - 55px);overflow: auto;padding-bottom: 53px;">
     <a-form :form="form" layout="vertical">
-      <a-row :gutter="20">
-        <a-col :span="6">
+      <a-row :gutter="20" >
+        <a-col :span="6" style="height: 100vh;overflow-y: auto">
           <div style="font-size: 13px;font-family: SimHei" v-if="bookData !== null">
             <div class="book-info-container">
-              <a-carousel autoplay style="height: 350px;" v-if="bookData.images !== undefined && bookData.images">
+              <a-carousel autoplay style="height: 150px;" v-if="bookData.images !== undefined && bookData.images">
                 <div v-for="(item, index) in bookData.images.split(',')" :key="index" class="carousel-item">
                   <img :src="'http://127.0.0.1:9527/imagesWeb/' + item" alt="封面" class="carousel-image">
                 </div>
               </a-carousel>
-              <a-carousel autoplay style="height: 350px;" v-else>
+              <a-carousel autoplay style="height: 150px;" v-else>
                 <div class="carousel-item">
                   <img src="http://127.0.0.1:9527/imagesWeb/xxx.png" alt="默认封面" class="carousel-image">
                 </div>
@@ -49,70 +49,138 @@
             </div>
             <br/>
           </div>
-          <div style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;margin-top: 15px">
-            <div style="font-size: 16px;font-family: SimHei;padding: 15px;font-weight: 600">
-              内容列表
+          <div class="comments-section">
+            <div class="comments-header">
+              <span class="comments-title">作品评论</span>
+              <a-button type="primary" size="small" @click="visible1 = true" class="add-comment-btn">
+                <a-icon type="plus" /> 添加评论
+              </a-button>
             </div>
-            <div style="padding: 15px">
-              <a-list item-layout="horizontal" :data-source="bookDetailList">
-                <a-list-item slot="renderItem" slot-scope="item, index">
+
+            <div class="comments-list">
+              <div v-for="(item, index) in evaluateList" :key="index" class="comment-item">
+                <a-comment>
+                  <a slot="author" class="comment-author">
+                    <a-icon type="crown" theme="twoTone" twoToneColor="#faad14" /> {{ item.userName }}
+                  </a>
+                  <a-avatar
+                    slot="avatar"
+                    :src="'http://127.0.0.1:9527/imagesWeb/' + item.userImages.split(',')[0]"
+                    alt="用户头像"
+                    class="comment-avatar"
+                  />
+                  <p slot="content" class="comment-content">
+                    {{ item.content }}
+                  </p>
+                  <a-tooltip slot="datetime" :title="moment(item.createDate).format('YYYY-MM-DD HH:mm:ss')">
+                    <span class="comment-datetime">{{ moment(item.createDate).fromNow() }}</span>
+                  </a-tooltip>
+                </a-comment>
+              </div>
+
+              <div v-if="evaluateList.length === 0" class="no-comments">
+                <a-icon type="message" theme="twoTone" twoToneColor="#bfbfbf" style="font-size: 48px;" />
+                <p>暂无评论，快来抢沙发吧！</p>
+              </div>
+            </div>
+          </div>
+          <!-- 内容列表区域美化 -->
+          <div class="content-list-section">
+            <div class="content-list-header">
+              <span class="content-list-title">内容列表</span>
+              <span class="content-count">{{ bookDetailList.length }} 篇内容</span>
+            </div>
+
+            <div class="content-list-container">
+              <a-list
+                item-layout="horizontal"
+                :pagination="pagination"
+                :data-source="bookDetailList"
+                :split="false"
+              >
+                <a-list-item
+                  slot="renderItem"
+                  slot-scope="item, index"
+                  class="content-list-item"
+                  @click="detailOpen(item)"
+                >
                   <a-list-item-meta>
-                    <a slot="title" @click="detailOpen(item)">{{ item.name }} <a-icon type="lock" theme="twoTone" v-if="item.checkFlag == 1"/></a>
+                    <div slot="title" class="content-item-title">
+                      <span class="content-index">{{ index + 1 }}.</span>
+                      <span class="content-name">{{ item.name }}</span>
+                      <a-icon
+                        type="lock"
+                        theme="twoTone"
+                        twoToneColor="#faad14"
+                        class="lock-icon"
+                        v-if="item.checkFlag == 1"
+                      />
+                    </div>
                   </a-list-item-meta>
+                  <div class="content-meta" v-if="item.words || item.createDate">
+                    <span v-if="item.words" class="content-words">
+                      <a-icon type="file-text" /> {{ item.words }} 字
+                    </span>
+                            <span v-if="item.createDate" class="content-date">
+                      <a-icon type="clock-circle" /> {{ moment(item.createDate).format('YYYY-MM-DD') }}
+                    </span>
+                  </div>
                 </a-list-item>
               </a-list>
             </div>
           </div>
-          <div style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;margin-top: 15px">
-            <div style="font-size: 16px;font-family: SimHei;padding: 15px;font-weight: 600">
-              作品评论
-              <a style="font-size: 13px;margin-left: 10px;font-weight: 500" @click="visible1 = true">添加评论</a>
-            </div>
-            <div v-for="(item, index) in evaluateList" :key="index">
-              <a-comment style="padding: 15px">
-                <a slot="author"><a-icon type="crown" theme="twoTone" /> {{ item.userName }}</a>
-                <a-avatar
-                  slot="avatar"
-                  :src="'http://127.0.0.1:9527/imagesWeb/' + item.userImages.split(',')[0]"
-                  alt="Han Solo"
-                />
-                <p slot="content">
-                  {{ item.content }}
-                </p>
-                <a-tooltip slot="datetime" :title="moment(item.createDate).format('YYYY-MM-DD HH:mm:ss')">
-                  <span>{{ moment(item.createDate).fromNow() }}</span>
-                </a-tooltip>
-              </a-comment>
-            </div>
-            <div v-if="evaluateList.length === 0">
-              <div style="text-align: center;padding: 20px">暂无评论</div>
-            </div>
-            <div style="margin-bottom: 150px"></div>
-          </div>
         </a-col>
-        <a-col :span="18">
-          <div style="padding: 15px" v-if="bookDetail != null">
-            <div>
-              <span style="font-size: 16px;font-family: SimHei;font-weight: 600">{{ bookDetail.name }}</span>
-              <span style="margin-left: 30px;font-family: SimHei;font-size: 13px">字数：{{ bookDetail.words }}</span>
-            </div>
-            <div style="margin-top: 50px;font-family: SimHei">
-              <div v-html="bookDetail.content" :style="styleClass">
+        <a-col :span="18" style="height: 100vh;overflow-y: auto">
+          <!-- 书籍详情内容区域美化 -->
+          <div class="book-detail-section" v-if="bookDetail != null">
+            <div class="book-detail-header">
+              <h2 class="book-detail-title">{{ bookDetail.name }}</h2>
+              <div class="book-detail-meta">
+        <span class="meta-item">
+          <a-icon type="file-text" /> 字数：{{ bookDetail.words }}
+        </span>
+                <span class="meta-item" v-if="bookDetail.createDate">
+          <a-icon type="clock-circle" /> 发布时间：{{ moment(bookDetail.createDate).format('YYYY-MM-DD HH:mm') }}
+        </span>
               </div>
             </div>
+
+            <div class="book-content-container">
+              <div
+                class="book-content"
+                v-html="bookDetail.content"
+                :style="styleClass"
+              >
+              </div>
+            </div>
+
+            <div class="book-detail-footer">
+              <a-button
+                type="primary"
+                @click="chooseStyle"
+                icon="bg-colors"
+                size="small"
+              >
+                切换样式
+              </a-button>
+            </div>
           </div>
-          <div style="margin-bottom: 100px"></div>
+
+          <div class="no-detail-content" v-else>
+            <a-icon type="file-search" theme="twoTone" twoToneColor="#bfbfbf" :style="{ fontSize: '64px' }" />
+            <p>请选择左侧内容查看详细信息</p>
+          </div>
         </a-col>
       </a-row>
     </a-form>
-    <div class="drawer-bootom-button">
-      <a-button key="submit" type="primary" @click="chooseStyle" style="margin-right: 10px">
-        选择模板
-      </a-button>
-      <a-popconfirm title="确定关闭？" @confirm="onClose" okText="确定" cancelText="取消">
-        <a-button style="margin-right: .8rem">关闭</a-button>
-      </a-popconfirm>
-    </div>
+<!--    <div class="drawer-bootom-button">-->
+<!--      <a-button key="submit" type="primary" @click="chooseStyle" style="margin-right: 10px">-->
+<!--        选择模板-->
+<!--      </a-button>-->
+<!--      <a-popconfirm title="确定关闭？" @confirm="onClose" okText="确定" cancelText="取消">-->
+<!--        <a-button style="margin-right: .8rem">关闭</a-button>-->
+<!--      </a-popconfirm>-->
+<!--    </div>-->
     <a-modal
       title="选择格式模板"
       :visible="visible"
@@ -203,6 +271,9 @@ export default {
   },
   data () {
     return {
+      pagination: {
+        pageSize: 10
+      },
       styleClass: {
         backgroundColor: '',
         color: ''
@@ -358,6 +429,9 @@ export default {
 }
 </script>
 <style scoped>
+  >>> .ant-drawer-wrapper-body {
+    overflow-y: hidden;
+  }
   >>> .ant-drawer-body {
     padding: 0 !important;
   }
@@ -373,7 +447,7 @@ export default {
 
   .carousel-item {
     width: 100%;
-    height: 350px;
+    height: 150px;
   }
 
   .carousel-image {
@@ -442,6 +516,397 @@ export default {
     .like-button {
       margin-left: 0;
       margin-top: 10px;
+    }
+  }
+
+  .comments-section {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    padding: 20px;
+  }
+
+  .comments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .comments-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    font-family: 'SimHei';
+  }
+
+  .add-comment-btn {
+    border-radius: 4px;
+  }
+
+  .comments-list {
+    max-height: 600px;
+    overflow-y: auto;
+  }
+
+  .comment-item {
+    border-bottom: 1px solid #f5f5f5;
+    padding: 15px 0;
+  }
+
+  .comment-item:last-child {
+    border-bottom: none;
+  }
+
+  .comment-author {
+    font-weight: 500;
+    color: #555;
+  }
+
+  .comment-avatar {
+    background: #f0f0f0;
+  }
+
+  .comment-content {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 5px;
+  }
+
+  .comment-datetime {
+    font-size: 12px;
+    color: #999;
+  }
+
+  .no-comments {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+  }
+
+  .no-comments p {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  /* 滚动条样式优化 */
+  .comments-list::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .comments-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  .comments-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+  }
+
+  .comments-list::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+
+  .content-list-section {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    padding: 20px;
+  }
+
+  .content-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .content-list-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    font-family: 'SimHei';
+  }
+
+  .content-count {
+    font-size: 13px;
+    color: #999;
+  }
+
+  .content-list-container {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  .content-list-item {
+    padding: 15px 0;
+    border-bottom: 1px solid #f5f5f5;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .content-list-item:hover {
+    background-color: #f9f9f9;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 4px;
+  }
+
+  .content-list-item:last-child {
+    border-bottom: none;
+  }
+
+  .content-item-title {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+  }
+
+  .content-index {
+    color: #bfbfbf;
+    margin-right: 8px;
+    font-size: 12px;
+    width: 20px;
+  }
+
+  .content-name {
+    color: #333;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .lock-icon {
+    margin-left: 8px;
+    font-size: 14px;
+  }
+
+  .content-meta {
+    display: flex;
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
+  }
+
+  .content-words {
+    margin-right: 15px;
+  }
+
+  .content-date {
+    display: flex;
+    align-items: center;
+  }
+
+  .content-date .anticon {
+    margin-right: 3px;
+  }
+
+  .content-words .anticon {
+    margin-right: 3px;
+  }
+
+  .no-content {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+  }
+
+  .no-content p {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  /* 滚动条样式优化 */
+  .content-list-container::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .content-list-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  .content-list-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+  }
+
+  .content-list-container::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+
+  /* 响应式优化 */
+  @media (max-width: 768px) {
+    .content-list-section {
+      padding: 15px;
+    }
+
+    .content-list-header {
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+    }
+
+    .content-list-item {
+      padding: 12px 0;
+    }
+
+    .content-meta {
+      flex-direction: column;
+    }
+
+    .content-words {
+      margin-right: 0;
+      margin-bottom: 3px;
+    }
+  }
+
+  .book-detail-section {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin: 20px;
+    min-height: 600px;
+  }
+
+  .book-detail-header {
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+  }
+
+  .book-detail-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    font-family: 'SimHei';
+    margin-bottom: 15px;
+  }
+
+  .book-detail-meta {
+    display: flex;
+    gap: 20px;
+  }
+
+  .meta-item {
+    font-size: 14px;
+    color: #666;
+    display: flex;
+    align-items: center;
+  }
+
+  .meta-item .anticon {
+    margin-right: 5px;
+    color: #1890ff;
+  }
+
+  .book-content-container {
+    min-height: 500px;
+    padding: 10px 0;
+  }
+
+  .book-content {
+    font-family: 'SimSun', 'STSong', serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+  }
+
+  .book-content >>> p {
+    margin-bottom: 1em;
+    text-indent: 2em;
+  }
+
+  .book-content >>> h1,
+  .book-content >>> h2,
+  .book-content >>> h3,
+  .book-content >>> h4,
+  .book-content >>> h5,
+  .book-content >>> h6 {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #222;
+  }
+
+  .book-content >>> img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: 10px 0;
+  }
+
+  .book-detail-footer {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 20px;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .no-detail-content {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 80px 20px;
+    margin: 20px;
+    text-align: center;
+    color: #999;
+  }
+
+  .no-detail-content p {
+    margin-top: 15px;
+    font-size: 16px;
+  }
+
+  /* 滚动条样式优化 */
+  .book-content-container::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .book-content-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  .book-content-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+  }
+
+  .book-content-container::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+
+  /* 响应式优化 */
+  @media (max-width: 768px) {
+    .book-detail-section {
+      padding: 15px;
+      margin: 10px;
+    }
+
+    .book-detail-title {
+      font-size: 20px;
+    }
+
+    .book-detail-meta {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .book-content {
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .book-content >>> p {
+      text-indent: 1.5em;
     }
   }
 </style>

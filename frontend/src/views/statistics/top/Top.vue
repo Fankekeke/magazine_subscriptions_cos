@@ -4,37 +4,39 @@
       <a-row :gutter="30">
         <a-col :span="24" style="padding:30px;margin-top: 30px;margin-bottom: 30px">
           <a-row :gutter="30">
-            <a-list item-layout="vertical" size="large" :pagination="pagination" :data-source="bookList">
-              <a-list-item slot="renderItem" key="item.title" slot-scope="item, index">
-                <template slot="actions">
+            <a-skeleton active :loading="loading" :paragraph="{rows: 17}">
+              <a-list item-layout="vertical" size="large" :pagination="pagination" :data-source="bookList">
+                <a-list-item slot="renderItem" key="item.title" slot-scope="item, index">
+                  <template slot="actions">
                   <span>
                     浏览量 <span style="color: #fa541c">{{ item.views }}</span> 次
                   </span>
-                </template>
-                <img
-                  v-if="item.images"
-                  slot="extra"
-                  width="150"
-                  alt="logo"
-                  :src="'http://127.0.0.1:9527/imagesWeb/' + item.images.split(',')[0]"
-                />
-                <img
-                  v-else
-                  slot="extra"
-                  width="150"
-                  alt="logo"
-                  :src="'http://127.0.0.1:9527/imagesWeb/xxx.png'"
-                />
-                <a-list-item-meta :description="'作者- ' + item.authorInfo.name">
-                  <a slot="title">
-                    《{{ item.name }}》
-                    <span style="margin-left: 15px;font-family: SimHei;font-size: 14px">排名<span style="">{{ index + 1 }}</span></span>
-                  </a>
-                  <a-avatar slot="avatar" shape="square" :src="'http://127.0.0.1:9527/imagesWeb/' + item.authorInfo.images.split(',')[0]" />
-                </a-list-item-meta>
-                {{ item.content }}
-              </a-list-item>
-            </a-list>
+                  </template>
+                  <img
+                    v-if="item.images"
+                    slot="extra"
+                    width="150"
+                    alt="logo"
+                    :src="'http://127.0.0.1:9527/imagesWeb/' + item.images.split(',')[0]"
+                  />
+                  <img
+                    v-else
+                    slot="extra"
+                    width="150"
+                    alt="logo"
+                    :src="'http://127.0.0.1:9527/imagesWeb/xxx.png'"
+                  />
+                  <a-list-item-meta :description="'作者- ' + item.authorInfo.name">
+                    <a slot="title">
+                      《{{ item.name }}》
+                      <span style="margin-left: 15px;font-family: SimHei;font-size: 14px">排名<span style="">{{ index + 1 }}</span></span>
+                    </a>
+                    <a-avatar slot="avatar" shape="square" :src="'http://127.0.0.1:9527/imagesWeb/' + item.authorInfo.images.split(',')[0]" />
+                  </a-list-item-meta>
+                  {{ item.content }}
+                </a-list-item>
+              </a-list>
+            </a-skeleton>
           </a-row>
         </a-col>
       </a-row>
@@ -100,8 +102,10 @@ export default {
       })
     },
     getWorkStatusList () {
+      this.loading = true
       this.$get(`/cos/book-info/selectListTop`).then((r) => {
         this.bookList = r.data.data
+        this.loading = false
       })
     }
   }
