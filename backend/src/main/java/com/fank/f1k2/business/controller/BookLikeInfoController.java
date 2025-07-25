@@ -76,7 +76,7 @@ public class BookLikeInfoController {
             bookLikeInfo.setUserId(userInfo.getId());
         }
         // 判断用户是否关注
-        int count = bookLikeInfoService.count(Wrappers.<BookLikeInfo>lambdaQuery().eq(BookLikeInfo::getBookId, bookLikeInfo.getAuthorId()).eq(BookLikeInfo::getUserId, userInfo.getId()));
+        int count = bookLikeInfoService.count(Wrappers.<BookLikeInfo>lambdaQuery().eq(BookLikeInfo::getBookId, bookLikeInfo.getBookId()).eq(BookLikeInfo::getUserId, userInfo.getId()));
         if (count > 0) {
             return R.ok(true);
         } else {

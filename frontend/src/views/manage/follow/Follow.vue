@@ -15,7 +15,7 @@
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="作者名称"
+                label="订阅名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.authorName"/>
@@ -146,7 +146,7 @@ export default {
           </a-popover>
         }
       }, {
-        title: '作者名称',
+        title: '订阅名称',
         dataIndex: 'authorName',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -156,7 +156,7 @@ export default {
           }
         }
       }, {
-        title: '作者头像',
+        title: '订阅图片',
         dataIndex: 'authorImages',
         customRender: (text, record, index) => {
           if (!record.authorImages) return <a-avatar shape="square" icon="user" />

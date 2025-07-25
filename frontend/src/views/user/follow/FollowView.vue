@@ -19,6 +19,19 @@
         </a-col>
       </a-row>
       <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col style="margin-bottom: 15px"><span class="view-title" style="font-size: 15px;font-weight: 650;color: #000c17">订阅源信息</span></a-col>
+        <a-col :span="8"><b>订阅源编号：</b>
+          {{ recordData.code ? recordData.code : '- -' }}
+        </a-col>
+        <a-col :span="8"><b>订阅源名称：</b>
+          {{ recordData.name ? recordData.name : '- -' }}
+        </a-col>
+        <a-col :span="8"><b>最后更新时间：</b>
+          {{ recordData.updateDate ? recordData.updateDate : '- -' }}
+        </a-col>
+      </a-row>
+      <br/>
       <div style="font-size: 13px;font-family: SimHei" v-if="authorInfo !== null">
         <a-row style="padding-left: 24px;padding-right: 24px;">
           <a-col style="margin-bottom: 15px"><span class="view-title" style="font-size: 15px;font-weight: 650;color: #000c17">作者信息</span></a-col>
@@ -104,7 +117,7 @@ export default {
   watch: {
     recordShow: function (value) {
       if (value) {
-        this.selectDetail(this.recordData.authorId)
+        this.selectDetail(this.recordData.authId)
       }
     }
   },

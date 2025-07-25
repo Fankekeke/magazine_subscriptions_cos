@@ -4,14 +4,11 @@ import java.net.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.alibaba.fastjson.JSON;
-import com.fank.f1k2.business.entity.RssHistory;
+import com.fank.f1k2.business.entity.BookDetailInfo;
 import com.sun.syndication.feed.synd.SyndCategory;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEnclosure;
@@ -49,8 +46,8 @@ public class  RssParse {
         }
         return pics;
     }
-    public static List<RssHistory> parseRss(String rss) {
-        List<RssHistory>  rssList = new ArrayList<>();
+    public static List<BookDetailInfo> parseRss(String rss) {
+        List<BookDetailInfo>  rssList = new ArrayList<>();
         try {
             // 初始化proxy对象参数为代理IP地址，访问端口
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7890));
@@ -84,7 +81,7 @@ public class  RssParse {
             List entries = feed.getEntries();
             // 循环得到每个子项信息
             for (int i = 0; i < entries.size(); i++) {
-                RssHistory rssHistory = new RssHistory();
+                BookDetailInfo rssHistory = new BookDetailInfo();
                 SyndEntry entry = (SyndEntry) entries.get(i);
                 // System.out.println("==="+entry.getContents());
                 // System.out.println("---"+entry.getContents().size());

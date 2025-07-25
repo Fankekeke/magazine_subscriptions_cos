@@ -5,23 +5,28 @@
     <!-- 分页获取用户关注信息 -->
     <select id="selectFollowPage" resultType="java.util.LinkedHashMap">
         select
-            fi.id,
-            fi.user_id,
-            fi.author_id,
-            fi.create_date,
-            ui.code as userCode,
-            ui.name as userName,
-            ui.images as userImages,
-            ai.name as authorName,
-            ai.images as authorImages
+        fi.id,
+        fi.user_id,
+        fi.author_id,
+        fi.create_date,
+        ui.code as userCode,
+        ui.name as userName,
+        ui.images as userImages,
+        ai.code,
+        ai.name,
+        ai.update_date,
+        ai.name as authorName,
+        ai.images as authorImages,
+        aui.id as authId
         from
-            follow_info fi
-                left join user_info ui on
-                (ui.id = fi.user_id)
-                left join author_info ai on
-                (ai.id = fi.author_id)
+        follow_info fi
+        left join user_info ui on
+        (ui.id = fi.user_id)
+        left join book_info ai on (ai.id = fi.author_id)
+        left join author_info aui on
+        (aui.id = ai.author_id)
         where
-            1 = 1
+        1 = 1
         <if test="followInfo.userName != null and followInfo.userName != ''">
             AND ui.name LIKE CONCAT('%',#{followInfo.userName},'%')
         </if>
@@ -32,6 +37,6 @@
             AND ui.user_id = #{ followInfo.userId }
         </if>
         order by
-            fi.create_date desc
+        fi.create_date desc
     </select>
 </mapper>

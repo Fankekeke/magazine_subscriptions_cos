@@ -10,9 +10,15 @@
     :getContainer="false"
     style="height: calc(100% - 55px);overflow: auto;padding-bottom: 53px;">
     <a-form :form="form" layout="vertical">
-      <a-row :gutter="20" >
+      <a-row>
         <a-col :span="6" style="height: 100vh;overflow-y: auto">
           <div style="font-size: 13px;font-family: SimHei" v-if="bookData !== null">
+            <a-page-header
+              style="border: 1px solid rgb(235, 237, 240)"
+              :title="bookData.name"
+              :sub-title="bookData.tag ? bookData.tag : '- -'"
+              @back="onClose"
+            />
             <div class="book-info-container">
               <a-carousel autoplay style="height: 150px;" v-if="bookData.images !== undefined && bookData.images">
                 <div v-for="(item, index) in bookData.images.split(',')" :key="index" class="carousel-item">
@@ -26,12 +32,9 @@
               </a-carousel>
               <a-card :bordered="false" class="book-details-card">
                 <span slot="title" class="book-title">
-                  <span class="book-name-tag">
-                    {{ bookData.name }} | {{ bookData.tag }}
-                  </span>
-                  <div class="book-description">{{ bookData.content }}</div>
-                  <div class="book-update-time">最后更新时间：{{ bookData.updateDate ? bookData.updateDate : '- -' }}</div>
-                  <div class="book-last-chapter">最后内容：{{ bookData.lastChapter ? bookData.lastChapter : '- -' }}</div>
+                  <div style="font-size: 13px;font-weight: 400" class="book-description">{{ bookData.content }}</div>
+                  <div style="font-size: 12px" class="book-update-time">最后更新时间：{{ bookData.updateDate ? bookData.updateDate : '- -' }}</div>
+                  <div style="font-size: 12px" class="book-last-chapter">最后内容：{{ bookData.lastChapter ? bookData.lastChapter : '- -' }}</div>
                   <div class="book-author-info">
                     <a-avatar shape="square" :src="'http://127.0.0.1:9527/imagesWeb/' + bookData.authorInfo.images.split(',')[0]" />
                     <span class="author-name">{{ bookData.authorInfo.name }}</span>
@@ -48,41 +51,6 @@
               </a-card>
             </div>
             <br/>
-          </div>
-          <div class="comments-section">
-            <div class="comments-header">
-              <span class="comments-title">作品评论</span>
-              <a-button type="primary" size="small" @click="visible1 = true" class="add-comment-btn">
-                <a-icon type="plus" /> 添加评论
-              </a-button>
-            </div>
-
-            <div class="comments-list">
-              <div v-for="(item, index) in evaluateList" :key="index" class="comment-item">
-                <a-comment>
-                  <a slot="author" class="comment-author">
-                    <a-icon type="crown" theme="twoTone" twoToneColor="#faad14" /> {{ item.userName }}
-                  </a>
-                  <a-avatar
-                    slot="avatar"
-                    :src="'http://127.0.0.1:9527/imagesWeb/' + item.userImages.split(',')[0]"
-                    alt="用户头像"
-                    class="comment-avatar"
-                  />
-                  <p slot="content" class="comment-content">
-                    {{ item.content }}
-                  </p>
-                  <a-tooltip slot="datetime" :title="moment(item.createDate).format('YYYY-MM-DD HH:mm:ss')">
-                    <span class="comment-datetime">{{ moment(item.createDate).fromNow() }}</span>
-                  </a-tooltip>
-                </a-comment>
-              </div>
-
-              <div v-if="evaluateList.length === 0" class="no-comments">
-                <a-icon type="message" theme="twoTone" twoToneColor="#bfbfbf" style="font-size: 48px;" />
-                <p>暂无评论，快来抢沙发吧！</p>
-              </div>
-            </div>
           </div>
           <!-- 内容列表区域美化 -->
           <div class="content-list-section">
@@ -107,14 +75,16 @@
                   <a-list-item-meta>
                     <div slot="title" class="content-item-title">
                       <span class="content-index">{{ index + 1 }}.</span>
-                      <span class="content-name">{{ item.name }}</span>
-                      <a-icon
-                        type="lock"
-                        theme="twoTone"
-                        twoToneColor="#faad14"
-                        class="lock-icon"
-                        v-if="item.checkFlag == 1"
-                      />
+                      <span class="content-name content-name-ellipsis">
+                        <a-icon
+                          type="lock"
+                          theme="twoTone"
+                          twoToneColor="#faad14"
+                          class="lock-icon"
+                          v-if="item.checkFlag == 1"
+                        />
+                        {{ item.name }}
+                      </span>
                     </div>
                   </a-list-item-meta>
                   <div class="content-meta" v-if="item.words || item.createDate">
@@ -127,6 +97,39 @@
                   </div>
                 </a-list-item>
               </a-list>
+            </div>
+          </div>
+          <div class="comments-section">
+            <div class="comments-header">
+              <span class="comments-title">杂志评论</span>
+              <a-button type="primary" size="small" @click="visible1 = true" class="add-comment-btn">
+                <a-icon type="plus" /> 添加评论
+              </a-button>
+            </div>
+            <div class="comments-list">
+              <div v-for="(item, index) in evaluateList" :key="index" class="comment-item">
+                <a-comment>
+                  <a slot="author" class="comment-author">
+                    <a-icon type="crown" theme="twoTone" twoToneColor="#faad14" /> {{ item.userName }}
+                  </a>
+                  <a-avatar
+                    slot="avatar"
+                    :src="'http://127.0.0.1:9527/imagesWeb/' + item.userImages.split(',')[0]"
+                    alt="用户头像"
+                    class="comment-avatar"
+                  />
+                  <p slot="content" class="comment-content">
+                    {{ item.content }}
+                  </p>
+                  <a-tooltip slot="datetime" :title="moment(item.createDate).format('YYYY-MM-DD HH:mm:ss')">
+                    <span class="comment-datetime">{{ moment(item.createDate).fromNow() }}</span>
+                  </a-tooltip>
+                </a-comment>
+              </div>
+              <div v-if="evaluateList.length === 0" class="no-comments">
+                <a-icon type="message" theme="twoTone" twoToneColor="#bfbfbf" style="font-size: 48px;" />
+                <p>暂无评论，快来抢沙发吧！</p>
+              </div>
             </div>
           </div>
         </a-col>
@@ -145,9 +148,8 @@
               </div>
             </div>
 
-            <div class="book-content-container">
+            <div>
               <div
-                class="book-content"
                 v-html="bookDetail.content"
                 :style="styleClass"
               >
@@ -307,7 +309,7 @@ export default {
       console.log(value)
       if (value) {
         this.selectEvaluateBookList(this.bookData.id)
-        this.selectBookDetailList(this.bookData.id)
+        this.selectBookDetailList(this.bookData.code)
       } else {
         this.bookDetail = null
       }
@@ -348,7 +350,7 @@ export default {
       })
     },
     followUser () {
-      let data = {userId: this.currentUser.userId, authorId: this.bookData.authorId}
+      let data = {userId: this.currentUser.userId, authorId: this.bookData.id}
       this.$post('/cos/follow-info', data).then((r) => {
         this.$message.success('关注成功')
       })
@@ -364,7 +366,7 @@ export default {
         this.$message.warn('该内容需要会员才能查看，请购买会员！')
         return false
       }
-      this.$get('/cos/book-detail-info/views/edit', {detailId: item.id}).then((r) => {
+      this.$get('/cos/book-detail-info/views/edit', {detailId: item.id, userId: this.currentUser.userId}).then((r) => {
       })
       this.bookDetail = item
     },
@@ -642,8 +644,6 @@ export default {
   }
 
   .content-list-container {
-    max-height: 500px;
-    overflow-y: auto;
   }
 
   .content-list-item {
@@ -908,5 +908,9 @@ export default {
     .book-content >>> p {
       text-indent: 1.5em;
     }
+  }
+
+  >>> .ant-page-header {
+    padding: 10px 24px;
   }
 </style>

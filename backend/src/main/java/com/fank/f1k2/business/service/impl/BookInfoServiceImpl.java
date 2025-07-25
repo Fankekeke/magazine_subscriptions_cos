@@ -245,8 +245,8 @@ public class BookInfoServiceImpl extends ServiceImpl<BookInfoMapper, BookInfo> i
         Map<String, List<BookDetailInfo>> bookDetailMap = bookDetailList.stream().collect(Collectors.groupingBy(BookDetailInfo::getBookId));
 
         for (BookInfo bookInfo : bookInfoList) {
-            if (CollectionUtil.isNotEmpty(bookDetailMap) && CollectionUtil.isNotEmpty(bookDetailMap.get(bookInfo.getId().toString()))) {
-                List<BookDetailInfo> detailInfoList = bookDetailMap.get(bookInfo.getId().toString());
+            if (CollectionUtil.isNotEmpty(bookDetailMap) && CollectionUtil.isNotEmpty(bookDetailMap.get(bookInfo.getCode()))) {
+                List<BookDetailInfo> detailInfoList = bookDetailMap.get(bookInfo.getCode());
                 Integer count = detailInfoList.stream().mapToInt(BookDetailInfo::getViews).sum();
                 bookInfo.setViews(count);
             } else {

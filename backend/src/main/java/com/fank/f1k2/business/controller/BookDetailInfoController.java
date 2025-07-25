@@ -1,13 +1,9 @@
 package com.fank.f1k2.business.controller;
 
 
-import com.fank.f1k2.business.entity.AuthorInfo;
-import com.fank.f1k2.business.service.IAuthorInfoService;
+import com.fank.f1k2.business.entity.*;
+import com.fank.f1k2.business.service.*;
 import com.fank.f1k2.common.utils.R;
-import com.fank.f1k2.business.entity.BookDetailInfo;
-import com.fank.f1k2.business.entity.BookInfo;
-import com.fank.f1k2.business.service.IBookDetailInfoService;
-import com.fank.f1k2.business.service.IBookInfoService;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
@@ -33,6 +29,10 @@ public class BookDetailInfoController {
 
     private final IAuthorInfoService authorInfoService;
 
+    private final IUserInfoService userInfoService;
+
+    private final IReadHistoryInfoService readHistoryInfoService;
+
     /**
      * 分页获取订阅源内容信息
      *
@@ -52,10 +52,19 @@ public class BookDetailInfoController {
      * @return 结果
      */
     @GetMapping("/views/edit")
-    public R updateViews(Integer detailId) {
+    public R updateViews(Integer detailId, Integer userId) {
         BookDetailInfo bookDetailInfo = bookDetailInfoService.getById(detailId);
         bookDetailInfo.setViews(bookDetailInfo.getViews() + 1);
         bookDetailInfoService.updateById(bookDetailInfo);
+        // 添加历史记录
+        UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, userId));
+        if (userInfo != null) {
+            ReadHistoryInfo readHistoryInfo = new ReadHistoryInfo();
+            readHistoryInfo.setBookDetailId(detailId);
+            readHistoryInfo.setUserId(userInfo.getId());
+            readHistoryInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
+            readHistoryInfoService.save(readHistoryInfo);
+        }
         return R.ok(true);
     }
 
@@ -66,7 +75,7 @@ public class BookDetailInfoController {
      * @return 结果
      */
     @GetMapping("/list/book")
-    public R selectDetailByBookId(Integer bookId) {
+    public R selectDetailByBookId(String bookId) {
         List<BookDetailInfo> detailList = bookDetailInfoService.list(Wrappers.<BookDetailInfo>lambdaQuery().eq(BookDetailInfo::getBookId, bookId).orderByDesc(BookDetailInfo::getIndexNo));
         if (CollectionUtil.isEmpty(detailList)) {
             return R.ok(Collections.emptyList());
