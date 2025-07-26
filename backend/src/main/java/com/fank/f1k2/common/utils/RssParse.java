@@ -49,17 +49,25 @@ public class  RssParse {
     public static List<BookDetailInfo> parseRss(String rss) {
         List<BookDetailInfo>  rssList = new ArrayList<>();
         try {
-            // 初始化proxy对象参数为代理IP地址，访问端口
-            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7890));
+//            // 初始化proxy对象参数为代理IP地址，访问端口
+//            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7890));
+//            URL url = new URL(rss);
+//            URLConnection UC = url.openConnection(proxy);
+//            UC.setRequestProperty("accept", "accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+//            UC.setRequestProperty("connection", "Keep-Alive");
+//            UC.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
+//            UC.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            // 不使用代理，直接创建URL连接
             URL url = new URL(rss);
-            URLConnection UC = url.openConnection(proxy);
+            URLConnection UC = url.openConnection(); // 移除了代理参数
+
             UC.setRequestProperty("accept", "accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
             UC.setRequestProperty("connection", "Keep-Alive");
             UC.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
             UC.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");//重点
 
             // https 忽略证书验证
-            if (rss.substring(0, 5).equals("https")) {
+            if (rss.startsWith("https")) { // 优化了判断条件
                 SSLContext ctx = MyX509TrustManagerUtils();
                 ((HttpsURLConnection) UC).setSSLSocketFactory(ctx.getSocketFactory());
                 ((HttpsURLConnection) UC).setHostnameVerifier(new HostnameVerifier() {
@@ -88,6 +96,7 @@ public class  RssParse {
                 // 标题、连接地址、标题简介、时间是一个Rss源项最基本的组成部分
                 // System.out.println("标题：" + entry.getTitle());
                 rssHistory.setTitle(entry.getTitle());
+                rssHistory.setName(entry.getTitle());
                 // System.out.println("连接地址：" + entry.getLink());
                 rssHistory.setLink(entry.getLink());
                 SyndContent description = entry.getDescription();

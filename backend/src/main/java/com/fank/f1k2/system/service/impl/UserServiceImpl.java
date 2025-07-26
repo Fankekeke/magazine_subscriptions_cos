@@ -1,5 +1,8 @@
 package com.fank.f1k2.system.service.impl;
 
+import cn.hutool.core.date.DateUtil;
+import com.fank.f1k2.business.entity.UserInfo;
+import com.fank.f1k2.business.service.IUserInfoService;
 import com.fank.f1k2.common.domain.F1k2Constant;
 import com.fank.f1k2.common.domain.QueryRequest;
 import com.fank.f1k2.common.service.CacheService;
@@ -43,6 +46,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserRoleService userRoleService;
     @Autowired
     private UserManager userManager;
+
+    @Autowired
+    private IUserInfoService userInfoService;
 
 
     @Override
@@ -175,8 +181,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         UserRole ur = new UserRole();
         ur.setUserId(user.getUserId());
-        ur.setRoleId(2L); // 注册用户角色 ID
+        ur.setRoleId(76L); // 注册用户角色 ID
         this.userRoleMapper.insert(ur);
+
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserId(Math.toIntExact(user.getUserId()));
+        userInfo.setCode("UR-" + System.currentTimeMillis());
+        userInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
+        userInfo.setStatus("1");
+        userInfoService.save(userInfo);
 
         // 创建用户默认的个性化配置
         userConfigService.initDefaultUserConfig(String.valueOf(user.getUserId()));

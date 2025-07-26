@@ -37,6 +37,8 @@ public class MemberInfoController {
 
     private final IBulletinInfoService bulletinInfoService;
 
+    private final INotifyInfoService notifyInfoService;
+
     /**
      * 根据用户ID获取会员信息
      *
@@ -128,6 +130,13 @@ public class MemberInfoController {
         memberInfo.setEndDate(DateUtil.formatDateTime(DateUtil.offsetDay(new Date(), ruleInfo.getDays())));
         memberInfo.setPrice(memberRecordInfo.getPrice());
         memberInfoService.save(memberInfo);
+
+        NotifyInfo notifyInfo = new NotifyInfo();
+        notifyInfo.setContent("恭喜您，会员订单支付成功！会员截至" + memberRecordInfo.getEndDate() + "！");
+        notifyInfo.setStatus("0");
+        notifyInfo.setUserId(userInfo.getId());
+        notifyInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
+        notifyInfoService.save(notifyInfo);
 
         return R.ok(true);
     }

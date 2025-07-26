@@ -31,6 +31,7 @@
     </div>
     <div>
       <div class="operator">
+        <a-button type="primary" @click="rssPares">解析订阅源</a-button>
         <a-button type="primary" ghost @click="add">新增</a-button>
         <a-button @click="batchDelete">删除</a-button>
       </div>
@@ -229,6 +230,11 @@ export default {
     this.fetch()
   },
   methods: {
+    rssPares () {
+      this.$get(`/cos/book-info/rssParse`).then((r) => {
+        this.$message.success('正在解析中')
+      })
+    },
     bookViewOpen (row) {
       this.bookView.data = row
       this.bookView.visiable = true

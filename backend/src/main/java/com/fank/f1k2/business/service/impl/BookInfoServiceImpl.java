@@ -1,5 +1,6 @@
 package com.fank.f1k2.business.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.fank.f1k2.common.utils.ItemCF;
 import com.fank.f1k2.business.dao.AuthorInfoMapper;
 import com.fank.f1k2.business.dao.BookDetailInfoMapper;
@@ -15,10 +16,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fank.f1k2.common.utils.RssParse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,6 +42,10 @@ public class BookInfoServiceImpl extends ServiceImpl<BookInfoMapper, BookInfo> i
     private final IBookLikeInfoService bookLikeInfoService;
 
     private final UserInfoMapper userInfoMapper;
+
+    private final SimpleDateFormat format0 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    private final SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 
     /**
      * 分页获取订阅源信息
@@ -256,5 +264,49 @@ public class BookInfoServiceImpl extends ServiceImpl<BookInfoMapper, BookInfo> i
 
         // 排序
         return bookInfoList.stream().sorted(Comparator.comparing(BookInfo::getViews).reversed()).collect(Collectors.toList());
+    }
+
+    @Override
+    public void parsRssList(List<BookInfo> rssInfoList) {
+        for (BookInfo rssInfo : rssInfoList) {
+            System.out.println("=======>" + rssInfo.getName());
+            if (StrUtil.isNotEmpty(rssInfo.getRssUrl())) {
+                List<BookDetailInfo> rssHistoryList = RssParse.parseRss(rssInfo.getRssUrl());
+                // 倒序
+                Collections.reverse(rssHistoryList);
+                rssHistoryList.forEach(rssHistory -> {
+                    try {
+                        rssHistory.setViews(0);
+                        rssHistory.setCheckFlag("0");
+                        rssHistory.setWords(StrUtil.length(rssHistory.getContent()));
+                        rssHistory.setBookId(rssInfo.getCode());
+                        // 判断日期是否为空 为空进行标题判断
+                        if (rssHistory.getPublishedDate() == null) {
+                            if (bookDetailInfoMapper.selectList(Wrappers.<BookDetailInfo>lambdaQuery().eq(rssHistory.getTitle() != null, BookDetailInfo::getTitle, rssHistory.getTitle())).size() == 0) {
+                                bookDetailInfoMapper.insert(rssHistory);
+                                System.out.println("入库");
+                            }
+                        } else {
+                            // 获取当前rss库中最大时间记录
+                            BookDetailInfo rssHistoryMax = bookDetailInfoMapper.getMaxHistoryByDate(rssHistory);
+                            if (rssHistoryMax != null) {
+                                // 判断发布日期是否大于库里最大日期
+                                if (format0.parse(format0.format(sdf.parse(rssHistory.getPublishedDate()))).getTime() > format0.parse(rssHistoryMax.getPublishedDate()).getTime()) {
+                                    rssHistory.setPublishedDate(format0.format(sdf.parse(rssHistory.getPublishedDate())));
+                                    bookDetailInfoMapper.insert(rssHistory);
+                                    System.out.println("入库");
+                                }
+                            } else {
+                                rssHistory.setPublishedDate(format0.format(sdf.parse(rssHistory.getPublishedDate())));
+                                bookDetailInfoMapper.insert(rssHistory);
+                                System.out.println("入库");
+                            }
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        }
     }
 }

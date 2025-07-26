@@ -133,14 +133,14 @@ export default {
         title: '用户头像',
         dataIndex: 'userImages',
         customRender: (text, record, index) => {
-          if (!record.supplierImages) return <a-avatar shape="square" icon="user"/>
+          if (!record.userImages) return <a-avatar shape="square" icon="user"/>
           return <a-popover>
             <template slot="content">
               <a-avatar shape="square" size={132} icon="user"
-                src={'http://127.0.0.1:9527/imagesWeb/' + record.supplierImages.split(',')[0]}/>
+                src={'http://127.0.0.1:9527/imagesWeb/' + record.userImages.split(',')[0]}/>
             </template>
             <a-avatar shape="square" icon="user"
-              src={'http://127.0.0.1:9527/imagesWeb/' + record.supplierImages.split(',')[0]}/>
+              src={'http://127.0.0.1:9527/imagesWeb/' + record.userImages.split(',')[0]}/>
           </a-popover>
         }
       }, {

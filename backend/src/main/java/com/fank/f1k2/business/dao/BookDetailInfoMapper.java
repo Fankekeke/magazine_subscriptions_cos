@@ -21,4 +21,7 @@ public interface BookDetailInfoMapper extends BaseMapper<BookDetailInfo> {
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> selectDetailPage(Page<BookDetailInfo> page, @Param("bookDetailInfo") BookDetailInfo bookDetailInfo);
+
+    // 获取库里最新消息
+    BookDetailInfo getMaxHistoryByDate(@Param("rssHistory") BookDetailInfo rssHistory);
 }

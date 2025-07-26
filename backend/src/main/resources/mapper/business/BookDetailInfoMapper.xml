@@ -55,4 +55,15 @@
         order by
         bti.create_date desc
     </select>
+
+    <select id="getMaxHistoryByDate" resultType="com.fank.f1k2.business.entity.BookDetailInfo">
+        SELECT
+            a.*
+        FROM
+            book_detail_info a,
+            ( SELECT max( published_date ) max_day FROM book_detail_info WHERE book_id = #{rssHistory.bookId} ) b
+        WHERE
+            a.published_date = b.max_day
+            LIMIT 0,1
+    </select>
 </mapper>

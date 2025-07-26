@@ -3,7 +3,9 @@ package com.fank.f1k2.business.controller;
 
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fank.f1k2.business.entity.NotifyInfo;
 import com.fank.f1k2.business.entity.UserInfo;
+import com.fank.f1k2.business.service.INotifyInfoService;
 import com.fank.f1k2.business.service.IUserInfoService;
 import com.fank.f1k2.common.utils.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -32,6 +34,8 @@ public class WorkOrderInfoController {
     private final IWorkOrderInfoService workerInfoService;
 
     private final IUserInfoService userInfoService;
+
+    private final INotifyInfoService notifyInfoService;
 
     /**
      * 分页获取工单信息
@@ -130,7 +134,14 @@ public class WorkOrderInfoController {
      */
     @GetMapping("/workClose")
     public R workClose(Integer quotationId) {
-        return R.ok(workerInfoService.update(Wrappers.<WorkOrderInfo>lambdaUpdate().set(WorkOrderInfo::getStatus, "1").eq(WorkOrderInfo::getFinishDate, DateUtil.formatDateTime(new Date())).eq(WorkOrderInfo::getId, quotationId)));
+        WorkOrderInfo workOrderInfo = workerInfoService.getById(quotationId);
+        NotifyInfo notifyInfo = new NotifyInfo();
+        notifyInfo.setContent("工单【" + workOrderInfo.getContent() + "】已关闭");
+        notifyInfo.setStatus("0");
+        notifyInfo.setUserId(workOrderInfo.getUserId());
+        notifyInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
+        notifyInfoService.save(notifyInfo);
+        return R.ok(workerInfoService.update(Wrappers.<WorkOrderInfo>lambdaUpdate().set(WorkOrderInfo::getStatus, "1").set(WorkOrderInfo::getFinishDate, DateUtil.formatDateTime(new Date())).eq(WorkOrderInfo::getId, quotationId)));
     }
 
     /**

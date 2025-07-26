@@ -45,7 +45,7 @@ public class CoreMath {
      *
      * @param xList
      * @param yList
-     * @param type  类型0基于用户推荐 1基于物品推荐
+     * @param type  类型0基于用户推荐 1基于内容推荐
      * @return double
      */
     private static double relateDist(List<RelateDTO> xList, List<RelateDTO> yList, int type) {

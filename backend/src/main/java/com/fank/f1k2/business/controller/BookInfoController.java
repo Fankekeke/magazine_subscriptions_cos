@@ -1,6 +1,7 @@
 package com.fank.f1k2.business.controller;
 
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.fank.f1k2.common.utils.R;
 import com.fank.f1k2.business.entity.AuthorInfo;
 import com.fank.f1k2.business.entity.BookInfo;
@@ -13,6 +14,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -119,6 +121,21 @@ public class BookInfoController {
     @GetMapping("/selectListTop")
     public R selectListTop() {
         return R.ok(bookInfoService.selectListTop());
+    }
+
+    /**
+     * rss解析
+     *
+     * @return 订阅源信息
+     */
+    @Async
+    @GetMapping("/rssParse")
+    public R rssParse() {
+        List<BookInfo> bookInfoList = bookInfoService.list();
+        if (CollectionUtil.isNotEmpty(bookInfoList)) {
+            bookInfoService.parsRssList(bookInfoList);
+        }
+        return R.ok(true);
     }
 
     /**

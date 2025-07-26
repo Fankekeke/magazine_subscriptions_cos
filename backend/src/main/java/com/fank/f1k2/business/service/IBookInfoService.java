@@ -68,4 +68,10 @@ public interface IBookInfoService extends IService<BookInfo> {
      * @return 结果
      */
     List<BookInfo> selectListTop();
+
+    /**
+     * 解析Rss列表 添加新记录
+     * @param rssInfoList
+     */
+    void parsRssList(List<BookInfo> rssInfoList);
 }
