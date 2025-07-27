@@ -92,7 +92,8 @@ public class BookDetailInfoController {
      */
     @GetMapping("/rate")
     public R selectBookDetailRate(Integer bookId) {
-        List<BookDetailInfo> detailList = bookDetailInfoService.list(Wrappers.<BookDetailInfo>lambdaQuery().eq(BookDetailInfo::getBookId, bookId).orderByDesc(BookDetailInfo::getIndexNo));
+        BookInfo bookInfo = bookInfoService.getById(bookId);
+        List<BookDetailInfo> detailList = bookDetailInfoService.list(Wrappers.<BookDetailInfo>lambdaQuery().eq(BookDetailInfo::getBookId, bookInfo.getCode()).orderByDesc(BookDetailInfo::getIndexNo));
         if (CollectionUtil.isEmpty(detailList)) {
             return R.ok(Collections.emptyList());
         }

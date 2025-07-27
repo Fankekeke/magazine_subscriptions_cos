@@ -54,7 +54,13 @@ export default {
           height: 300
         },
         xaxis: {
-          categories: []
+          categories: [],
+          labels: {
+            show: false
+          },
+          axisBorder: {
+            show: false
+          }
         },
         stroke: {
           curve: 'stepline'
