@@ -1,6 +1,6 @@
-### 基于SpringBoot + Vue的在线杂志订阅系统.
+# 基于SpringBoot + Vue的在线杂志订阅系统.
 
-#### 安装环境
+## 安装环境
 
 JAVA 环境 
 
@@ -16,7 +16,7 @@ Idea 编译器 [https://blog.csdn.net/weixin_44505194/article/details/104452880]
 
 WebStorm OR VScode 编译器 [https://www.jianshu.com/p/d63b5bae9dff]
 
-#### 采用技术及功能
+## 采用技术及功能
 
 后端：SpringBoot、MybatisPlus、MySQL、Redis、
 前端：Vue、Apex、Antd、Axios
@@ -28,11 +28,11 @@ WebStorm OR VScode 编译器 [https://www.jianshu.com/p/d63b5bae9dff]
 开发环境：windows10 or windows7 ， vscode or webstorm ， idea + lambok
 
 
-#### 前台启动方式
+## 前台启动方式
 安装所需文件 yarn install 
 运行 yarn run dev
 
-#### 默认后台账户密码
+## 默认后台账户密码
 [管理员]
 admin
 1234qwer
@@ -41,13 +41,13 @@ admin
 fank
 1234qwer
 
-###### 管理员：
+### 管理员：
 公告信息、用户管理、杂志内容模块、用户订阅管理、订阅价格管理、用户消息通知、历史阅读记录、订阅收益记录、收益统计、阅读统计、工单管理、样式管理、文章评论。
 
-###### 用户：
+### 用户：
 用户注册登录、修改密码、订单管理、杂志订阅、在线阅读、杂志推荐、支付宝在线支付、工单提交、杂志评论，杂志点赞，杂志关注。
 
-#### 项目截图
+## 项目截图
 暂无
 
 |  |  |
@@ -65,11 +65,11 @@ fank
 | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/3ad234d1-5cd5-4633-8872-d5c9ce098901.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/work/936e9baf53eb9a217af4f89c616dc19.png) |
 
 
-#### 演示视频
+## 演示视频
 
 暂无
 
-#### 获取方式
+## 获取方式
 
 Email: fan1ke2ke@gmail.com
 
@@ -81,7 +81,7 @@ WeChat: `Storm_Berserker`
 
 > 项目部署调试不好包退！功能逻辑没讲明白包退！
 
-#### 其它资源
+## 其它资源
 
 [2024年-答辩顺利通过-客户评价👻](https://berserker287.github.io/2024/06/06/2024%E5%B9%B4%E7%AD%94%E8%BE%A9%E9%A1%BA%E5%88%A9%E9%80%9A%E8%BF%87/)
 
@@ -97,7 +97,7 @@ WeChat: `Storm_Berserker`
 
 [计算机专业毕业答辩小tips](https://zhuanlan.zhihu.com/p/145911029)
 
-#### 接JAVAWEB毕设，纯原创，价格公道，诚信第一
+## 接JAVAWEB毕设，纯原创，价格公道，诚信第一
 
 `网站建设、小程序、H5、APP、各种系统 选题+开题报告+任务书+程序定制+安装调试+项目讲解+论文+答辩PPT`
 
