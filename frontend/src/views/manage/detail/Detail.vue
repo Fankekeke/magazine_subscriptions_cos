@@ -197,25 +197,6 @@ export default {
           }
         }
       }, {
-        title: '类型',
-        dataIndex: 'type',
-        customRender: (text, row, index) => {
-          switch (text) {
-            case '1':
-              return <a-tag>科技</a-tag>
-            case '2':
-              return <a-tag>历史</a-tag>
-            case '3':
-              return <a-tag>新闻</a-tag>
-            case '4':
-              return <a-tag>都市</a-tag>
-            case '5':
-              return <a-tag>资讯</a-tag>
-            default:
-              return '- -'
-          }
-        }
-      }, {
         title: '订阅源图片',
         dataIndex: 'images',
         customRender: (text, record, index) => {

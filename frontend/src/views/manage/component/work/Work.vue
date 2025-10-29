@@ -75,6 +75,7 @@ export default {
   },
   methods: {
     newsNext () {
+      console.log(this.newsList.length)
       if (this.newsPage + 1 === this.newsList.length) {
         this.newsPage = 0
       } else {
@@ -109,6 +110,7 @@ export default {
         this.userInfo = r.data.user
         this.memberInfo = r.data.member
         this.newsList = r.data.bulletin
+        console.log(r.data.bulletin)
         if (this.newsList.length !== 0) {
           this.newsContent = `《${this.newsList[0].title}》 ${this.newsList[0].content}`
         }

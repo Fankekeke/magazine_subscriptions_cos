@@ -179,7 +179,7 @@ public class BookDetailInfoController {
     @PutMapping
     public R edit(BookDetailInfo bookDetailInfo) {
         // 更新订阅源信息
-        BookInfo bookInfo = bookInfoService.getById(bookDetailInfo.getBookId());
+        BookInfo bookInfo = bookInfoService.getOne(Wrappers.<BookInfo>lambdaQuery().eq(BookInfo::getCode, bookDetailInfo.getBookId()));
         bookInfo.setUpdateDate(DateUtil.formatDateTime(new Date()));
 
 

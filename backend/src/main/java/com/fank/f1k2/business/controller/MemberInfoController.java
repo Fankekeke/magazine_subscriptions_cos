@@ -54,7 +54,7 @@ public class MemberInfoController {
         result.put("user", userInfo);
 
         // 公告信息
-        List<BulletinInfo> bulletinInfoList = bulletinInfoService.list(Wrappers.<BulletinInfo>lambdaQuery().eq(BulletinInfo::getType, 1));
+        List<BulletinInfo> bulletinInfoList = bulletinInfoService.list(Wrappers.<BulletinInfo>lambdaQuery());
         result.put("bulletin", bulletinInfoList);
         // 会员信息
         List<MemberInfo> memberInfos = memberInfoService.list(Wrappers.<MemberInfo>lambdaQuery().eq(MemberInfo::getUserId, userInfo.getId()));

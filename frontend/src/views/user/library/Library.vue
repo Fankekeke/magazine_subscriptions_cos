@@ -7,7 +7,7 @@
         </a-col>
         <a-col :span="24" style="background:#ECECEC; padding:30px;margin-top: 30px;margin-bottom: 30px">
           <a-row :gutter="30">
-            <a-col :span="4" v-for="(item, index) in bookList" :key="index" v-if="item.status == 1" style="margin-bottom: 20px">
+            <a-col :span="6" v-for="(item, index) in bookList" :key="index" v-if="item.status == 1" style="margin-bottom: 20px">
               <div style="background: #e8e8e8">
                 <a-carousel autoplay style="height: 150px;" v-if="item.images !== undefined && item.images">
                   <div style="width: 100%;height: 150px" v-for="(item, index) in item.images.split(',')" :key="index">

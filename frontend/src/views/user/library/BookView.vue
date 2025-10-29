@@ -350,7 +350,7 @@ export default {
       })
     },
     followUser () {
-      let data = {userId: this.currentUser.userId, authorId: this.bookData.id}
+      let data = {userId: this.currentUser.userId, authorId: this.bookData.authorId}
       this.$post('/cos/follow-info', data).then((r) => {
         this.$message.success('关注成功')
       })

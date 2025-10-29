@@ -13,7 +13,7 @@ export default {
     theme: db.get('THEME', 'light'),
     layout: db.get('LAYOUT', 'side'),
     systemName: '在线杂志订阅系统',
-    copyright: `${new Date().getFullYear()} <a href="https://berserker287.github.io" target="_blank">FanK</a>`,
+    copyright: `${new Date().getFullYear()} <a>Yuming-Lu</a>`,
     multipage: getBooleanValue(db.get('MULTIPAGE'), true),
     fixSiderbar: getBooleanValue(db.get('FIX_SIDERBAR'), true),
     fixHeader: getBooleanValue(db.get('FIX_HEADER'), true),
