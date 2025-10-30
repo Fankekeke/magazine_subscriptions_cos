@@ -131,10 +131,10 @@ export default {
         dataIndex: 'type',
         ellipsis: true,
         customRender: (text, row, index) => {
-          if (text !== null) {
+          if (text !== null && text !== '[]') {
             return text
           } else {
-            return '- -'
+            return '暂无类型'
           }
         }
       }, {
@@ -163,7 +163,7 @@ export default {
         title: '文章图片',
         dataIndex: 'webImg',
         customRender: (text, record, index) => {
-          if (!record.webImg) return <a-avatar shape="square" icon="user"/>
+          if (!record.webImg) return <a-avatar shape="square" icon="user" src="http://127.0.0.1:9527/imagesWeb/xxx.png"/>
           return <a-popover>
             <template slot="content">
               <a-avatar shape="square" size={132} icon="user" src={record.webImg.split(',')[0]}/>

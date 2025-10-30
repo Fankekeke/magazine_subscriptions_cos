@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * @author Fank gmail - fan1ke2ke@gmail.com
@@ -26,5 +27,16 @@ public class BookLikeInfoServiceImpl extends ServiceImpl<BookLikeInfoMapper, Boo
     @Override
     public IPage<LinkedHashMap<String, Object>> selectBookLikePage(Page<BookLikeInfo> page, BookLikeInfo bookLikeInfo) {
         return baseMapper.selectBookLikePage(page, bookLikeInfo);
+    }
+
+    /**
+     * 根据用户ID查询订阅源点赞信息
+     *
+     * @param userId 用户ID
+     * @return 结果
+     */
+    @Override
+    public List<LinkedHashMap<String, Object>> queryBookLikeByUserId(Integer userId) {
+        return baseMapper.queryBookLikeByUserId(userId);
     }
 }

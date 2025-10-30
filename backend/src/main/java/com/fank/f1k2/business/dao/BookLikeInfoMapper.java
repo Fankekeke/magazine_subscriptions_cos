@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * @author Fank gmail - fan1ke2ke@gmail.com
@@ -21,4 +22,12 @@ public interface BookLikeInfoMapper extends BaseMapper<BookLikeInfo> {
      * @return 结果
      */
     IPage<LinkedHashMap<String, Object>> selectBookLikePage(Page<BookLikeInfo> page, @Param("bookLikeInfo") BookLikeInfo bookLikeInfo);
+
+    /**
+     * 根据用户ID查询订阅源点赞信息
+     *
+     * @param userId 用户ID
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> queryBookLikeByUserId(@Param("userId") Integer userId);
 }

@@ -43,6 +43,17 @@ public class BookLikeInfoController {
     }
 
     /**
+     * 查询用户订阅源点赞信息
+     *
+     * @param userId 用户ID
+     * @return 订阅源点赞信息
+     */
+    @GetMapping("/queryBookLikeByUserId")
+    public R queryBookLikeByUserId(Integer userId) {
+        return R.ok(bookLikeInfoService.queryBookLikeByUserId(userId));
+    }
+
+    /**
      * 订阅源点赞信息详情
      *
      * @param id 订阅源点赞ID
