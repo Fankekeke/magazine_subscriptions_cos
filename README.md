@@ -1,14 +1,17 @@
-### 基于SpringBoot + Vue的在线杂志订阅系统.
+![](https://img.shields.io/badge/License-MIT-blue.svg)
 
-在线杂志订阅系统、数字期刊平台、电子杂志订阅、杂志付费阅读系统、期刊SaaS、内容付费订阅
+![](https://img.shields.io/badge/Version-1.0.0-brightgreen.svg)
 
-##### 管理员：
-公告信息、用户管理、杂志内容模块、用户订阅管理、订阅价格管理、用户消息通知、历史阅读记录、订阅收益记录、收益统计、阅读统计、工单管理、样式管理、文章评论。
+![](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
-##### 用户：
-用户注册登录、修改密码、订单管理、杂志订阅、在线阅读、杂志推荐、支付宝在线支付、工单提交、杂志评论，杂志点赞，杂志关注。
+# 基于 SpringBoot + Vue  的在线杂志订阅系统
+
+杂志订阅 · 在线阅读 · 支付宝支付 · 收益统计 · 工单服务 | 面向数字出版、内容订阅与读者服务的一体化平台
+
+本项目是一套基于 **Spring Boot + Vue** 的在线杂志订阅系统，采用前后端分离架构，覆盖 **管理员、用户** 两类核心角色。系统围绕“杂志内容管理 → 订阅定价 → 用户订阅 → 在线阅读 → 订单支付 → 互动评论 → 工单服务 → 数据统计”的完整业务闭环设计，打通内容发布、订阅付费、读者互动与运营分析全流程，实现数字杂志的在线化订阅与精细化运营。
 
 #### 安装环境
+️**注意**：请确保您的开发环境已安装以下依赖。
 
 JAVA 环境 
 
@@ -16,24 +19,134 @@ Node.js环境 [https://nodejs.org/en/] 选择14.17
 
 Yarn 打开cmd， 输入npm install -g yarn !!!必须安装完毕nodejs
 
-Mysql 数据库 [https://blog.csdn.net/qq_40303031/article/details/88935262] 一定要把账户和密码记住
+Mysql 数据库 一定要把账户和密码记住
 
 redis
 
-Idea 编译器 [https://blog.csdn.net/weixin_44505194/article/details/104452880]
+Idea 编译器
 
-WebStorm OR VScode 编译器 [https://www.jianshu.com/p/d63b5bae9dff]
+WebStorm OR VScode 编译器
 
 #### 采用技术及功能
 
 后端：SpringBoot、MybatisPlus、MySQL、Redis、
 前端：Vue、Apex、Antd、Axios
 
-平台前端：vue(框架) + vuex(全局缓存) + rue-router(路由) + axios(请求插件) + apex(图表)  + antd-ui(ui组件)
+平台前端：vue(框架) + vuex(全局缓存) + rue-router(路由) + axios(请求插件) + apex(图表)  + antd-ui(ui组件) + 百度地图 API
 
 平台后台：springboot(框架) + redis(缓存中间件) + shiro(权限中间件) + mybatisplus(orm) + restful风格接口 + mysql(数据库)
 
 开发环境：windows10 or windows7 ， vscode or webstorm ， idea + lambok
+
+---
+
+## 核心特性
+
+- **杂志内容模块化管理**：支持杂志 → 期号 → 文章三级内容结构，管理员可管理杂志分类、期号发布、文章上传与排版，支持富文本编辑、图文混排、封面设置与定时发布。
+- **灵活订阅定价体系**：支持单篇购买、单期购买、月度/年度订阅等多种订阅模式，管理员可配置不同订阅套餐价格与权益，用户按需选择订阅。
+- **支付宝在线支付**：集成支付宝 SDK（支持沙箱环境调试），用户订阅杂志或购买单篇文章时可通过支付宝完成支付，支付回调自动开通阅读权限，支持订单查询与退款处理。
+- **在线阅读体验**：用户订阅后可在线阅读杂志文章，支持阅读进度云端同步、字体大小调节、深色/浅色模式切换、书签与笔记功能，跨设备无缝衔接。
+- **互动社交体系**：用户可对杂志/文章进行评论、点赞、关注，形成读者互动社区；管理员可查看与管理评论内容，维护社区氛围。
+- **工单服务系统**：用户遇到问题可提交工单（如支付异常、阅读权限问题、内容反馈），管理员在线处理并回复，形成服务闭环。
+---
+
+## 适用场景
+
+- 数字杂志/期刊在线订阅平台
+- 出版社/杂志社数字化发行系统
+- 知识付费内容订阅平台
+- 企业内部刊物在线阅读系统
+- 计算机类毕业设计/课程设计项目
+---
+
+## 功能模块概览
+
+## 管理员端
+
+管理员为平台运营中枢，负责全局管控：
+
+### 内容与杂志管理
+
+- **杂志内容模块**：管理杂志分类、杂志基本信息（名称、封面、简介、出版周期）、期号管理（期号创建、文章关联、发布状态）、文章管理（标题、作者、正文、配图、标签、发布状态）。
+- **样式管理**：配置杂志阅读页面样式，包括主题色、字体、版式布局、深色/浅色模式默认设置，支持不同杂志自定义品牌样式。
+
+### 订阅与订单管理
+
+- **订阅价格管理**：配置订阅套餐，包括单篇价格、单期价格、月度订阅、年度订阅等，设置折扣、早鸟优惠、续费优惠等策略。
+- **用户订阅管理**：查看用户订阅记录，包括订阅用户、订阅杂志、订阅套餐、订阅起止时间、订阅状态（生效中/已过期/已取消），支持手动调整订阅状态。
+- **订单管理**：查看用户订阅订单与单篇购买订单，包括订单号、用户信息、订单金额、支付状态、创建时间。
+
+### 用户与互动管理
+
+- **用户管理**：管理注册用户，包括用户ID、昵称、手机号、注册时间、订阅状态、账户状态，支持账户冻结/解冻。
+- **文章评论管理**：查看用户对文章的评论，支持审核、回复、删除违规评论，维护评论秩序。
+- **用户消息通知**：向用户发送系统消息，包括订阅到期提醒、新期号发布通知、优惠活动通知、工单回复通知等。
+
+### 运营与统计
+
+- **公告信息管理**：发布平台公告，包括公告标题、内容、类型（系统通知/新刊上线/活动公告）、发布时间、置顶状态。
+- **历史阅读记录**：查看用户历史阅读记录，包括阅读文章、阅读时间、阅读时长，支持按用户/时间段筛选。
+- **阅读统计**：统计文章/杂志的 PV（浏览量）、UV（独立访客数）、人均阅读时长、热门排行，为内容运营提供数据参考。
+- **订阅收益记录**：查看每笔订阅/购买订单的收益明细，包括订单号、用户、金额、支付方式、收益时间。
+- **收益统计**：综合收益看板，展示日/周/月/年收益趋势、各杂志收益占比、各订阅套餐销售占比、新增订阅用户数等，支持图表可视化与报表导出。
+
+### 工单管理
+
+- **工单管理**：查看用户提交的工单，包括工单号、用户信息、工单类型（支付问题/阅读权限/内容反馈/其他）、工单内容、处理状态（待处理/处理中/已解决）、处理结果与回复。
+
+## 用户端
+
+用户通过 Web 端进行杂志浏览、订阅与在线阅读：
+
+### 账户与个人
+
+- **用户注册登录**：支持手机号+验证码注册与登录，支持账号密码登录。
+- **修改密码**：用户可在个人中心修改登录密码，支持原密码验证。
+- **消息通知**：接收系统消息，包括订阅到期提醒、新期号发布、工单回复、优惠活动等。
+
+### 杂志浏览与订阅
+
+- **杂志推荐**：首页展示热门杂志、新刊上线、编辑精选、个性化推荐（基于用户阅读历史与关注偏好）。
+- **杂志订阅**：浏览杂志详情，选择订阅套餐（单篇/单期/月度/年度），提交订阅订单。
+- **支付宝在线支付**：通过支付宝完成订阅支付，支付成功后自动开通对应阅读权限。
+- **订单管理**：查看个人订阅订单与购买订单，包括订单状态（待支付/已支付/已取消/已退款）、订阅有效期、支付信息。
+
+### 在线阅读与互动
+
+- **在线阅读**：在线阅读已订阅的杂志文章，支持翻页、字体调节、深色模式、书签标记、阅读进度同步。
+- **历史阅读记录**：查看个人阅读历史，支持快速回到上次阅读位置。
+- **杂志评论**：对杂志/文章发表评论，查看其他用户评论并回复。
+- **杂志点赞**：对喜欢的杂志/文章点赞，表达认可。
+- **杂志关注**：关注感兴趣的杂志，新期号发布时收到推送通知。
+
+### 工单服务
+
+- **工单提交**：遇到问题时提交工单，选择工单类型、填写问题描述，查看工单处理进度与管理员回复。
+
+---
+
+## 项目结构
+
+```text
+pharmacy-dispensing-system/
+├── backend/            # 后端 API 服务
+│   ├── src/
+│   │   ├── controllers/  # 控制器
+│   │   ├── models/       # 数据模型
+│   │   ├── routes/       # 路由
+│   │   └── services/     # 业务逻辑
+│   └── package.json
+├── frontend/           # 前端 Web 应用
+│   ├── src/
+│   │   ├── views/      # 页面视图
+│   │   ├── components/ # 公共组件
+│   │   └── store/      # 状态管理
+│   └── package.json
+├── docs/               # 项目文档与 API 接口说明
+├── LICENSE
+└── README.md
+```
+---
 
 
 #### 前台启动方式
@@ -43,29 +156,26 @@ WebStorm OR VScode 编译器 [https://www.jianshu.com/p/d63b5bae9dff]
 #### 默认后台账户密码
 [管理员]
 admin
-1234qwer
+123456
 
 [用户]
 fank
-1234qwer
+123456
 
 #### 项目截图
-暂无
-
 |  |  |
 |---------------------|---------------------|
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/61304ff1-34d9-4a70-9aeb-3fb3c5e75ee0.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/2faa3f79-def7-4133-8a21-e9a93fc34cd1.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1990f439-1aa4-4db0-b7bb-7d705ce7ceec.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/f95e7ee1-5e7f-43b5-af81-f4f3c80279e4.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/953f706e-63d8-485d-b17b-5f8c8ebddd06.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/f3d0fe5c-6fdf-41af-b8ec-14f0d5e4afe6.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/920de269-5033-47c5-b41e-46336275004f.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/f1b1a9cd-5846-4cfe-aa58-fe7ba91bb5aa.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/097fc158-5a07-4928-9cb3-a487e6fdfc25.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/eeb32f06-e33e-4d83-82d8-73cd430cf7dd.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/96d7969b-e464-46f9-a3c8-a2ce819e2d20.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/d7d83a17-56fa-40ef-baf5-5f782dbc26da.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/68c9e1d7-540d-4797-a178-18e9f3fb76a6.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/bb2bd217-eb8b-4111-82fa-c88b32ec734f.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/8fdcbd2d-0ea6-469c-8532-f10b54da05dc.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/b0e4e2c0-1af3-4e73-ba22-eac7ea3bcae3.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/6b5c7bb2-0d22-44a3-8f71-d13723a4bddf.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/a9d9f7cb-07b9-484c-ae4a-ba17347281d7.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/4c9274d3-3b1e-43de-8069-7b936a7a683d.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/353434ba-cf34-4072-9c8c-62eca001aeb0.png) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/3ad234d1-5cd5-4633-8872-d5c9ce098901.png) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/work/936e9baf53eb9a217af4f89c616dc19.png) |
-
+| ![](./assets/image%20(1).png) | ![](./assets/image%20(2).png) |
+| ![](./assets/image%20(3).png) | ![](./assets/image%20(4).png) |
+| ![](./assets/image%20(5).png) | ![](./assets/image%20(6).png) |
+| ![](./assets/image%20(7).png) | ![](./assets/image%20(8).png) |
+| ![](./assets/image%20(9).png) | ![](./assets/image%20(10).png) |
+| ![](./assets/image%20(11).png) | ![](./assets/image%20(12).png) |
+| ![](./assets/image%20(13).png) | ![](./assets/image%20(14).png) |
+| ![](./assets/image%20(15).png) | ![](./assets/image%20(16).png) |
+| ![](./assets/image%20(17).png) | ![](./assets/image%20(18).png) |
+| ![](./assets/image%20(19).png) | ![](./assets/image%20(20).png) |
+| ![](./assets/image%20(21).png) |
 
 #### 演示视频
 
@@ -83,7 +193,10 @@ WeChat: `Storm_Berserker`
 
 > 项目部署调试不好包退！功能逻辑没讲明白包退！
 
+<div align=center><img align="center" src="./assets/product_word.png" alt="fankekeke" /></div>
+
 #### 其它资源
+[2026年-答辩顺利通过-客户评价🀄](https://berserker287.github.io/2026/06/29/2026%E5%B9%B4%E7%AD%94%E8%BE%A9%E9%A1%BA%E5%88%A9%E9%80%9A%E8%BF%87/)
 
 [2025年-答辩顺利通过-客户评价🍜](https://berserker287.github.io/2025/06/18/2025%E5%B9%B4%E7%AD%94%E8%BE%A9%E9%A1%BA%E5%88%A9%E9%80%9A%E8%BF%87/)
 
@@ -107,4 +220,8 @@ WeChat: `Storm_Berserker`
 
 More info: [悲伤的橘子树](https://berserker287.github.io/)
 
-<p><img align="center" src="https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/%E5%90%88%E4%BD%9C%E7%89%A9%E6%96%99%E6%A0%B7%E5%BC%8F%20(3).png" alt="fankekeke" /></p>
+<div align="center"><img align="center" src="./assets/chat_qr_code.png" alt="fankekeke" width=250 /></div>
+
+<p><img align="center" src="./assets/wechat_group.png" alt="fankekeke" /></p>
+
+**感谢查看**
